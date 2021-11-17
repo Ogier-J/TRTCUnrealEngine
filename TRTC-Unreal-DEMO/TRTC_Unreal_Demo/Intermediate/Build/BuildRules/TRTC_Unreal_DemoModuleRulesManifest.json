@@ -1,0 +1,9 @@
+{
+	"SourceFiles": [
+		"/Users/gavinwjwang/work/ugit/UE4/TRTC-Unreal-SDK/TRTC-Unreal-DEMO/TRTC_Unreal_Demo/Source/TRTC_Unreal_Demo/TRTC_Unreal_Demo.Build.cs",
+		"/Users/gavinwjwang/work/ugit/UE4/TRTC-Unreal-SDK/TRTC-Unreal-DEMO/TRTC_Unreal_Demo/Plugins/TRTC_Unreal_Plugin/Source/TRTC_Unreal_Plugin/TRTC_Unreal_Plugin.Build.cs",
+		"/Users/gavinwjwang/work/ugit/UE4/TRTC-Unreal-SDK/TRTC-Unreal-DEMO/TRTC_Unreal_Demo/Source/TRTC_Unreal_Demo.Target.cs",
+		"/Users/gavinwjwang/work/ugit/UE4/TRTC-Unreal-SDK/TRTC-Unreal-DEMO/TRTC_Unreal_Demo/Source/TRTC_Unreal_DemoEditor.Target.cs"
+	],
+	"EngineVersion": "4.27.1"
+}
