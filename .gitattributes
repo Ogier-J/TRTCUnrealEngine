@@ -1,1 +1,2 @@
 /TRTC-Unreal-DEMO/TRTC_Unreal_Demo/Intermediate/Build/Mac/x86_64/TRTC_Unreal_DemoEditor/Development/Engine/SharedPCH.Engine.ShadowErrors.h.gch filter=lfs diff=lfs merge=lfs -text
+/TRTC-Unreal-DEMO/TRTC_Unreal_Demo/Intermediate/Build/IOS/TRTC_Unreal_Demo/Development/Engine/SharedPCH.Engine.ShadowErrors.h.gch filter=lfs diff=lfs merge=lfs -text
