@@ -1,0 +1,50 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "BtnTRTCUserWidget.h"
+#include "Engine/Engine.h"
+
+void UBtnTRTCUserWidget::handleInitButtonClick()
+{
+    UE_LOG(LogTemp,Warning, TEXT("++++++++++handleInitButtonClick+++++"));
+    if (TextBlock_1 != nullptr) {
+        TextBlock_1->SetText(FText::FromString("====handleInitButtonClick======"));
+    }else{
+        UE_LOG(LogTemp,Warning, TEXT("TextBlock_1 not find"));
+    }
+}
+
+void UBtnTRTCUserWidget::handleInitButtonPress()
+{
+    UE_LOG(LogTemp,Warning, TEXT("+handleInitButtonPress+++++++++-------++++"));
+    if (TextBlock_1 != nullptr) {
+        TextBlock_1->SetText(FText::FromString("handleInitButtonPress"));
+    }else{
+        UE_LOG(LogTemp,Warning, TEXT("TextBlock_1 not find"));
+    }
+}
+
+void UBtnTRTCUserWidget::OnJButton_1Click()
+{
+    UE_LOG(LogTemp, Warning, TEXT("UBtnTRTCUserWidget ====== OnJButton_1Click ======"));
+    if (TextBlock_1 != nullptr) {
+        TextBlock_1->SetText(FText::FromString("====OnJButton_1Click======"));
+    }else{
+        UE_LOG(LogTemp,Warning, TEXT("TextBlock_1 not find"));
+    }
+}
+
+void UBtnTRTCUserWidget::NativeConstruct() {
+    Super::NativeConstruct();
+    UE_LOG(LogTemp, Warning, TEXT("UBtnTRTCUserWidget ====== NativeConstruct ======"));
+    Button_1->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnJButton_1Click);
+    if (TextBlock_1 != nullptr) {
+        TextBlock_1->SetText(FText::FromString("NativeConstruct"));
+    }else{
+        UE_LOG(LogTemp,Warning, TEXT("TextBlock_1 not find"));
+    }
+}
+
+void UBtnTRTCUserWidget::NativeDestruct() {
+    Super::NativeDestruct();
+}
