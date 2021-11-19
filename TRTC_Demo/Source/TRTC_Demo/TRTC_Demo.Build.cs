@@ -4,6 +4,13 @@ using UnrealBuildTool;
 
 public class TRTC_Demo : ModuleRules
 {
+    private string ThirdPartyPath
+    {
+        get
+        {
+            return Path.GetFullPath(Path.Combine(ModuleDirectory, "../../Source/TRTCSDK"));
+        }
+    }
 	public TRTC_Demo(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
@@ -20,8 +27,8 @@ public class TRTC_Demo : ModuleRules
             
         }else if (Target.Platform == UnrealTargetPlatform.IOS) {
             
-            PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_TRTC", Path.Combine("/Users/gavinwjwang/work/ugit/UE4/TRTC-Unreal-SDK/TRTC_Demo/Source/TRTCSDK", "iOS", "TXLiteAVSDK_TRTC.framework.zip"), "", true) );
-            PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_ReplayKitExt", Path.Combine("/Users/gavinwjwang/work/ugit/UE4/TRTC-Unreal-SDK/TRTC_Demo/Source/TRTCSDK", "iOS", "TXLiteAVSDK_ReplayKitExt.framework.zip"), "", true) );
+            PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_TRTC", Path.Combine(ThirdPartyPath, "iOS", "TXLiteAVSDK_TRTC.framework.zip"), "", true) );
+            PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_ReplayKitExt", Path.Combine(ThirdPartyPath, "iOS", "TXLiteAVSDK_ReplayKitExt.framework.zip"), "", true) );
             PublicFrameworks.AddRange(
                         new string[] {
                             "CoreML",
@@ -34,7 +41,7 @@ public class TRTC_Demo : ModuleRules
             );
         }else if(Target.Platform == UnrealTargetPlatform.Mac)
         {
-            PublicFrameworks.Add(Path.Combine("/Users/gavinwjwang/work/ugit/UE4/TRTC-Unreal-SDK/TRTC_Demo/Source/TRTCSDK", "Mac", "Release", "TXLiteAVSDK_TRTC_Mac.framework"));
+            PublicFrameworks.Add(Path.Combine(ThirdPartyPath, "Mac", "Release", "TXLiteAVSDK_TRTC_Mac.framework"));
             
             PublicAdditionalLibraries.Add ("resolv");
             PublicFrameworks.AddRange(

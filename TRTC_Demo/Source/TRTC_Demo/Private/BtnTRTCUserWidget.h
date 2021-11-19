@@ -6,8 +6,10 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "Modules/ModuleManager.h"
 #include "BtnTRTCUserWidget.generated.h"
 //#include "../../../TRTCSDK/include/ITRTCCloud.h"
+
 
 /**
  * 
