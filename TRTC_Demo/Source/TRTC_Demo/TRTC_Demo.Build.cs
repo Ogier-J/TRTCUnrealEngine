@@ -8,7 +8,7 @@ public class TRTC_Demo : ModuleRules
     {
         get
         {
-            return Path.GetFullPath(Path.Combine(ModuleDirectory, "../../Source/TRTCSDK"));
+            return Path.GetFullPath(Path.Combine(ModuleDirectory, "TRTCSDK"));
         }
     }
 	public TRTC_Demo(ReadOnlyTargetRules Target) : base(Target)

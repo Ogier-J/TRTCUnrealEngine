@@ -3,10 +3,11 @@
 
 #include "BtnTRTCUserWidget.h"
 #include "Engine/Engine.h"
-
+#include <string>
 
 void UBtnTRTCUserWidget::handleInitButtonClick()
 {
+    //std::string perfect = std::to_string(trtc::TXLiteAVError.ERR_NULL);
     UE_LOG(LogTemp,Warning, TEXT("++++++++++handleInitButtonClick+++++"));
     if (TextBlock_1 != nullptr) {
         TextBlock_1->SetText(FText::FromString("====handleInitButtonClick======"));

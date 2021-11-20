@@ -12,5 +12,17 @@
 				"UMG"
 			]
 		}
+	],
+	"Plugins": [
+		{
+			"Name": "TRTC_SDK",
+			"Enabled": false
+		}
+	],
+	"TargetPlatforms": [
+		"IOS",
+		"MacNoEditor",
+		"Android",
+		"WindowsNoEditor"
 	]
 }
