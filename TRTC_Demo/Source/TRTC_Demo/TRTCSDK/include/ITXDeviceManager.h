@@ -256,7 +256,7 @@ class ITXDeviceManager {
 /**
  * 1.1 判断当前是否为前置摄像头（仅适用于移动端）
  */
-#if __ANDROID__ || (__APPLE__ && TARGET_OS_IOS)
+#if defined(__ANDROID__) || (defined(__APPLE__) && TARGET_OS_IOS)
     virtual bool isFrontCamera() = 0;
 
     /**
