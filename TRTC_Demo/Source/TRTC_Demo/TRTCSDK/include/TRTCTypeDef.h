@@ -25,14 +25,14 @@
 #elif __APPLE__
 #include <TargetConditionals.h>
 #define TRTC_API __attribute__((visibility("default")))
-#elif __ANDROID__
+#elif PLATFORM_ANDROID
 #define TRTC_API __attribute__((visibility("default")))
 #else
 #define TRTC_API
 #endif
 
 #define TARGET_PLATFORM_DESKTOP ((__APPLE__ && TARGET_OS_MAC && !TARGET_OS_IPHONE) || _WIN32)
-#define TARGET_PLATFORM_PHONE (__ANDROID__ || (__APPLE__ && TARGET_OS_IOS))
+#define TARGET_PLATFORM_PHONE (PLATFORM_ANDROID || (__APPLE__ && TARGET_OS_IOS))
 #define TARGET_PLATFORM_MAC (__APPLE__ && TARGET_OS_MAC && !TARGET_OS_IPHONE)
 
 namespace liteav {
@@ -816,8 +816,9 @@ struct TRTCParams {
     ///【字段含义】业务数据字段（选填），部分高级特性才需要用到此字段。
     ///【推荐取值】请不要自行设置该字段。
     const char *businessInfo;
-    TRTCParams() : sdkAppId(0), roomId(0), strRoomId(nullptr), userId(nullptr), userSig(nullptr), role(TRTCRoleAnchor), privateMapKey(nullptr), businessInfo(nullptr), userDefineRecordId(nullptr), streamId(nullptr) {
-    }
+    TRTCParams() {}
+//    : sdkAppId(0), roomId(0), strRoomId(nullptr), userId(nullptr), userSig(nullptr), role(TRTCRoleAnchor), privateMapKey(nullptr), businessInfo(nullptr), userDefineRecordId(nullptr), streamId(nullptr) {
+//    }
 };
 
 /**
@@ -866,8 +867,9 @@ struct TRTCVideoEncParam {
     ///【特别说明】默认值：关闭。如有云端录制的需求，请不要开启此功能，因为如果视频分辨率发生变化后，云端录制出的 MP4 在普通的播放器上无法正常播放。
     bool enableAdjustRes;
 
-    TRTCVideoEncParam() : videoResolution(TRTCVideoResolution_640_360), resMode(TRTCVideoResolutionModeLandscape), videoFps(15), videoBitrate(550), enableAdjustRes(false), minVideoBitrate(0) {
-    }
+    TRTCVideoEncParam(){}
+//    : videoResolution(TRTCVideoResolution_640_360), resMode(TRTCVideoResolutionModeLandscape), videoFps(15), videoBitrate(550), enableAdjustRes(false), minVideoBitrate(0) {
+//    }
 };
 
 /**
@@ -1104,12 +1106,13 @@ struct TRTCMixUser {
     ///   - 如果您之前在老版本中已经使用了 pureAudio 字段，并期望保持其设置，则可以将 inputType 设置为 TRTCMixInputTypeUndefined。
     TRTCMixInputType inputType;
 
-    TRTCMixUser() : userId(nullptr), roomId(nullptr), rect(), zOrder(0), pureAudio(false), streamType(TRTCVideoStreamTypeBig), inputType(TRTCMixInputTypeUndefined) {
-        rect.left = 0;
-        rect.top = 0;
-        rect.right = 0;
-        rect.bottom = 0;
-    }
+    TRTCMixUser(){}
+//    : userId(nullptr), roomId(nullptr), rect(), zOrder(0), pureAudio(false), streamType(TRTCVideoStreamTypeBig), inputType(TRTCMixInputTypeUndefined) {
+//        rect.left = 0;
+//        rect.top = 0;
+//        rect.right = 0;
+//        rect.bottom = 0;
+//    }
 };
 
 /**
@@ -1186,24 +1189,24 @@ struct TRTCTranscodingConfig {
     ///    - 如您设置该参数，SDK 会将房间里的多路音视频流混合到您指定的直播流上，也就是 A + B => C（C 代表您指定的 streamId）。
     const char *streamId;
 
-    TRTCTranscodingConfig()
-        : mode(TRTCTranscodingConfigMode_Unknown),
-          appId(0),
-          bizId(0),
-          videoWidth(0),
-          videoHeight(0),
-          videoBitrate(0),
-          videoFramerate(15),
-          videoGOP(2),
-          audioSampleRate(48000),
-          audioBitrate(64),
-          audioChannels(1),
-          mixUsersArray(nullptr),
-          mixUsersArraySize(0),
-          backgroundColor(0),
-          backgroundImage(nullptr),
-          streamId(nullptr) {
-    }
+    TRTCTranscodingConfig(){}
+//        : mode(TRTCTranscodingConfigMode_Unknown),
+//          appId(0),
+//          bizId(0),
+//          videoWidth(0),
+//          videoHeight(0),
+//          videoBitrate(0),
+//          videoFramerate(15),
+//          videoGOP(2),
+//          audioSampleRate(48000),
+//          audioBitrate(64),
+//          audioChannels(1),
+//          mixUsersArray(nullptr),
+//          mixUsersArraySize(0),
+//          backgroundColor(0),
+//          backgroundImage(nullptr),
+//          streamId(nullptr) {
+//    }
 };
 
 /**
@@ -1226,8 +1229,9 @@ struct TRTCPublishCDNParam {
     ///【特别说明】推流 URL 必须为 RTMP 格式，必须符合您的目标直播服务商的规范要求，否则目标服务商会拒绝来自 TRTC 后台服务的推流请求。
     const char *url;
 
-    TRTCPublishCDNParam() : url(nullptr), appId(0), bizId(0) {
-    }
+    TRTCPublishCDNParam(){}
+//    : url(nullptr), appId(0), bizId(0) {
+//    }
 };
 
 /**
@@ -1462,5 +1466,4 @@ namespace trtc = liteav;
 using namespace liteav;
 #endif
 
-#endif / *__TRTCCLOUDDEF_H__ * /
-/// @}
+#endif

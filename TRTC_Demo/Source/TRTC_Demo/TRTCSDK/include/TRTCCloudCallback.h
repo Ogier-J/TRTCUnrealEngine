@@ -809,7 +809,7 @@ class ITRTCCloudCallback {
 #elif defined(__APPLE__)
     virtual void onSpeedTest(const TRTCSpeedTestResult& currentResult, uint32_t finishedCount, uint32_t totalCount) {
     }
-    __attribute__((deprecated("use onSpeedTestResult instead")));
+//    __attribute__((deprecated("use onSpeedTestResult instead")));
 #else
     virtual void onSpeedTest(const TRTCSpeedTestResult& currentResult, uint32_t finishedCount, uint32_t totalCount) {
     }

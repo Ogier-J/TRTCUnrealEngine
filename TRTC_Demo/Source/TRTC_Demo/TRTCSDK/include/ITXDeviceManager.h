@@ -489,5 +489,4 @@ namespace trtc = liteav;
 using namespace liteav;
 #endif
 
-#endif / *__ITXDEVICEMANAGER_H__* /
-/// @}
+#endif

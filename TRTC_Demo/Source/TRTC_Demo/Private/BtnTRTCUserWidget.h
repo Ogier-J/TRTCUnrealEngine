@@ -7,8 +7,6 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Modules/ModuleManager.h"
-#include "../TRTCSDK/include/ITRTCCloud.h"
-#include "../TRTCSDK/include/TXLiteAVCode.h"
 #include "BtnTRTCUserWidget.generated.h"
 //#include "../../../TRTCSDK/include/ITRTCCloud.h"
 

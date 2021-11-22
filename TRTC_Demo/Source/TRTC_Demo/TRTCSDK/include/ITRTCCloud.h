@@ -14,6 +14,59 @@
 #include "TXLiteAVBase.h"
 #endif
 
+//@port Define the platform here to be zero when compiling for other platforms
+#if !defined(PLATFORM_WINDOWS)
+    #define PLATFORM_WINDOWS 0
+#endif
+#if !defined(PLATFORM_XBOXONE)
+    #define PLATFORM_XBOXONE 0
+#endif
+#if !defined(PLATFORM_MAC)
+    #define PLATFORM_MAC 0
+#endif
+#if !defined(PLATFORM_PS4)
+    #define PLATFORM_PS4 0
+#endif
+#if !defined(PLATFORM_IOS)
+    #define PLATFORM_IOS 0
+#endif
+#if !defined(PLATFORM_ANDROID)
+    #define PLATFORM_ANDROID 0
+#endif
+#if !defined(PLATFORM_ANDROID_ARM)
+    #define PLATFORM_ANDROID_ARM 0
+#endif
+#if !defined(PLATFORM_ANDROID_ARM64)
+    #define PLATFORM_ANDROID_ARM64 0
+#endif
+#if !defined(PLATFORM_ANDROID_X86)
+    #define PLATFORM_ANDROID_X86 0
+#endif
+#if !defined(PLATFORM_ANDROID_X64)
+    #define PLATFORM_ANDROID_X64 0
+#endif
+#if !defined(PLATFORM_ANDROIDGL4)
+    #define PLATFORM_ANDROIDGL4 0
+#endif
+#if !defined(PLATFORM_ANDROIDES31)
+    #define PLATFORM_ANDROIDES31 0
+#endif
+#if !defined(PLATFORM_WINRT)
+    #define PLATFORM_WINRT 0
+#endif
+#if !defined(PLATFORM_WINRT_ARM)
+    #define PLATFORM_WINRT_ARM  0
+#endif
+#if !defined(PLATFORM_APPLE)
+    #define PLATFORM_APPLE 0
+#endif
+#if !defined(PLATFORM_HTML5)
+    #define PLATFORM_HTML5 0
+#endif
+#if !defined(PLATFORM_LINUX)
+    #define PLATFORM_LINUX 0
+#endif
+
 /// @defgroup TRTCCloud_cplusplus TRTCCloud
 /// 腾讯云 TRTC 主功能接口
 /// @{
@@ -74,7 +127,7 @@ class ITRTCCloud
  * 2. 在 Windows、Mac 和 iOS 平台上，请调用 getTRTCShareInstance() 接口。
  * 3. 在 Android 平台上，请调用 getTRTCShareInstance(void *context) 接口。
  */
-#ifdef __ANDROID__
+#ifdef PLATFORM_ANDROID
     TRTC_API static liteav::ITRTCCloud* getTRTCShareInstance(void* context);
 #else
     TRTC_API static liteav::ITRTCCloud* getTRTCShareInstance();
@@ -294,7 +347,7 @@ class ITRTCCloud
  * - 通过 createSubCloud 接口创建出来的 TRTCCloud 实例有一个能力限制：不能调用子实例中与本地音视频相关的接口（除 switchRole、muteLocalVideo 和 muteLocalAudio 之外）， 设置美颜等接口请使用原 TRTCCloud 实例对象。
  * @return 子 TRTCCloud 实例
  */
-#if _WIN32 || __APPLE__
+#if PLATFORM_WINDOWS || __APPLE__
     virtual ITRTCCloud* createSubCloud() = 0;
 #endif
 
@@ -303,7 +356,7 @@ class ITRTCCloud
  *
  * @param subCloud
  */
-#if _WIN32 || __APPLE__
+#if PLATFORM_WINDOWS || __APPLE__
     virtual void destroySubCloud(ITRTCCloud* subCloud) = 0;
 #endif
 
@@ -602,7 +655,7 @@ class ITRTCCloud
  * @param sourceType 画面来源，可选择截取视频流画面（{@link TRTCSnapshotSourceTypeStream}）或视频渲染画面（{@link TRTCSnapshotSourceTypeView}），前者一般更清晰。
  * @note Windows 平台目前仅支持截取 {@link TRTCSnapshotSourceTypeStream} 来源的视频画面。
  */
-#if _WIN32 || __APPLE__
+#if PLATFORM_WINDOWS || __APPLE__
     virtual void snapshotVideo(const char* userId, TRTCVideoStreamType streamType, TRTCSnapshotSourceType sourceType) = 0;
 #endif
 
@@ -736,7 +789,7 @@ class ITRTCCloud
  * 开启后把直播过程中的音视和视频内容录制到本地的一个文件中。
  * @param params 录制参数，请参考 {@link TRTCLocalRecordingParams}
  */
-#if _WIN32
+#if PLATFORM_WINDOWS
     virtual void startLocalRecording(const TRTCLocalRecordingParams& params) = 0;
 #endif
 
@@ -745,7 +798,7 @@ class ITRTCCloud
  *
  * 如果录制任务在退出房间前尚未通过本接口停止，则退出房间后录音任务会自动被停止。
  */
-#if _WIN32
+#if PLATFORM_WINDOWS
     virtual void stopLocalRecording() = 0;
 #endif
 

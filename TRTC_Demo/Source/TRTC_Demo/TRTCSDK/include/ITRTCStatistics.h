@@ -201,8 +201,9 @@ struct TRTCStatistics {
     ///【字段含义】数组 remoteStatisticsArray 的大小
     uint32_t remoteStatisticsArraySize;
 
-    TRTCStatistics() : upLoss(0), downLoss(0), appCpu(0), systemCpu(0), rtt(0), gatewayRtt(0), receivedBytes(0), sentBytes(0), localStatisticsArray(nullptr), localStatisticsArraySize(0), remoteStatisticsArray(nullptr), remoteStatisticsArraySize(0) {
-    }
+    TRTCStatistics(){}
+//    : upLoss(0), downLoss(0), appCpu(0), systemCpu(0), rtt(0), gatewayRtt(0), receivedBytes(0), sentBytes(0), localStatisticsArray(nullptr), localStatisticsArraySize(0), remoteStatisticsArray(nullptr), remoteStatisticsArraySize(0) {
+//    }
 };
 /// @}
 
@@ -212,5 +213,4 @@ struct TRTCStatistics {
 using namespace liteav;
 #endif
 
-#endif / *__TRTCSTATISTIC_H__* /
-/// @}
+#endif
