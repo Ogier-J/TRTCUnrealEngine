@@ -9,63 +9,63 @@
 #include "TRTCTypeDef.h"
 #include "ITXAudioEffectManager.h"
 #include "ITXDeviceManager.h"
-#ifdef _WIN32
+#if defined(_WIN32)
 #include "IDeprecatedTRTCCloud.h"
 #include "TXLiteAVBase.h"
 #endif
 
-//@port Define the platform here to be zero when compiling for other platforms
-#if !defined(PLATFORM_WINDOWS)
-    #define PLATFORM_WINDOWS 0
-#endif
-#if !defined(PLATFORM_XBOXONE)
-    #define PLATFORM_XBOXONE 0
-#endif
-#if !defined(PLATFORM_MAC)
-    #define PLATFORM_MAC 0
-#endif
-#if !defined(PLATFORM_PS4)
-    #define PLATFORM_PS4 0
-#endif
-#if !defined(PLATFORM_IOS)
-    #define PLATFORM_IOS 0
-#endif
-#if !defined(PLATFORM_ANDROID)
-    #define PLATFORM_ANDROID 0
-#endif
-#if !defined(PLATFORM_ANDROID_ARM)
-    #define PLATFORM_ANDROID_ARM 0
-#endif
-#if !defined(PLATFORM_ANDROID_ARM64)
-    #define PLATFORM_ANDROID_ARM64 0
-#endif
-#if !defined(PLATFORM_ANDROID_X86)
-    #define PLATFORM_ANDROID_X86 0
-#endif
-#if !defined(PLATFORM_ANDROID_X64)
-    #define PLATFORM_ANDROID_X64 0
-#endif
-#if !defined(PLATFORM_ANDROIDGL4)
-    #define PLATFORM_ANDROIDGL4 0
-#endif
-#if !defined(PLATFORM_ANDROIDES31)
-    #define PLATFORM_ANDROIDES31 0
-#endif
-#if !defined(PLATFORM_WINRT)
-    #define PLATFORM_WINRT 0
-#endif
-#if !defined(PLATFORM_WINRT_ARM)
-    #define PLATFORM_WINRT_ARM  0
-#endif
-#if !defined(PLATFORM_APPLE)
-    #define PLATFORM_APPLE 0
-#endif
-#if !defined(PLATFORM_HTML5)
-    #define PLATFORM_HTML5 0
-#endif
-#if !defined(PLATFORM_LINUX)
-    #define PLATFORM_LINUX 0
-#endif
+// //@port Define the platform here to be zero when compiling for other platforms
+// #if !defined(PLATFORM_WINDOWS)
+//     #define PLATFORM_WINDOWS 0
+// #endif
+// #if !defined(PLATFORM_XBOXONE)
+//     #define PLATFORM_XBOXONE 0
+// #endif
+// #if !defined(PLATFORM_MAC)
+//     #define PLATFORM_MAC 0
+// #endif
+// #if !defined(PLATFORM_PS4)
+//     #define PLATFORM_PS4 0
+// #endif
+// #if !defined(PLATFORM_IOS)
+//     #define PLATFORM_IOS 0
+// #endif
+// #if !defined(PLATFORM_ANDROID)
+//     #define PLATFORM_ANDROID 0
+// #endif
+// #if !defined(PLATFORM_ANDROID_ARM)
+//     #define PLATFORM_ANDROID_ARM 0
+// #endif
+// #if !defined(PLATFORM_ANDROID_ARM64)
+//     #define PLATFORM_ANDROID_ARM64 0
+// #endif
+// #if !defined(PLATFORM_ANDROID_X86)
+//     #define PLATFORM_ANDROID_X86 0
+// #endif
+// #if !defined(PLATFORM_ANDROID_X64)
+//     #define PLATFORM_ANDROID_X64 0
+// #endif
+// #if !defined(PLATFORM_ANDROIDGL4)
+//     #define PLATFORM_ANDROIDGL4 0
+// #endif
+// #if !defined(PLATFORM_ANDROIDES31)
+//     #define PLATFORM_ANDROIDES31 0
+// #endif
+// #if !defined(PLATFORM_WINRT)
+//     #define PLATFORM_WINRT 0
+// #endif
+// #if !defined(PLATFORM_WINRT_ARM)
+//     #define PLATFORM_WINRT_ARM  0
+// #endif
+// #if !defined(PLATFORM_APPLE)
+//     #define PLATFORM_APPLE 0
+// #endif
+// #if !defined(PLATFORM_HTML5)
+//     #define PLATFORM_HTML5 0
+// #endif
+// #if !defined(PLATFORM_LINUX)
+//     #define PLATFORM_LINUX 0
+// #endif
 
 /// @defgroup TRTCCloud_cplusplus TRTCCloud
 /// 腾讯云 TRTC 主功能接口
@@ -101,7 +101,7 @@ TRTC_API void destroyTRTCShareInstance();
 namespace liteav {
 
 class ITRTCCloud
-#ifdef _WIN32
+#if defined(_WIN32)
     : public IDeprecatedTRTCCloud
 #endif  // _WIN32
 {
@@ -347,7 +347,7 @@ class ITRTCCloud
  * - 通过 createSubCloud 接口创建出来的 TRTCCloud 实例有一个能力限制：不能调用子实例中与本地音视频相关的接口（除 switchRole、muteLocalVideo 和 muteLocalAudio 之外）， 设置美颜等接口请使用原 TRTCCloud 实例对象。
  * @return 子 TRTCCloud 实例
  */
-#if PLATFORM_WINDOWS || __APPLE__
+#if defined(_WIN32) || __APPLE__
     virtual ITRTCCloud* createSubCloud() = 0;
 #endif
 
@@ -356,7 +356,7 @@ class ITRTCCloud
  *
  * @param subCloud
  */
-#if PLATFORM_WINDOWS || __APPLE__
+#if defined(_WIN32) || __APPLE__
     virtual void destroySubCloud(ITRTCCloud* subCloud) = 0;
 #endif
 
@@ -655,7 +655,7 @@ class ITRTCCloud
  * @param sourceType 画面来源，可选择截取视频流画面（{@link TRTCSnapshotSourceTypeStream}）或视频渲染画面（{@link TRTCSnapshotSourceTypeView}），前者一般更清晰。
  * @note Windows 平台目前仅支持截取 {@link TRTCSnapshotSourceTypeStream} 来源的视频画面。
  */
-#if PLATFORM_WINDOWS || __APPLE__
+#if defined(_WIN32) || __APPLE__
     virtual void snapshotVideo(const char* userId, TRTCVideoStreamType streamType, TRTCSnapshotSourceType sourceType) = 0;
 #endif
 
@@ -789,7 +789,7 @@ class ITRTCCloud
  * 开启后把直播过程中的音视和视频内容录制到本地的一个文件中。
  * @param params 录制参数，请参考 {@link TRTCLocalRecordingParams}
  */
-#if PLATFORM_WINDOWS
+#if defined(_WIN32)
     virtual void startLocalRecording(const TRTCLocalRecordingParams& params) = 0;
 #endif
 
@@ -798,7 +798,7 @@ class ITRTCCloud
  *
  * 如果录制任务在退出房间前尚未通过本接口停止，则退出房间后录音任务会自动被停止。
  */
-#if PLATFORM_WINDOWS
+#if defined(_WIN32)
     virtual void stopLocalRecording() = 0;
 #endif
 
@@ -1489,7 +1489,7 @@ class ITRTCCloud
 /**
  * 13.9 调用实验性接口
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual const char* callExperimentalAPI(const char* jsonStr) = 0;
 #else
     virtual void callExperimentalAPI(const char* jsonStr) = 0;
@@ -1509,7 +1509,7 @@ class ITRTCCloud
  *
  * @deprecated v8.5 版本开始不推荐使用，建议使用 enableCustomVideoCapture(streamType,enable) 接口替代之。
  */
-#ifndef _WIN32
+#if !defined(_WIN32)
     virtual void enableCustomVideoCapture(bool enable) = 0;
 #endif
 
@@ -1518,7 +1518,7 @@ class ITRTCCloud
  *
  * @deprecated v8.5 版本开始不推荐使用，建议使用 sendCustomVideoData(streamType, TRTCVideoFrame) 接口替代之。
  */
-#ifndef _WIN32
+#if !defined(_WIN32)
     virtual void sendCustomVideoData(TRTCVideoFrame* frame) = 0;
 #endif
 
@@ -1527,7 +1527,7 @@ class ITRTCCloud
  *
  * @deprecated v8.9 版本开始不推荐使用，建议使用 muteLocalVideo(streamType, mute) 接口替代之。
  */
-#ifndef _WIN32
+#if !defined(_WIN32)
     virtual void muteLocalVideo(bool mute) = 0;
 #endif
 
@@ -1536,7 +1536,7 @@ class ITRTCCloud
  *
  * @deprecated v8.9 版本开始不推荐使用，建议使用 muteRemoteVideoStream(userId, streamType, mute) 接口替代之。
  */
-#ifndef _WIN32
+#if !defined(_WIN32)
     virtual void muteRemoteVideoStream(const char* userId, bool mute) = 0;
 #endif
 
@@ -1551,7 +1551,7 @@ class ITRTCCloud
     virtual void startSpeedTest(uint32_t sdkAppId, const char* userId, const char* userSig) = 0;
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32)
     using IDeprecatedTRTCCloud::enableCustomVideoCapture;
     using IDeprecatedTRTCCloud::muteLocalVideo;
     using IDeprecatedTRTCCloud::muteRemoteVideoStream;

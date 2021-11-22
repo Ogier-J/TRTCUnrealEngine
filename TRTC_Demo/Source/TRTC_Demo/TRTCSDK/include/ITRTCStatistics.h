@@ -209,7 +209,7 @@ struct TRTCStatistics {
 
 }  // namespace liteav
 
-#ifdef _WIN32
+#if defined(_WIN32)
 using namespace liteav;
 #endif
 

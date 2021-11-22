@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <memory>
 
-#ifdef _WIN32
+#if defined(_WIN32)
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
@@ -39,7 +39,7 @@ namespace liteav {
 
 /// @{
 
-#ifndef _WIN32
+#if !defined(_WIN32)
 struct RECT {
     int left = 0;
     int top = 0;
@@ -86,7 +86,7 @@ struct SIZE {
  * }
  * </pre>
  */
-#ifdef _WIN32
+#if defined(_WIN32)
 // Windows: HWND
 typedef HWND TXView;
 #else
@@ -1462,7 +1462,7 @@ typedef ITXDeviceInfo ITRTCDeviceInfo;
 // 9.0 开始 C++ 接口将声明在 liteav 命名空间下，为兼容之前的使用方式，将 trtc 作为 liteav 的别名
 namespace trtc = liteav;
 
-#ifdef _WIN32
+#if defined(_WIN32)
 using namespace liteav;
 #endif
 

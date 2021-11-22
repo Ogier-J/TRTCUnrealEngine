@@ -666,7 +666,7 @@ class ITRTCCloudCallback {
  *
  * 当屏幕分享的目标窗口被遮挡无法正常捕获时，SDK 会抛出此事件回调，你可以在捕获到该事件回调后，通过 UI 上的一些变化来提示用户移开遮盖窗口。
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual void onScreenCaptureCovered(){};
 #endif
 
@@ -740,7 +740,7 @@ class ITRTCCloudCallback {
  *
  * @deprecated 新版本开始不推荐使用，建议使用 {@link onRemoteUserEnterRoom} 替代之。
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual __declspec(deprecated("use onRemoteUserEnterRoom instead")) void onUserEnter(const char* userId) {
     }
 #endif
@@ -750,7 +750,7 @@ class ITRTCCloudCallback {
  *
  * @deprecated 新版本开始不推荐使用，建议使用 {@link onRemoteUserLeaveRoom} 替代之。
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual __declspec(deprecated("use onRemoteUserLeaveRoom instead")) void onUserExit(const char* userId, int reason) {
     }
 #endif
@@ -761,7 +761,7 @@ class ITRTCCloudCallback {
  * @deprecated 新版本开始不推荐使用，建议使用 {@link ITXAudioEffectManager} 接口替代之。
  * 新的接口中不再区分背景音乐和音效，而是统一用 {@link startPlayMusic} 取代之。
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual __declspec(deprecated("use ITXAudioEffectManager.ITXMusicPlayObserver instead")) void onAudioEffectFinished(int effectId, int code){};
 #endif
 
@@ -771,7 +771,7 @@ class ITRTCCloudCallback {
  * @deprecated 新版本开始不推荐使用，建议使用 {@link ITXMusicPlayObserver} 接口替代之。
  * 新的接口中不再区分背景音乐和音效，而是统一用 {@link startPlayMusic} 取代之。
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual __declspec(deprecated("use ITXAudioEffectManager.ITXMusicPlayObserver instead")) void onPlayBGMBegin(TXLiteAVError errCode) {
     }
 #endif
@@ -782,7 +782,7 @@ class ITRTCCloudCallback {
  * @deprecated 新版本开始不推荐使用，建议使用 {@link ITXMusicPlayObserver} 接口替代之。
  * 新的接口中不再区分背景音乐和音效，而是统一用 {@link startPlayMusic} 取代之。
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual __declspec(deprecated("use ITXAudioEffectManager.ITXMusicPlayObserver instead")) void onPlayBGMProgress(uint32_t progressMS, uint32_t durationMS) {
     }
 #endif
@@ -793,7 +793,7 @@ class ITRTCCloudCallback {
  * @deprecated 新版本开始不推荐使用，建议使用 {@link ITXMusicPlayObserver} 接口替代之。
  * 新的接口中不再区分背景音乐和音效，而是统一用 {@link startPlayMusic} 取代之。
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual __declspec(deprecated("use ITXAudioEffectManager.ITXMusicPlayObserver instead")) void onPlayBGMComplete(TXLiteAVError errCode) {
     }
 #endif
@@ -803,7 +803,7 @@ class ITRTCCloudCallback {
  *
  * @deprecated 新版本开始不推荐使用，建议使用 {@link onSpeedTestResult:} 接口替代之。
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual __declspec(deprecated("use onSpeedTestResult instead")) void onSpeedTest(const TRTCSpeedTestResult& currentResult, uint32_t finishedCount, uint32_t totalCount) {
     }
 #elif defined(__APPLE__)

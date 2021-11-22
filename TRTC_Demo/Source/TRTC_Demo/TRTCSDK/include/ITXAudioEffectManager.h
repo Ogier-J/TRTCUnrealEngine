@@ -310,7 +310,7 @@ class ITXAudioEffectManager {
 // 9.0 开始 C++ 接口将声明在 liteav 命名空间下，为兼容之前的使用方式，将 trtc 作为 liteav 的别名
 namespace trtc = liteav;
 
-#ifdef _WIN32
+#if defined(_WIN32)
 using namespace liteav;
 #endif
 

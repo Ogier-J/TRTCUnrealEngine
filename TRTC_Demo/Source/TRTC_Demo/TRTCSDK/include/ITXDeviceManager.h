@@ -107,7 +107,7 @@ enum TXMediaDeviceState {
  *
  * 该枚举类型用于摄像头采集参数设置。
  */
-#ifdef _WIN32
+#if defined(_WIN32)
 enum TXCameraCaptureMode {
 
     ///自动调整采集参数。
@@ -432,42 +432,42 @@ class ITXDeviceManager {
  *
  * 该接口支持自定义渲染，即您可以通过接 ITRTCVideoRenderCallback 回调接口接管摄像头的渲染画面。
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual int startCameraDeviceTest(ITRTCVideoRenderCallback* callback) = 0;
 #endif
 
 /**
  * 2.15 设置 Windows 系统音量合成器中当前进程的音量（仅适用于 Windows 系统）
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual int setApplicationPlayVolume(int volume) = 0;
 #endif
 
 /**
  * 2.16 获取 Windows 系统音量合成器中当前进程的音量（仅适用于 Windows 系统）
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual int getApplicationPlayVolume() = 0;
 #endif
 
 /**
  * 2.17 设置 Windows 系统音量合成器中当前进程的静音状态（仅适用于 Windows 系统）
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual int setApplicationMuteState(bool bMute) = 0;
 #endif
 
 /**
  * 2.18 获取 Windows 系统音量合成器中当前进程的静音状态（仅适用于 Windows 系统）
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual bool getApplicationMuteState() = 0;
 #endif
 
 /**
  * 2.19 设置摄像头采集偏好
  */
-#ifdef _WIN32
+#if defined(_WIN32)
     virtual void setCameraCapturerParam(const TXCameraCaptureParam& params) = 0;
 #endif
 
@@ -485,7 +485,7 @@ class ITXDeviceManager {
 // 9.0 开始 C++ 接口将声明在 liteav 命名空间下，为兼容之前的使用方式，将 trtc 作为 liteav 的别名
 namespace trtc = liteav;
 
-#ifdef _WIN32
+#if defined(_WIN32)
 using namespace liteav;
 #endif
 
