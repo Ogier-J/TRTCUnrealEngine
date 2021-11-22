@@ -28,10 +28,11 @@ public class TRTC_Demo : ModuleRules
         {
             
         }else if (Target.Platform == UnrealTargetPlatform.IOS) {
-            
             PublicAdditionalLibraries.AddRange(new string[] {
                 // "resolv",
+                "resolv",
                 "z",
+                "c++",
             });
             PublicFrameworks.AddRange(
                         new string[] {

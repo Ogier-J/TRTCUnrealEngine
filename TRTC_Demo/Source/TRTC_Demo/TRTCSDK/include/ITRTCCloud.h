@@ -90,7 +90,7 @@ class ITRTCCloud;
 extern "C" {
 /// @name Exported C function
 /// @{
-#ifdef __ANDROID__
+#if defined(__ANDROID__)
 TRTC_API liteav::ITRTCCloud* getTRTCShareInstance(void* context);
 #else
 TRTC_API liteav::ITRTCCloud* getTRTCShareInstance();
@@ -127,7 +127,7 @@ class ITRTCCloud
  * 2. 在 Windows、Mac 和 iOS 平台上，请调用 getTRTCShareInstance() 接口。
  * 3. 在 Android 平台上，请调用 getTRTCShareInstance(void *context) 接口。
  */
-#ifdef PLATFORM_ANDROID
+#if defined(__ANDROID__)
     TRTC_API static liteav::ITRTCCloud* getTRTCShareInstance(void* context);
 #else
     TRTC_API static liteav::ITRTCCloud* getTRTCShareInstance();

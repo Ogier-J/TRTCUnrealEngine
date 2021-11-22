@@ -25,7 +25,7 @@
 #elif __APPLE__
 #include <TargetConditionals.h>
 #define TRTC_API __attribute__((visibility("default")))
-#elif PLATFORM_ANDROID
+#elif defined(__ANDROID__)
 #define TRTC_API __attribute__((visibility("default")))
 #else
 #define TRTC_API
