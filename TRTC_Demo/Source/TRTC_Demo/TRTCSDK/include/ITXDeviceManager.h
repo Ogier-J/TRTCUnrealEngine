@@ -216,7 +216,7 @@ class ITXDeviceCollection {
 };
 /// @}
 
-#if (__APPLE__ && TARGET_OS_MAC && !TARGET_OS_IPHONE) || _WIN32
+#if (__APPLE__ && TARGET_OS_MAC && !TARGET_OS_IPHONE) || PLATFORM_WINDOWS
 class ITXDeviceObserver {
    public:
     virtual ~ITXDeviceObserver() {
@@ -340,7 +340,7 @@ class ITXDeviceManager {
  *   - type 只支持 TXMediaDeviceTypeMic、TXMediaDeviceTypeSpeaker、TXMediaDeviceTypeCamera。
  *   - 此接口只支持 Mac 和 Windows 平台
  */
-#if (__APPLE__ && TARGET_OS_MAC && !TARGET_OS_IPHONE) || _WIN32
+#if (__APPLE__ && TARGET_OS_MAC && !TARGET_OS_IPHONE) || PLATFORM_WINDOWS
     virtual ITXDeviceCollection* getDevicesList(TXMediaDeviceType type) = 0;
 
     /**
@@ -474,7 +474,7 @@ class ITXDeviceManager {
 /**
  * 2.20 设置 onDeviceChanged 事件回调
  */
-#if (__APPLE__ && TARGET_OS_MAC && !TARGET_OS_IPHONE) || _WIN32
+#if (__APPLE__ && TARGET_OS_MAC && !TARGET_OS_IPHONE) || PLATFORM_WINDOWS
     virtual void setDeviceObserver(ITXDeviceObserver* observer) = 0;
 #endif
 

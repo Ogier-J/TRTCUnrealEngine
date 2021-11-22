@@ -46,7 +46,6 @@ public class TRTC_Demo : ModuleRules
                 }
             );
             PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_TRTC", Path.Combine(ThirdPartyPath, "iOS", "TXLiteAVSDK_TRTC.framework.zip"), "", true) );
-            PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_ReplayKitExt", Path.Combine(ThirdPartyPath, "iOS", "TXLiteAVSDK_ReplayKitExt.framework.zip"), "", true) );
         }else if(Target.Platform == UnrealTargetPlatform.Mac)
         {
             // libbz2.tbd
