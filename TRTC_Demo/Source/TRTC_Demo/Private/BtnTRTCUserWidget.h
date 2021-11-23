@@ -13,26 +13,33 @@
  * 
  */
 UCLASS()
-class UBtnTRTCUserWidget : public UUserWidget,public trtc::ITRTCVideoRenderCallback
+class UBtnTRTCUserWidget : public UUserWidget,public trtc::ITRTCVideoRenderCallback, public trtc::ITRTCCloudCallback
 {
 	GENERATED_BODY()
+private:
+   void onExitRoom(int reason) override;
+   void onEnterRoom(int result) override;
+   void onUserVideoAvailable(const char *userId, bool available) override;
+   void onError(TXLiteAVError errCode, const char *errMsg, void *extraInfo) override;
+   void onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) override;
+    
 public:
     trtc::ITRTCCloud * pTRTCCloud;
     
-    UFUNCTION(BlueprintCallable, Category ="initFunction")
+    UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
         void handleInitButtonClick();
     
-    UFUNCTION(BlueprintCallable, Category ="initFunction")
-        void handleInitButtonPress();
-    
     UPROPERTY(VisibleAnywhere, Meta = (BindWidget))
-        UTextBlock* TextBlock_1;
+        UTextBlock* txtLog;
     
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
-        UButton* Button_1 = nullptr;
+        UButton* btnEnterroom = nullptr;
+    
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
+        UButton* btnInitTrtc = nullptr;
     
     UFUNCTION(BlueprintCallable)
-        void OnJButton_1Click();
+        void OnEnterRoom_Click();
     
     void NativeConstruct() override;
 

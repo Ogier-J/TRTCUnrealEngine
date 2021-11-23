@@ -7,34 +7,14 @@
 
 void UBtnTRTCUserWidget::handleInitButtonClick()
 {
-    //std::string perfect = std::to_string(trtc::TXLiteAVError.ERR_NULL);
-    UE_LOG(LogTemp,Warning, TEXT("++++++++++handleInitButtonClick+++++"));
-    if (TextBlock_1 != nullptr) {
-        TextBlock_1->SetText(FText::FromString("====handleInitButtonClick======"));
-    }else{
-        UE_LOG(LogTemp,Warning, TEXT("TextBlock_1 not find"));
-    }
+    
 }
 
-void UBtnTRTCUserWidget::handleInitButtonPress()
+void UBtnTRTCUserWidget::OnEnterRoom_Click()
 {
-    std::string version = pTRTCCloud->getSDKVersion();
-    UE_LOG(LogTemp,Warning, TEXT("+handleInitButtonPress+++++++++-------++++"));
-    if (TextBlock_1 != nullptr) {
-        TextBlock_1->SetText(FText::FromString(version.c_str()));
-    }else{
-        UE_LOG(LogTemp,Warning, TEXT("TextBlock_1 not find"));
-    }
-}
-
-void UBtnTRTCUserWidget::OnJButton_1Click()
-{
-    UE_LOG(LogTemp, Warning, TEXT("UBtnTRTCUserWidget ====== OnJButton_1Click ======"));
-    if (TextBlock_1 != nullptr) {
-        TextBlock_1->SetText(FText::FromString("====OnJButton_1Click======"));
-    }else{
-        UE_LOG(LogTemp,Warning, TEXT("TextBlock_1 not find"));
-    }
+    pTRTCCloud->startLocalPreview(nullptr);
+    pTRTCCloud->setLocalVideoRenderCallback(trtc::TRTCVideoPixelFormat_I420, trtc::TRTCVideoBufferType_Buffer, this);
+    
 }
 void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *frame) {
 }
@@ -42,16 +22,28 @@ void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoS
 void UBtnTRTCUserWidget::NativeConstruct() {
     Super::NativeConstruct();
     pTRTCCloud = getTRTCShareInstance();
+    pTRTCCloud->addCallback(this);
     std::string version = pTRTCCloud->getSDKVersion();
-    UE_LOG(LogTemp, Warning, TEXT("UBtnTRTCUserWidget ====== NativeConstruct ======"));
-    Button_1->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnJButton_1Click);
-    if (TextBlock_1 != nullptr) {
-        TextBlock_1->SetText(FText::FromString(version.c_str()));
+    btnEnterroom->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnEnterRoom_Click);
+    btnInitTrtc->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::handleInitButtonClick);
+    if (txtLog != nullptr) {
+        txtLog->SetText(FText::FromString(version.c_str()));
     }else{
-        UE_LOG(LogTemp,Warning, TEXT("TextBlock_1 not find"));
+        UE_LOG(LogTemp,Warning, TEXT("txtLog not find"));
     }
 }
 
 void UBtnTRTCUserWidget::NativeDestruct() {
     Super::NativeDestruct();
+    if (pTRTCCloud != nullptr) {
+        pTRTCCloud->removeCallback(this);
+        pTRTCCloud = nullptr;
+   }
 }
+
+void  UBtnTRTCUserWidget::onUserVideoAvailable(const char *userId, bool available) {
+}
+void UBtnTRTCUserWidget::onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) { }
+void UBtnTRTCUserWidget::onError(TXLiteAVError errCode, const char *errMsg, void *extraInfo) { }
+void UBtnTRTCUserWidget::onEnterRoom(int result) { }
+void UBtnTRTCUserWidget::onExitRoom(int reason) { }
