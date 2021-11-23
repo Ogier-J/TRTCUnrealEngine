@@ -17,12 +17,12 @@ class UBtnTRTCUserWidget : public UUserWidget,public trtc::ITRTCVideoRenderCallb
 {
 	GENERATED_BODY()
 private:
-   void onExitRoom(int reason) override;
-   void onEnterRoom(int result) override;
-   void onUserVideoAvailable(const char *userId, bool available) override;
-   void onError(TXLiteAVError errCode, const char *errMsg, void *extraInfo) override;
-   void onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) override;
-    
+    void onExitRoom(int reason) override;
+    void onEnterRoom(int result) override;
+    void onUserVideoAvailable(const char *userId, bool available) override;
+    void onError(TXLiteAVError errCode, const char *errMsg, void *extraInfo) override;
+    void onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) override;
+    void writeLblLog(const char *log);
 public:
     trtc::ITRTCCloud * pTRTCCloud;
     

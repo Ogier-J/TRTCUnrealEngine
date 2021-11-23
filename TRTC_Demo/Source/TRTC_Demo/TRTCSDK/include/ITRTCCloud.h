@@ -14,59 +14,6 @@
 #include "TXLiteAVBase.h"
 #endif
 
-// //@port Define the platform here to be zero when compiling for other platforms
-// #if !defined(PLATFORM_WINDOWS)
-//     #define PLATFORM_WINDOWS 0
-// #endif
-// #if !defined(PLATFORM_XBOXONE)
-//     #define PLATFORM_XBOXONE 0
-// #endif
-// #if !defined(PLATFORM_MAC)
-//     #define PLATFORM_MAC 0
-// #endif
-// #if !defined(PLATFORM_PS4)
-//     #define PLATFORM_PS4 0
-// #endif
-// #if !defined(PLATFORM_IOS)
-//     #define PLATFORM_IOS 0
-// #endif
-// #if !defined(PLATFORM_ANDROID)
-//     #define PLATFORM_ANDROID 0
-// #endif
-// #if !defined(PLATFORM_ANDROID_ARM)
-//     #define PLATFORM_ANDROID_ARM 0
-// #endif
-// #if !defined(PLATFORM_ANDROID_ARM64)
-//     #define PLATFORM_ANDROID_ARM64 0
-// #endif
-// #if !defined(PLATFORM_ANDROID_X86)
-//     #define PLATFORM_ANDROID_X86 0
-// #endif
-// #if !defined(PLATFORM_ANDROID_X64)
-//     #define PLATFORM_ANDROID_X64 0
-// #endif
-// #if !defined(PLATFORM_ANDROIDGL4)
-//     #define PLATFORM_ANDROIDGL4 0
-// #endif
-// #if !defined(PLATFORM_ANDROIDES31)
-//     #define PLATFORM_ANDROIDES31 0
-// #endif
-// #if !defined(PLATFORM_WINRT)
-//     #define PLATFORM_WINRT 0
-// #endif
-// #if !defined(PLATFORM_WINRT_ARM)
-//     #define PLATFORM_WINRT_ARM  0
-// #endif
-// #if !defined(PLATFORM_APPLE)
-//     #define PLATFORM_APPLE 0
-// #endif
-// #if !defined(PLATFORM_HTML5)
-//     #define PLATFORM_HTML5 0
-// #endif
-// #if !defined(PLATFORM_LINUX)
-//     #define PLATFORM_LINUX 0
-// #endif
-
 /// @defgroup TRTCCloud_cplusplus TRTCCloud
 /// 腾讯云 TRTC 主功能接口
 /// @{
