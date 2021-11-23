@@ -36,6 +36,8 @@ void UBtnTRTCUserWidget::OnJButton_1Click()
         UE_LOG(LogTemp,Warning, TEXT("TextBlock_1 not find"));
     }
 }
+void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *frame) {
+}
 
 void UBtnTRTCUserWidget::NativeConstruct() {
     Super::NativeConstruct();

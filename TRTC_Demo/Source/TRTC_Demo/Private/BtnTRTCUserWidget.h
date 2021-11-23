@@ -13,11 +13,11 @@
  * 
  */
 UCLASS()
-class UBtnTRTCUserWidget : public UUserWidget
+class UBtnTRTCUserWidget : public UUserWidget,public trtc::ITRTCVideoRenderCallback
 {
 	GENERATED_BODY()
 public:
-    liteav::ITRTCCloud * pTRTCCloud;
+    trtc::ITRTCCloud * pTRTCCloud;
     
     UFUNCTION(BlueprintCallable, Category ="initFunction")
         void handleInitButtonClick();
@@ -37,5 +37,7 @@ public:
     void NativeConstruct() override;
 
     void NativeDestruct() override;
-    
+    // 自定义视频渲染回调
+    void onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *frame) override;
+        
 };
