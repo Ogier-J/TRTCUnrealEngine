@@ -43,7 +43,8 @@ public class TRTC_Demo : ModuleRules
                     "CoreTelephony"
                 }
             );
-            PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_TRTC",Path.Combine(_TRTCSDKPath, "iOS","TXLiteAVSDK_TRTC.framework.zip"), "", true));
+            // PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_TRTC",Path.Combine(_TRTCSDKPath, "iOS","TXLiteAVSDK_TRTC.framework.zip"), "", true));
+            PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVSDK_TRTC",_TRTCSDKPath+"/ios/TXLiteAVSDK_TRTC.framework.zip", ""));
         }else if(Target.Platform == UnrealTargetPlatform.Mac)
         {
             PublicAdditionalLibraries.AddRange(new string[] {
