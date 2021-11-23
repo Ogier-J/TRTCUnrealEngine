@@ -4,51 +4,48 @@ using UnrealBuildTool;
 
 public class TRTC_Demo : ModuleRules
 {
-    private string ThirdPartyPath
+    private string _TRTCSDKPath
     {
         get
         {
             return Path.GetFullPath(Path.Combine(ModuleDirectory, "TRTCSDK"));
         }
     }
+    
 	public TRTC_Demo(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
         // //添加系统Framework和库
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
-
 		// Uncomment if you are using Slate UI
-		PrivateDependencyModuleNames.AddRange(new string[] {"UMG", "Slate", "SlateCore" });
+		PrivateDependencyModuleNames.AddRange(new string[] {"UMG", "Slate", "SlateCore"});
         // 添加插件的包含路径
-       PublicIncludePaths.Add(Path.Combine(ThirdPartyPath, "include"));
-
+        PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include"));
         if (Target.Platform == UnrealTargetPlatform.Android)
         {
             
-        }else if (Target.Platform == UnrealTargetPlatform.IOS) {
+        }else if (Target.Platform == UnrealTargetPlatform.IOS)
+        {
             PublicAdditionalLibraries.AddRange(new string[] {
-                // "resolv",
                 "resolv",
                 "z",
                 "c++",
             });
             PublicFrameworks.AddRange(
-                        new string[] {
-                            "CoreML",
-                            "VideoToolbox",
-                            "Accelerate",
-                            "CFNetwork",
-                            "OpenGLES",
-                            "AVFoundation",
-                            "CoreTelephony"
+                new string[] {
+                    "CoreML",
+                    "VideoToolbox",
+                    "Accelerate",
+                    "CFNetwork",
+                    "OpenGLES",
+                    "AVFoundation",
+                    "CoreTelephony"
                 }
             );
-            PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_TRTC", Path.Combine(ThirdPartyPath, "iOS", "TXLiteAVSDK_TRTC.framework.zip"), "", true) );
+            PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_TRTC",Path.Combine(_TRTCSDKPath, "iOS","TXLiteAVSDK_TRTC.framework.zip"), "", true));
         }else if(Target.Platform == UnrealTargetPlatform.Mac)
         {
-            // libbz2.tbd
             PublicAdditionalLibraries.AddRange(new string[] {
                 "resolv",
                 "z",
@@ -76,10 +73,12 @@ public class TRTC_Demo : ModuleRules
                     "AudioUnit",
                     "Accelerate",
                 });
-            PublicFrameworks.Add(Path.Combine(ThirdPartyPath, "Mac", "Release", "TXLiteAVSDK_TRTC_Mac.framework"));
+            PublicFrameworks.Add(Path.Combine(_TRTCSDKPath, "Mac", "Release","TXLiteAVSDK_TRTC_Mac.framework"));
+        }else if (Target.Platform == UnrealTargetPlatform.Win64)
+        {
             
         }
-       
+        
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
 

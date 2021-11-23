@@ -4,7 +4,6 @@
 #include "BtnTRTCUserWidget.h"
 #include "Engine/Engine.h"
 #include <string>
-#include "../TRTCSDK/include/ITRTCCloud.h"
 
 void UBtnTRTCUserWidget::handleInitButtonClick()
 {
@@ -19,9 +18,10 @@ void UBtnTRTCUserWidget::handleInitButtonClick()
 
 void UBtnTRTCUserWidget::handleInitButtonPress()
 {
+    std::string version = pTRTCCloud->getSDKVersion();
     UE_LOG(LogTemp,Warning, TEXT("+handleInitButtonPress+++++++++-------++++"));
     if (TextBlock_1 != nullptr) {
-        TextBlock_1->SetText(FText::FromString("handleInitButtonPress"));
+        TextBlock_1->SetText(FText::FromString(version.c_str()));
     }else{
         UE_LOG(LogTemp,Warning, TEXT("TextBlock_1 not find"));
     }
@@ -39,9 +39,9 @@ void UBtnTRTCUserWidget::OnJButton_1Click()
 
 void UBtnTRTCUserWidget::NativeConstruct() {
     Super::NativeConstruct();
-    UE_LOG(LogTemp, Warning, TEXT("UBtnTRTCUserWidget ====== NativeConstruct ======"));
-    liteav::ITRTCCloud * pTRTCCloud = getTRTCShareInstance();
+    pTRTCCloud = getTRTCShareInstance();
     std::string version = pTRTCCloud->getSDKVersion();
+    UE_LOG(LogTemp, Warning, TEXT("UBtnTRTCUserWidget ====== NativeConstruct ======"));
     Button_1->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnJButton_1Click);
     if (TextBlock_1 != nullptr) {
         TextBlock_1->SetText(FText::FromString(version.c_str()));

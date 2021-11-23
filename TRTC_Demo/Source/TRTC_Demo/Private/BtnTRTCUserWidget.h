@@ -7,10 +7,8 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Modules/ModuleManager.h"
+#include "ITRTCCloud.h"
 #include "BtnTRTCUserWidget.generated.h"
-//#include "../../../TRTCSDK/include/ITRTCCloud.h"
-
-
 /**
  * 
  */
@@ -19,6 +17,8 @@ class UBtnTRTCUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+    liteav::ITRTCCloud * pTRTCCloud;
+    
     UFUNCTION(BlueprintCallable, Category ="initFunction")
         void handleInitButtonClick();
     
