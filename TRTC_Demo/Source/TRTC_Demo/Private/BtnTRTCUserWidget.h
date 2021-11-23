@@ -7,6 +7,7 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Modules/ModuleManager.h"
+#include "GenerateTestUserSig.h"
 #include "ITRTCCloud.h"
 #include "BtnTRTCUserWidget.generated.h"
 /**

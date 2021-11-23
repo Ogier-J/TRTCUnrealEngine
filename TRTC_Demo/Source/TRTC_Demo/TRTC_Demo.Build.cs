@@ -11,7 +11,13 @@ public class TRTC_Demo : ModuleRules
             return Path.GetFullPath(Path.Combine(ModuleDirectory, "TRTCSDK"));
         }
     }
-    
+    private string _BasePath
+    {
+        get
+        {
+            return Path.GetFullPath(Path.Combine(ModuleDirectory, "base"));
+        }
+    }
 	public TRTC_Demo(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
@@ -22,6 +28,7 @@ public class TRTC_Demo : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[] {"UMG", "Slate", "SlateCore"});
         // 添加插件的包含路径
         PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include"));
+        PublicIncludePaths.Add(Path.Combine(_BasePath, "include"));
         if (Target.Platform == UnrealTargetPlatform.Android)
         {
             
@@ -75,6 +82,9 @@ public class TRTC_Demo : ModuleRules
                     "Accelerate",
                 });
             PublicFrameworks.Add(Path.Combine(_TRTCSDKPath, "Mac", "Release","TXLiteAVSDK_TRTC_Mac.framework"));
+            // 暂时注释
+            // PublicFrameworks.Add(Path.Combine(_BasePath, "Mac", "Release","libTXLiteAVTestUserSig.a"));
+            
         }else if (Target.Platform == UnrealTargetPlatform.Win64)
         {
             
