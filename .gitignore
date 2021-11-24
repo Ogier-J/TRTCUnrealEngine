@@ -56,3 +56,4 @@ TRTC_Demo/Plugins/TRTC_SDK/Intermediate/*
 TRTC_Demo/Plugins/TRTC_SDK/DerivedDataCache/*
 TRTC_Demo/Plugins/TRTC_SDK/Android_DXT/*
 TRTC_Demo/Plugins/TRTC_SDK/MacNoEditor/*
+TRTC_Demo/Source/TRTC_Demo/base/include/Defs.h
