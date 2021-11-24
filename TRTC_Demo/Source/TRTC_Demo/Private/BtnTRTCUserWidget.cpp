@@ -17,7 +17,7 @@ void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     writeLblLog("start OnStartLocalPreview_Click");
     
 #if PLATFORM_IOS || PLATFORM_ANDROID
-    pTRTCCloud->startLocalPreview(true);
+    pTRTCCloud->startLocalPreview(true, nullptr);
 #else
     pTRTCCloud->startLocalPreview(nullptr);
 #endif
@@ -48,7 +48,6 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
 }
 void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *videoFrame) {
     std::lock_guard<std::mutex> lock(_mutex);
-    
 }
 void UBtnTRTCUserWidget::onTick() {
     std::lock_guard<std::mutex> lock(_mutex);
