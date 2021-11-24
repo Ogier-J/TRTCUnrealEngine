@@ -14,6 +14,9 @@
  */
 static const int SDKAppID = 0;
 
+static const char *testUserId = "";
+
+static const char *testUserSig = "";
 /**
  * 计算签名用的加密密钥，获取步骤如下：
  *
@@ -33,10 +36,5 @@ static const char *SECRETKEY = "";
  *  默认时间：7 x 24 x 60 x 60 = 604800 = 7 天
  */
 static const int EXPIRETIME = 604800;
-
-enum ControlButtonType {
-    Audio = 0,
-    Video = 1,
-};
 
 #endif  // QTMACDEMO_BASE_DEFS_H_

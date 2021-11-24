@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
+#include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Modules/ModuleManager.h"
 #include "GenerateTestUserSig.h"
@@ -24,23 +25,38 @@ private:
     void onError(TXLiteAVError errCode, const char *errMsg, void *extraInfo) override;
     void onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) override;
     void writeLblLog(const char *log);
+    void writeCallbackLog(const char *log);
 public:
     trtc::ITRTCCloud * pTRTCCloud;
     
     UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
         void handleInitButtonClick();
-    
+    UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
+        void OnEnterRoom_Click();
+    UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
+        void OnStartLocalPreview_Click();
+
     UPROPERTY(VisibleAnywhere, Meta = (BindWidget))
         UTextBlock* txtLog;
+
+    UPROPERTY(VisibleAnywhere, Meta = (BindWidget))
+        UTextBlock* txtcallBack;
     
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
         UButton* btnEnterroom = nullptr;
     
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
         UButton* btnInitTrtc = nullptr;
-    
-    UFUNCTION(BlueprintCallable)
-        void OnEnterRoom_Click();
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
+        UButton* btnLocalPreview = nullptr;
+
+    UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+        UImage* remoteImage= nullptr;
+
+    UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+        UImage* localPreviewImage = nullptr;
+
     
     void NativeConstruct() override;
 
