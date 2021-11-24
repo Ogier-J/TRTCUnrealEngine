@@ -10,6 +10,8 @@
 #include "Modules/ModuleManager.h"
 #include "GenerateTestUserSig.h"
 #include "ITRTCCloud.h"
+#include <map>
+#include <mutex>
 #include "BtnTRTCUserWidget.generated.h"
 /**
  * 
@@ -26,9 +28,9 @@ private:
     void onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) override;
     void writeLblLog(const char *log);
     void writeCallbackLog(const char *log);
-public:
+    std::mutex _mutex;
     trtc::ITRTCCloud * pTRTCCloud;
-    
+public:
     UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
         void handleInitButtonClick();
     UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
@@ -57,6 +59,7 @@ public:
     UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
         UImage* localPreviewImage = nullptr;
 
+    void onTick();
     
     void NativeConstruct() override;
 

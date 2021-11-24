@@ -21,7 +21,8 @@ void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
 #else
     pTRTCCloud->startLocalPreview(nullptr);
 #endif
-    pTRTCCloud->setLocalVideoRenderCallback(trtc::TRTCVideoPixelFormat_I420, trtc::TRTCVideoBufferType_Buffer, this);
+    pTRTCCloud->setLocalVideoRenderCallback(trtc::TRTCVideoPixelFormat_RGBA32
+, trtc::TRTCVideoBufferType_Buffer, this);
     writeLblLog("end OnStartLocalPreview_Click");
 }
 void UBtnTRTCUserWidget::OnEnterRoom_Click() {
@@ -45,9 +46,13 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     pTRTCCloud->enterRoom(params, style);
     writeLblLog("end OnEnterRoom_Click roomid: 110");
 }
-void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *frame) {
+void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *videoFrame) {
+    std::lock_guard<std::mutex> lock(_mutex);
+    
 }
-
+void UBtnTRTCUserWidget::onTick() {
+    std::lock_guard<std::mutex> lock(_mutex);
+}
 void UBtnTRTCUserWidget::NativeConstruct() {
     Super::NativeConstruct();
     pTRTCCloud = getTRTCShareInstance();
