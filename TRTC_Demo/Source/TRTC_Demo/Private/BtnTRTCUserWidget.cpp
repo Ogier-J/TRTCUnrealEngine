@@ -19,7 +19,7 @@ void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     writeLblLog("end OnStartLocalPreview_Click");
 }
 void UBtnTRTCUserWidget::OnEnterRoom_Click() {
-    writeLblLog("start OnEnterRoom_Click");
+    writeLblLog("start OnEnterRoom_Click roomid: 1901");
     // 构造进房参数
     trtc::TRTCParams params;
     trtc::TRTCRoleType type = static_cast<trtc::TRTCRoleType>(20);
@@ -27,8 +27,9 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     
     params.sdkAppId = SDKAppID;
     params.userId = testUserId;
-    std::string strRoomId = "10";
-    params.strRoomId = strRoomId.c_str();
+    std::string strRoomId = "1901";
+    // params.strRoomId = strRoomId.c_str();
+    params.roomId = 1901;
 #ifdef __APPLE__
     // 暂时注释
 //    userSig = GenerateTestUserSig().genTestUserSig(uid.c_str(), SDKAppID, SECRETKEY);
@@ -37,7 +38,7 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     trtc::TRTCAppScene style = static_cast<trtc::TRTCAppScene>(0);
     // 进房
     pTRTCCloud->enterRoom(params, style);
-    writeLblLog("end OnEnterRoom_Click");
+    writeLblLog("end OnEnterRoom_Click roomid: 1901");
 }
 void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *frame) {
 }
@@ -62,10 +63,11 @@ void UBtnTRTCUserWidget::NativeDestruct() {
     Super::NativeDestruct();
 }
 void UBtnTRTCUserWidget::writeLblLog(const char * logStr) {
+    std::string stdStrLog(logStr);
+    FString log = stdStrLog.c_str();
+    UE_LOG(LogTemp,Log,TEXT("==> %s"), *log);
     if (txtLog != nullptr) {
-        std::string stdStrLog(logStr);
         AsyncTask(ENamedThreads::GameThread, [=]() {
-            FString log = stdStrLog.c_str();
             txtLog->SetText(FText::FromString(log));
         });
         
@@ -77,10 +79,11 @@ void UBtnTRTCUserWidget::writeLblLog(const char * logStr) {
     }
 }
 void UBtnTRTCUserWidget::writeCallbackLog(const char * logStr) {
+    std::string stdStrLog(logStr);
+    FString log = stdStrLog.c_str();
+    UE_LOG(LogTemp,Log, TEXT("<== %s"),*log);
     if (txtcallBack != nullptr) {
-        std::string stdStrLog(logStr);
         AsyncTask(ENamedThreads::GameThread, [=]() {
-            FString log = stdStrLog.c_str();
             txtcallBack->SetText(FText::FromString(log));
         });
     }else{

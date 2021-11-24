@@ -12,11 +12,11 @@
  * 进入腾讯云实时音视频[控制台](https://console.cloud.tencent.com/rav) 创建应用，即可看到 SDKAppId，
  * 它是腾讯云用于区分客户的唯一标识。
  */
-static const int SDKAppID = 0;
+static const int SDKAppID = 1400188366;
 
-static const char *testUserId = "";
+static const char *testUserId = "oiug1545sf";
 
-static const char *testUserSig = "";
+static const char *testUserSig = "eJwtzLEOgjAYBOB36aqB-rQUJHGCQYMmIExuaAv*UbDQakyM7y4BbrvvkvuS8lA4bzWQiHgOJeupo1SdxRonfuKrAZ-7pl5WI**V1ihJBJxSCEMmxLyoj8ZBkUhQHtIps1tsRwXBgsDzABY12Iz36eoYl0zb5JZ1Fnbgmszlm1PX9vVjn7BzjH2V5teLLPIt*f0BUyIysA__";
 /**
  * 计算签名用的加密密钥，获取步骤如下：
  *
