@@ -4,7 +4,7 @@
 #include "BtnTRTCUserWidget.h"
 #include "Engine/Engine.h"
 #include <string>
-#include "Defs.h"
+#include "DebugDefs.h"
 #ifdef __APPLE__
 
 #endif
@@ -28,13 +28,13 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     params.sdkAppId = SDKAppID;
     params.userId = testUserId;
     std::string strRoomId = "1901";
-    // params.strRoomId = strRoomId.c_str();
-    params.roomId = 1901;
+    params.strRoomId = strRoomId.c_str();
+    // params.roomId = 1901;
 #ifdef __APPLE__
     // 暂时注释
-//    userSig = GenerateTestUserSig().genTestUserSig(uid.c_str(), SDKAppID, SECRETKEY);
+    const char * userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
 #endif
-    params.userSig = testUserSig;
+    params.userSig = userSig;
     trtc::TRTCAppScene style = static_cast<trtc::TRTCAppScene>(0);
     // 进房
     pTRTCCloud->enterRoom(params, style);

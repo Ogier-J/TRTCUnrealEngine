@@ -14,7 +14,7 @@
  */
 static const int SDKAppID = 1400188366;
 
-static const char *testUserId = "oiug1545sf";
+static const char *testUserId = "1212";
 
 static const char *testUserSig = "eJwtzLEOgjAYBOB36aqB-rQUJHGCQYMmIExuaAv*UbDQakyM7y4BbrvvkvuS8lA4bzWQiHgOJeupo1SdxRonfuKrAZ-7pl5WI**V1ihJBJxSCEMmxLyoj8ZBkUhQHtIps1tsRwXBgsDzABY12Iz36eoYl0zb5JZ1Fnbgmszlm1PX9vVjn7BzjH2V5teLLPIt*f0BUyIysA__";
 /**

@@ -83,7 +83,7 @@ public class TRTC_Demo : ModuleRules
                 });
             PublicFrameworks.Add(Path.Combine(_TRTCSDKPath, "Mac", "Release","TXLiteAVSDK_TRTC_Mac.framework"));
             // 暂时注释
-            // PublicFrameworks.Add(Path.Combine(_BasePath, "Mac", "Release","libTXLiteAVTestUserSig.a"));
+            PublicFrameworks.Add(Path.Combine(_BasePath, "Mac", "Release","TXLiteAVTestUserSig.framework"));
             
         }else if (Target.Platform == UnrealTargetPlatform.Win64)
         {
