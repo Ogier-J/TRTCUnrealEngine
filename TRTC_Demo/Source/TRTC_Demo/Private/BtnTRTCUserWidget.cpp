@@ -34,11 +34,12 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     params.sdkAppId = SDKAppID;
     params.userId = testUserId;
     std::string strRoomId = "110";
-    //params.strRoomId = strRoomId.c_str();
+    // params.strRoomId = strRoomId.c_str();
     params.roomId = 110;
     // 暂时指支持macos。
     const char * userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
     params.userSig = userSig;
+    params.userDefineRecordId = nullptr;
     trtc::TRTCAppScene style = static_cast<trtc::TRTCAppScene>(0);
     // 进房
     pTRTCCloud->enterRoom(params, style);
