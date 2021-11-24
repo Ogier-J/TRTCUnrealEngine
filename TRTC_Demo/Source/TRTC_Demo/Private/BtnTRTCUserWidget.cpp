@@ -12,14 +12,20 @@
 void UBtnTRTCUserWidget::handleInitButtonClick() {
     writeLblLog("start handleInitButtonClick");
 }
+
 void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     writeLblLog("start OnStartLocalPreview_Click");
+    
+#if PLATFORM_IOS || PLATFORM_ANDROID
+    pTRTCCloud->startLocalPreview(true);
+#else
     pTRTCCloud->startLocalPreview(nullptr);
+#endif
     pTRTCCloud->setLocalVideoRenderCallback(trtc::TRTCVideoPixelFormat_I420, trtc::TRTCVideoBufferType_Buffer, this);
     writeLblLog("end OnStartLocalPreview_Click");
 }
 void UBtnTRTCUserWidget::OnEnterRoom_Click() {
-    writeLblLog("start OnEnterRoom_Click roomid: 1901");
+    writeLblLog("start OnEnterRoom_Click roomid: a1901");
     // 构造进房参数
     trtc::TRTCParams params;
     trtc::TRTCRoleType type = static_cast<trtc::TRTCRoleType>(20);
@@ -27,18 +33,16 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     
     params.sdkAppId = SDKAppID;
     params.userId = testUserId;
-    std::string strRoomId = "1901";
+    std::string strRoomId = "a1901";
     params.strRoomId = strRoomId.c_str();
-    // params.roomId = 1901;
-#ifdef __APPLE__
-    // 暂时注释
+    //params.roomId = 1901;
+    // 暂时指支持macos。
     const char * userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
-#endif
     params.userSig = userSig;
     trtc::TRTCAppScene style = static_cast<trtc::TRTCAppScene>(0);
     // 进房
     pTRTCCloud->enterRoom(params, style);
-    writeLblLog("end OnEnterRoom_Click roomid: 1901");
+    writeLblLog("end OnEnterRoom_Click roomid: a1901");
 }
 void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *frame) {
 }
@@ -104,7 +108,9 @@ void UBtnTRTCUserWidget::onError(TXLiteAVError errCode, const char *errMsg, void
 }
 void UBtnTRTCUserWidget::onEnterRoom(int result) {
     writeCallbackLog("onEnterRoom");
+    UE_LOG(LogTemp,Log,TEXT("<== %d"), result);
 }
 void UBtnTRTCUserWidget::onExitRoom(int reason) {
     writeCallbackLog("onExitRoom");
+    UE_LOG(LogTemp,Log,TEXT("<== %d"), reason);
 }
