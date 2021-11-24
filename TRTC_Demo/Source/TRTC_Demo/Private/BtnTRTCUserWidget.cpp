@@ -25,7 +25,7 @@ void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     writeLblLog("end OnStartLocalPreview_Click");
 }
 void UBtnTRTCUserWidget::OnEnterRoom_Click() {
-    writeLblLog("start OnEnterRoom_Click roomid: a1901");
+    writeLblLog("start OnEnterRoom_Click roomid: 110");
     // 构造进房参数
     trtc::TRTCParams params;
     trtc::TRTCRoleType type = static_cast<trtc::TRTCRoleType>(20);
@@ -33,16 +33,16 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     
     params.sdkAppId = SDKAppID;
     params.userId = testUserId;
-    std::string strRoomId = "a1901";
-    params.strRoomId = strRoomId.c_str();
-    //params.roomId = 1901;
+    std::string strRoomId = "110";
+    //params.strRoomId = strRoomId.c_str();
+    params.roomId = 110;
     // 暂时指支持macos。
     const char * userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
     params.userSig = userSig;
     trtc::TRTCAppScene style = static_cast<trtc::TRTCAppScene>(0);
     // 进房
     pTRTCCloud->enterRoom(params, style);
-    writeLblLog("end OnEnterRoom_Click roomid: a1901");
+    writeLblLog("end OnEnterRoom_Click roomid: 110");
 }
 void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *frame) {
 }
