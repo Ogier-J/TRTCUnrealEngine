@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-class FTRTC_SDKModule : public IModuleInterface
+class FTencentPluginModule : public IModuleInterface
 {
 public:
 

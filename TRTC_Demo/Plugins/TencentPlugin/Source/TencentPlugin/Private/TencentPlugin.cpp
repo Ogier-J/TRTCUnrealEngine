@@ -1,15 +1,15 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "TRTC_SDK.h"
+#include "TencentPlugin.h"
 
-#define LOCTEXT_NAMESPACE "FTRTC_SDKModule"
+#define LOCTEXT_NAMESPACE "FTencentPluginModule"
 
-void FTRTC_SDKModule::StartupModule()
+void FTencentPluginModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
 }
 
-void FTRTC_SDKModule::ShutdownModule()
+void FTencentPluginModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
@@ -17,4 +17,4 @@ void FTRTC_SDKModule::ShutdownModule()
 
 #undef LOCTEXT_NAMESPACE
 	
-IMPLEMENT_MODULE(FTRTC_SDKModule, TRTC_SDK)
+IMPLEMENT_MODULE(FTencentPluginModule, TencentPlugin)

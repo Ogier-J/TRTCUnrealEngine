@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class TRTC_SDK : ModuleRules
+public class TencentPlugin : ModuleRules
 {
-	public TRTC_SDK(ReadOnlyTargetRules Target) : base(Target)
+	public TencentPlugin(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
@@ -18,7 +18,7 @@ public class TRTC_SDK : ModuleRules
 		PrivateIncludePaths.AddRange(
 			new string[] {
 				// ... add other private include paths required here ...
-            }
+			}
 			);
 			
 		
