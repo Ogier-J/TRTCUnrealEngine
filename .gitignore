@@ -49,11 +49,11 @@ TRTC_Demo/DerivedDataCache/*
 TRTC_Demo/Android_DXT/*
 TRTC_Demo/MacNoEditor/*
 
-TRTC_Demo/Plugins/TRTC_SDK/Binaries/*
-TRTC_Demo/Plugins/TRTC_SDK/Build/*
-TRTC_Demo/Plugins/TRTC_SDK/Saved/*
-TRTC_Demo/Plugins/TRTC_SDK/Intermediate/*
-TRTC_Demo/Plugins/TRTC_SDK/DerivedDataCache/*
-TRTC_Demo/Plugins/TRTC_SDK/Android_DXT/*
-TRTC_Demo/Plugins/TRTC_SDK/MacNoEditor/*
+TRTC_Demo/Plugins/TencentPlugin/Binaries/*
+TRTC_Demo/Plugins/TencentPlugin/Build/*
+TRTC_Demo/Plugins/TencentPlugin/Saved/*
+TRTC_Demo/Plugins/TencentPlugin/Intermediate/*
+TRTC_Demo/Plugins/TencentPlugin/DerivedDataCache/*
+TRTC_Demo/Plugins/TencentPlugin/Android_DXT/*
+TRTC_Demo/Plugins/TencentPlugin/MacNoEditor/*
 TRTC_Demo/Source/TRTC_Demo/base/include/Defs.h
