@@ -62,7 +62,8 @@ void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoS
         }
         int frameLength = videoFrame->length;
         uint8_t *slidePressure = new uint8_t[frameLength];
-        memcpy(slidePressure, videoFrame->data, frameLength);
+//        FMemory::Memcpy(slidePressure, videoFrame->data, frameLength);
+        Memcpy(slidePressure, videoFrame->data, frameLength);
         _users_texture_frame_map["0"]._texture->UpdateTextureRegions( 0, 1, _users_texture_frame_map["0"]._region.get(), frameLength, (uint32)argbPixSize, slidePressure);
         
         _users_texture_frame_map["0"]._width = videoFrame->width;
@@ -71,9 +72,10 @@ void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoS
         _users_texture_frame_map["0"]._fresh = true;
     }
 }
-void UBtnTRTCUserWidget::onTick() {
+void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime) {
+    Super::NativeTick(MyGeometry, DeltaTime);
     std::lock_guard<std::mutex> lock(_mutex);
-    if(_users_texture_frame_map["0"]._texture && _users_texture_frame_map["0"]._fresh) {
+    if(_users_texture_frame_map["0"]._texture && _users_texture_frame_map["0"]._fresh){
         localPreviewImage->SetBrush(_users_texture_frame_map["0"].Brush);
     }
 }

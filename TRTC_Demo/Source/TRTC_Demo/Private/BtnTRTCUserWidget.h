@@ -73,7 +73,8 @@ public:
     UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
         UImage* localPreviewImage = nullptr;
 
-    void onTick();
+    void NativeTick(const FGeometry& MyGeometry, float DeltaTime) override;
+    
     
     void NativeConstruct() override;
 
