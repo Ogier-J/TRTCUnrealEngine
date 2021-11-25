@@ -24,6 +24,7 @@ void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     pTRTCCloud->setLocalVideoRenderCallback(trtc::TRTCVideoPixelFormat_RGBA32
 , trtc::TRTCVideoBufferType_Buffer, this);
     writeLblLog("end OnStartLocalPreview_Click");
+    localPreviewImage->SetBrush(_users_texture_frame_map["0"].Brush);
 }
 void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     writeLblLog("start OnEnterRoom_Click roomid: 110");
@@ -49,9 +50,32 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
 void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *videoFrame) {
     std::lock_guard<std::mutex> lock(_mutex);
 //    UE_LOG(LogTemp,Log,TEXT("onRenderVideoFrame width: %d , length : %d , data : %s"), videoFrame->width, videoFrame->length,videoFrame->data);
+    if (localPreviewImage != nullptr) {
+        if( !_users_texture_frame_map["0"]._texture ||
+           _users_texture_frame_map["0"]._texture->GetSizeX() != videoFrame->width ||
+           _users_texture_frame_map["0"]._texture->GetSizeY() != videoFrame->height)
+        {
+            _users_texture_frame_map["0"]._region.reset( new FUpdateTextureRegion2D(0, 0, 0, 0, (uint32)videoFrame->width, (uint32)videoFrame->height));
+            _users_texture_frame_map["0"]._texture = UTexture2D::CreateTransient( videoFrame->width, videoFrame->height, PF_R8G8B8A8 );
+            _users_texture_frame_map["0"]._texture->UpdateResource();
+            _users_texture_frame_map["0"].Brush.SetResourceObject(_users_texture_frame_map["0"]._texture);
+        }
+        int frameLength = videoFrame->length;
+        uint8_t *slidePressure = new uint8_t[frameLength];
+        memcpy(slidePressure, videoFrame->data, frameLength);
+        _users_texture_frame_map["0"]._texture->UpdateTextureRegions( 0, 1, _users_texture_frame_map["0"]._region.get(), frameLength, (uint32)argbPixSize, slidePressure);
+        
+        _users_texture_frame_map["0"]._width = videoFrame->width;
+        _users_texture_frame_map["0"]._height = videoFrame->height;
+        _users_texture_frame_map["0"]._uid = "0";
+        _users_texture_frame_map["0"]._fresh = true;
+    }
 }
 void UBtnTRTCUserWidget::onTick() {
     std::lock_guard<std::mutex> lock(_mutex);
+    if(_users_texture_frame_map["0"]._texture && _users_texture_frame_map["0"]._fresh) {
+        localPreviewImage->SetBrush(_users_texture_frame_map["0"].Brush);
+    }
 }
 void UBtnTRTCUserWidget::NativeConstruct() {
     Super::NativeConstruct();

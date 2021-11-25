@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
+#include "SlateOptMacros.h"
+#include "Engine/Texture2D.h"
 #include "Components/TextBlock.h"
 #include "Modules/ModuleManager.h"
 #include "GenerateTestUserSig.h"
@@ -13,6 +15,16 @@
 #include <map>
 #include <mutex>
 #include "BtnTRTCUserWidget.generated.h"
+struct VideoTextureFrame {
+    VideoTextureFrame():_texture(nullptr),_region(nullptr),_fresh(false),_width(0),_height(0),_uid(0) {}
+    UTexture2D* _texture;
+    FSlateBrush Brush;
+    std::unique_ptr<FUpdateTextureRegion2D> _region;
+    bool _fresh;
+    int _width;
+    int _height;
+    const char * _uid;
+};
 /**
  * 
  */
@@ -30,6 +42,8 @@ private:
     void writeCallbackLog(const char *log);
     std::mutex _mutex;
     trtc::ITRTCCloud * pTRTCCloud;
+    int argbPixSize = 4;
+    std::map<const char *, VideoTextureFrame> _users_texture_frame_map;
 public:
     UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
         void handleInitButtonClick();
