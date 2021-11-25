@@ -52,6 +52,8 @@ public class TRTC_Demo : ModuleRules
             );
             // PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_TRTC",Path.Combine(_TRTCSDKPath, "iOS","TXLiteAVSDK_TRTC.framework.zip"), "", true));
             PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVSDK_TRTC",_TRTCSDKPath+"/ios/TXLiteAVSDK_TRTC.framework.zip", ""));
+            
+            PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVTestUserSig",_BasePath+"/ios/TXLiteAVTestUserSig.framework.zip", ""));
         }else if(Target.Platform == UnrealTargetPlatform.Mac)
         {
             PublicAdditionalLibraries.AddRange(new string[] {
