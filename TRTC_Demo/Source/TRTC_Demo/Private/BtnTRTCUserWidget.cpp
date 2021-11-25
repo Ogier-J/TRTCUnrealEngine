@@ -62,8 +62,8 @@ void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoS
         }
         int frameLength = videoFrame->length;
         uint8_t *slidePressure = new uint8_t[frameLength];
-//        FMemory::Memcpy(slidePressure, videoFrame->data, frameLength);
-        Memcpy(slidePressure, videoFrame->data, frameLength);
+        FMemory::Memcpy(slidePressure, videoFrame->data, frameLength);
+        //Memcpy(slidePressure, videoFrame->data, frameLength);
         _users_texture_frame_map["0"]._texture->UpdateTextureRegions( 0, 1, _users_texture_frame_map["0"]._region.get(), frameLength, (uint32)argbPixSize, slidePressure);
         
         _users_texture_frame_map["0"]._width = videoFrame->width;
