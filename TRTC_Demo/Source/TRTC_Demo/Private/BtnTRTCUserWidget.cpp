@@ -48,6 +48,7 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
 }
 void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *videoFrame) {
     std::lock_guard<std::mutex> lock(_mutex);
+//    UE_LOG(LogTemp,Log,TEXT("onRenderVideoFrame width: %d , length : %d , data : %s"), videoFrame->width, videoFrame->length,videoFrame->data);
 }
 void UBtnTRTCUserWidget::onTick() {
     std::lock_guard<std::mutex> lock(_mutex);
