@@ -53,7 +53,7 @@ public class TRTC_Demo : ModuleRules
             // PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_TRTC",Path.Combine(_TRTCSDKPath, "iOS","TXLiteAVSDK_TRTC.framework.zip"), "", true));
             PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVSDK_TRTC",_TRTCSDKPath+"/ios/TXLiteAVSDK_TRTC.framework.zip", ""));
             
-            PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVTestUserSig",_BasePath+"/ios/TXLiteAVTestUserSig.framework.zip", ""));
+            //PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVTestUserSig",_BasePath+"/ios/TXLiteAVTestUserSig.framework.zip", ""));
         }else if(Target.Platform == UnrealTargetPlatform.Mac)
         {
             PublicAdditionalLibraries.AddRange(new string[] {
@@ -98,7 +98,8 @@ public class TRTC_Demo : ModuleRules
             PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "LiteAvAudioHookService.dll"));
             PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "openh264.dll"));
             PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "TRAE.dll"));
-            
+
+            PublicAdditionalLibraries.Add(Path.Combine(_BasePath, "x86_x64", "Release","zlib.lib"));
         }
         
 		// Uncomment if you are using online features

@@ -41,7 +41,7 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     // params.strRoomId = testStrRoomId.c_str();
     params.roomId = (uint32_t)atoi(testStrRoomId);
     // 暂时只支持macos。
-    #if defined(PLATFORM_MAC)
+    #if PLATFORM_MAC
     params.sdkAppId = SDKAppID;
     const char * userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
     #else

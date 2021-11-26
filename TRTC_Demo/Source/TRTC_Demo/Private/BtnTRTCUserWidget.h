@@ -10,7 +10,7 @@
 #include "Engine/Texture2D.h"
 #include "Components/TextBlock.h"
 #include "Modules/ModuleManager.h"
-#if defined(PLATFORM_MAC)
+#if PLATFORM_MAC
 #include "GenerateTestUserSig.h"
 #endif
 #include "ITRTCCloud.h"
