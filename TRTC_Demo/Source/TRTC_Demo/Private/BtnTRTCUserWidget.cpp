@@ -37,7 +37,7 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     std::string strRoomId = "110";
     // params.strRoomId = strRoomId.c_str();
     params.roomId = 110;
-    // 暂时指支持macos。
+    // 暂时只支持macos。
     const char * userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
     params.userSig = userSig;
     params.userDefineRecordId = nullptr;
@@ -60,10 +60,9 @@ void UBtnTRTCUserWidget::ResetBuffer()
 
 void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *videoFrame) {
 //    UE_LOG(LogTemp,Log,TEXT("onRenderVideoFrame width: %d , length : %d , data : %s"), videoFrame->width, videoFrame->length,videoFrame->data);
-    if (localPreviewImage != nullptr) {
-        int frameLength = videoFrame->length;
-        // uint8_t *slidePressure = new uint8_t[frameLength];
-        // FMemory::Memcpy(slidePressure, videoFrame->data, frameLength);
+    int frameLength = videoFrame->length;
+    if (localPreviewImage != nullptr && frameLength > 1) {
+       
         UpdateBuffer(videoFrame->data,videoFrame->width,videoFrame->height,frameLength);
     }
 }
@@ -80,7 +79,8 @@ void UBtnTRTCUserWidget::UpdateBuffer(
 	{
 		return;
 	}
-
+    // uint8_t *slidePressure = new uint8_t[frameLength];
+        // FMemory::Memcpy(slidePressure, videoFrame->data, frameLength);
 	if (BufferSize == NewSize)
 	{
 		std::copy(RGBBuffer, RGBBuffer + NewSize, Buffer);
@@ -132,7 +132,7 @@ void UBtnTRTCUserWidget::NativeConstruct() {
     writeLblLog(version.c_str());
     //TODO:
 	Width = 640;
-	Height = 360;
+	Height = 640;
 
 	RenderTargetTexture = UTexture2D::CreateTransient(Width, Height, PF_R8G8B8A8 );
 	RenderTargetTexture->UpdateResource();

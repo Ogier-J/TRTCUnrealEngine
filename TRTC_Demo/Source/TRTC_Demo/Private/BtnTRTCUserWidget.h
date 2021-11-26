@@ -47,11 +47,7 @@ public:
 	uint32_t Width = 0;
 	uint32_t Height = 0;
 	uint32 BufferSize = 0;
-	FUpdateTextureRegion2D* UpdateTextureRegion = nullptr;
-
-	FSlateBrush Brush;
-
-	FCriticalSection Mutex;
+	
     void UpdateBuffer(
 		char* RGBBuffer,
 		uint32_t Width,
@@ -91,6 +87,12 @@ public:
 
     UPROPERTY(EditDefaultsOnly)
 		UTexture2D* RenderTargetTexture = nullptr;
+    
+    FUpdateTextureRegion2D* UpdateTextureRegion = nullptr;
+
+	FSlateBrush Brush;
+
+	FCriticalSection Mutex;
 
     void NativeTick(const FGeometry& MyGeometry, float DeltaTime) override;
     
