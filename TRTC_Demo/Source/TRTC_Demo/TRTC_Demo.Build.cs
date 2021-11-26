@@ -89,6 +89,15 @@ public class TRTC_Demo : ModuleRules
             
         }else if (Target.Platform == UnrealTargetPlatform.Win64)
         {
+            // Add the import library
+            PublicAdditionalLibraries.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release","liteave.lib"));
+
+			// Delay-load the DLL, so we can load it from the right place first
+			PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "liteave.dll"));
+            PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "LiteAvAudioHook.dll"));
+            PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "LiteAvAudioHookService.dll"));
+            PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "openh264.dll"));
+            PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "TRAE.dll"));
             
         }
         
