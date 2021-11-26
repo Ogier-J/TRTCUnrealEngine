@@ -816,9 +816,10 @@ struct TRTCParams {
     ///【字段含义】业务数据字段（选填），部分高级特性才需要用到此字段。
     ///【推荐取值】请不要自行设置该字段。
     const char *businessInfo;
-    TRTCParams() {}
-//    : sdkAppId(0), roomId(0), strRoomId(nullptr), userId(nullptr), userSig(nullptr), role(TRTCRoleAnchor), privateMapKey(nullptr), businessInfo(nullptr), userDefineRecordId(nullptr), streamId(nullptr) {
-//    }
+    TRTCParams(): sdkAppId(0),userId(nullptr),userSig(nullptr), roomId(0), 
+    strRoomId(nullptr), role(TRTCRoleAnchor), streamId(nullptr),userDefineRecordId(nullptr), 
+    privateMapKey(nullptr), businessInfo(nullptr) {
+   }
 };
 
 /**
