@@ -48,7 +48,6 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     params.userSig = testUserSig;
     #endif
     
-    
     trtc::TRTCAppScene style = static_cast<trtc::TRTCAppScene>(0);
     // 进房
     pTRTCCloud->enterRoom(params, style);

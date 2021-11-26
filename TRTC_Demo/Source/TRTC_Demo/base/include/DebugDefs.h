@@ -9,11 +9,10 @@
 /**
  * 仅仅for test 
  */
-static const int testSDKAppID = 1400582850;
+static const int testSDKAppID = 1400393897;
 static const char *testUserId = "a9715d2fe80d6dda38db9af2dd7621ad";
-static const char *testUserSig = "eJwtzc0OgjAQBOB36dlgWygtJB40US4ciL-nwrZkgwKhjZoY310EjvvNTPZDzvkpeJqBpIQHlKymG8G0Hi1OrBPJBHBrFIUYQIcKykRbDiBjzjQsGweN7nsEkrKIUqG4EnROPD7MqHEoE8ZUFM1q3j0Of5dc0aXpsB4fXnBvX9nR*TtGJT*svcvarhCsaLrmGubbpJQ7396qrKo35PsDN4M4yA__";
+static const char *testUserSig = "eJwtzUsLgkAUBeD-MttC5uE4jtAmqDaSVELWbuSOdonyiSjRf8-U5f0O59wPicOL09maBIQ7lKynG8G*W8xwYqMVk8Az61PwAIzwIdUm4wDK48zA0mngacoSgQTMpVRo4Ws1J7YvsbajSyk5pXTWFl9-84TSnCsmlhXMx5f323ZfHdWwQwyHVXXuk0deRZ1mdeGyZjBRG1*7Q5qfkmJDvj*uFznj";
 static const char *testStrRoomId = "110";
-
 /**
  * 腾讯云 SDKAppId，需要替换为您自己账号下的 SDKAppId。
  *
