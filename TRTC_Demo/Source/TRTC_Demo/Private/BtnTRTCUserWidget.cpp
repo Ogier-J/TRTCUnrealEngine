@@ -35,22 +35,20 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     trtc::TRTCParams params;
     trtc::TRTCRoleType type = static_cast<trtc::TRTCRoleType>(20);
     params.role = type;
-    
-    
+    params.userDefineRecordId = "";
     params.userId = testUserId;
-    // params.strRoomId = testStrRoomId.c_str();
-    params.roomId = (uint32_t)atoi(testStrRoomId);
+    // params.strRoomId = testStrRoomId;
+    params.roomId =  110;//(uint32_t)atoi(testStrRoomId);
     // 暂时只支持macos。
     #if PLATFORM_MAC
     params.sdkAppId = SDKAppID;
-    const char * userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
+    params.userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
     #else
     params.sdkAppId = testSDKAppID;
-    const char * userSig = testUserSig;
+    params.userSig = testUserSig;
     #endif
     
-    params.userSig = userSig;
-    params.userDefineRecordId = nullptr;
+    
     trtc::TRTCAppScene style = static_cast<trtc::TRTCAppScene>(0);
     // 进房
     pTRTCCloud->enterRoom(params, style);
@@ -84,7 +82,6 @@ void UBtnTRTCUserWidget::UpdateBuffer(
 	uint32_t NewSize)
 {
 	FScopeLock lock(&Mutex);
-
 	if (!RGBBuffer)
 	{
 		return;
@@ -108,9 +105,7 @@ void UBtnTRTCUserWidget::UpdateBuffer(
 
 void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime) {
     Super::NativeTick(MyGeometry, DeltaTime);
-    
 	FScopeLock lock(&Mutex);
-
 	if (UpdateTextureRegion->Width != Width ||
 		UpdateTextureRegion->Height != Height)
 	{
@@ -178,6 +173,9 @@ void UBtnTRTCUserWidget::writeLblLog(const char * logStr) {
     std::string stdStrLog(logStr);
     FString log = stdStrLog.c_str();
     UE_LOG(LogTemp,Log,TEXT("==> %s"), *log);
+#if PLATFORM_IOS
+    //NSLog(@"--------");
+#endif
     if (txtLog != nullptr) {
         AsyncTask(ENamedThreads::GameThread, [=]() {
             txtLog->SetText(FText::FromString(log));
