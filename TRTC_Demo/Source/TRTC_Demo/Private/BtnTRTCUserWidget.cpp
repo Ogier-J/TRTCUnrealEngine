@@ -36,13 +36,19 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     trtc::TRTCRoleType type = static_cast<trtc::TRTCRoleType>(20);
     params.role = type;
     
-    params.sdkAppId = SDKAppID;
+    
     params.userId = testUserId;
-    std::string strRoomId = "110";
-    // params.strRoomId = strRoomId.c_str();
-    params.roomId = 110;
+    // params.strRoomId = testStrRoomId.c_str();
+    params.roomId = (uint32_t)atoi(testStrRoomId);
     // 暂时只支持macos。
+    #if defined(PLATFORM_MAC)
+    params.sdkAppId = SDKAppID;
     const char * userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
+    #else
+    params.sdkAppId = testSDKAppID;
+    const char * userSig = testUserSig;
+    #endif
+    
     params.userSig = userSig;
     params.userDefineRecordId = nullptr;
     trtc::TRTCAppScene style = static_cast<trtc::TRTCAppScene>(0);

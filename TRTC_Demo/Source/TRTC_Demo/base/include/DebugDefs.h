@@ -7,6 +7,14 @@
 #define QTMACDEMO_BASE_DEFS_H_
 
 /**
+ * 仅仅for test 
+ */
+static const int testSDKAppID = 1400582850;
+static const char *testUserId = "a9715d2fe80d6dda38db9af2dd7621ad";
+static const char *testUserSig = "eJwtzc0OgjAQBOB36dlgWygtJB40US4ciL-nwrZkgwKhjZoY310EjvvNTPZDzvkpeJqBpIQHlKymG8G0Hi1OrBPJBHBrFIUYQIcKykRbDiBjzjQsGweN7nsEkrKIUqG4EnROPD7MqHEoE8ZUFM1q3j0Of5dc0aXpsB4fXnBvX9nR*TtGJT*svcvarhCsaLrmGubbpJQ7396qrKo35PsDN4M4yA__";
+static const char *testStrRoomId = "110";
+
+/**
  * 腾讯云 SDKAppId，需要替换为您自己账号下的 SDKAppId。
  *
  * 进入腾讯云实时音视频[控制台](https://console.cloud.tencent.com/rav) 创建应用，即可看到 SDKAppId，
@@ -14,9 +22,6 @@
  */
 static const int SDKAppID = 1400188366;
 
-static const char *testUserId = "gavintest";
-
-static const char *testUserSig = "eJwtzLEOgjAYBOB36aqB-rQUJHGCQYMmIExuaAv*UbDQakyM7y4BbrvvkvuS8lA4bzWQiHgOJeupo1SdxRonfuKrAZ-7pl5WI**V1ihJBJxSCEMmxLyoj8ZBkUhQHtIps1tsRwXBgsDzABY12Iz36eoYl0zb5JZ1Fnbgmszlm1PX9vVjn7BzjH2V5teLLPIt*f0BUyIysA__";
 /**
  * 计算签名用的加密密钥，获取步骤如下：
  *

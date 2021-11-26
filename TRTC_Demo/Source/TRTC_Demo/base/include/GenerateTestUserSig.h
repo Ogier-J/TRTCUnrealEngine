@@ -1,3 +1,4 @@
+#if defined(PLATFORM_MAC)
 class GenerateTestUserSig
 {
 /**
@@ -19,4 +20,4 @@ class GenerateTestUserSig
 public:
    static const char* genTestUserSig(const char* identifier, int sdkAppId, const char* secretKey);
 };
-
+#endif
