@@ -63,6 +63,8 @@ public:
         void OnEnterRoom_Click();
     UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
         void OnStartLocalPreview_Click();
+    UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
+        void OnStopLocalPreview_Click();
 
     UPROPERTY(VisibleAnywhere, Meta = (BindWidget))
         UTextBlock* txtLog;
@@ -78,6 +80,9 @@ public:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
         UButton* btnLocalPreview = nullptr;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
+        UButton* btnStopPreview = nullptr;
 
     UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
         UImage* remoteImage= nullptr;

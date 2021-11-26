@@ -12,7 +12,11 @@
 void UBtnTRTCUserWidget::handleInitButtonClick() {
     writeLblLog("start handleInitButtonClick");
 }
-
+void UBtnTRTCUserWidget::OnStopLocalPreview_Click() {
+    writeLblLog("start OnStopLocalPreview_Click");
+    pTRTCCloud->stopLocalPreview();
+    ResetBuffer();
+}
 void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     writeLblLog("start OnStartLocalPreview_Click");
     
@@ -129,6 +133,7 @@ void UBtnTRTCUserWidget::NativeConstruct() {
     btnEnterroom->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnEnterRoom_Click);
     btnInitTrtc->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::handleInitButtonClick);
     btnLocalPreview->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStartLocalPreview_Click);
+    btnStopPreview->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStopLocalPreview_Click);
     writeLblLog(version.c_str());
     //TODO:
 	Width = 640;
@@ -154,6 +159,7 @@ void UBtnTRTCUserWidget::NativeConstruct() {
 }
 
 void UBtnTRTCUserWidget::NativeDestruct() {
+    Super::NativeDestruct();
     if (pTRTCCloud != nullptr) {
         pTRTCCloud->removeCallback(this);
         pTRTCCloud->destroyTRTCShareInstance();
@@ -161,7 +167,6 @@ void UBtnTRTCUserWidget::NativeDestruct() {
     }
     delete[] Buffer;
 	delete UpdateTextureRegion;
-    Super::NativeDestruct();
 }
 void UBtnTRTCUserWidget::writeLblLog(const char * logStr) {
     std::string stdStrLog(logStr);
