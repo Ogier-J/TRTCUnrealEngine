@@ -40,10 +40,26 @@ private:
     void onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) override;
     void writeLblLog(const char *log);
     void writeCallbackLog(const char *log);
-    std::mutex _mutex;
     trtc::ITRTCCloud * pTRTCCloud;
-    int argbPixSize = 4;
-    std::map<const char *, VideoTextureFrame> _users_texture_frame_map;
+    
+public:
+    uint8* Buffer = nullptr;
+	uint32_t Width = 0;
+	uint32_t Height = 0;
+	uint32 BufferSize = 0;
+	FUpdateTextureRegion2D* UpdateTextureRegion = nullptr;
+
+	FSlateBrush Brush;
+
+	FCriticalSection Mutex;
+    void UpdateBuffer(
+		char* RGBBuffer,
+		uint32_t Width,
+		uint32_t Height,
+		uint32_t Size);
+
+	void ResetBuffer();
+
 public:
     UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
         void handleInitButtonClick();
@@ -73,8 +89,10 @@ public:
     UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
         UImage* localPreviewImage = nullptr;
 
+    UPROPERTY(EditDefaultsOnly)
+		UTexture2D* RenderTargetTexture = nullptr;
+
     void NativeTick(const FGeometry& MyGeometry, float DeltaTime) override;
-    
     
     void NativeConstruct() override;
 

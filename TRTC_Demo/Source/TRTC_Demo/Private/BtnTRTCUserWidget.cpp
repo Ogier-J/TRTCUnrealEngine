@@ -24,7 +24,6 @@ void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     pTRTCCloud->setLocalVideoRenderCallback(trtc::TRTCVideoPixelFormat_RGBA32
 , trtc::TRTCVideoBufferType_Buffer, this);
     writeLblLog("end OnStartLocalPreview_Click");
-    localPreviewImage->SetBrush(_users_texture_frame_map["0"].Brush);
 }
 void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     writeLblLog("start OnEnterRoom_Click roomid: 110");
@@ -47,37 +46,80 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     pTRTCCloud->enterRoom(params, style);
     writeLblLog("end OnEnterRoom_Click roomid: 110");
 }
+
+void UBtnTRTCUserWidget::ResetBuffer()
+{
+	for (uint32 i = 0; i < Width * Height; ++i)
+	{
+		Buffer[i * 4 + 0] = 0x32;
+		Buffer[i * 4 + 1] = 0x32;
+		Buffer[i * 4 + 2] = 0x32;
+		Buffer[i * 4 + 3] = 0xFF;
+	}
+}
+
 void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *videoFrame) {
-    std::lock_guard<std::mutex> lock(_mutex);
 //    UE_LOG(LogTemp,Log,TEXT("onRenderVideoFrame width: %d , length : %d , data : %s"), videoFrame->width, videoFrame->length,videoFrame->data);
     if (localPreviewImage != nullptr) {
-        if( !_users_texture_frame_map["0"]._texture ||
-           _users_texture_frame_map["0"]._texture->GetSizeX() != videoFrame->width ||
-           _users_texture_frame_map["0"]._texture->GetSizeY() != videoFrame->height)
-        {
-            _users_texture_frame_map["0"]._region.reset( new FUpdateTextureRegion2D(0, 0, 0, 0, (uint32)videoFrame->width, (uint32)videoFrame->height));
-            _users_texture_frame_map["0"]._texture = UTexture2D::CreateTransient( videoFrame->width, videoFrame->height, PF_R8G8B8A8 );
-            _users_texture_frame_map["0"]._texture->UpdateResource();
-            _users_texture_frame_map["0"].Brush.SetResourceObject(_users_texture_frame_map["0"]._texture);
-        }
         int frameLength = videoFrame->length;
-        uint8_t *slidePressure = new uint8_t[frameLength];
-        FMemory::Memcpy(slidePressure, videoFrame->data, frameLength);
-        //Memcpy(slidePressure, videoFrame->data, frameLength);
-        _users_texture_frame_map["0"]._texture->UpdateTextureRegions( 0, 1, _users_texture_frame_map["0"]._region.get(), frameLength, (uint32)argbPixSize, slidePressure);
-        
-        _users_texture_frame_map["0"]._width = videoFrame->width;
-        _users_texture_frame_map["0"]._height = videoFrame->height;
-        _users_texture_frame_map["0"]._uid = "0";
-        _users_texture_frame_map["0"]._fresh = true;
+        // uint8_t *slidePressure = new uint8_t[frameLength];
+        // FMemory::Memcpy(slidePressure, videoFrame->data, frameLength);
+        UpdateBuffer(videoFrame->data,videoFrame->width,videoFrame->height,frameLength);
     }
 }
+
+void UBtnTRTCUserWidget::UpdateBuffer(
+	char* RGBBuffer,
+	uint32_t NewWidth,
+	uint32_t NewHeight,
+	uint32_t NewSize)
+{
+	FScopeLock lock(&Mutex);
+
+	if (!RGBBuffer)
+	{
+		return;
+	}
+
+	if (BufferSize == NewSize)
+	{
+		std::copy(RGBBuffer, RGBBuffer + NewSize, Buffer);
+	}
+	else
+	{
+		delete[] Buffer;
+		BufferSize = NewSize;
+		Width = NewWidth;
+		Height = NewHeight;
+		Buffer = new uint8[BufferSize];
+		std::copy(RGBBuffer, RGBBuffer + NewSize, Buffer);
+	}
+}
+
 void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime) {
     Super::NativeTick(MyGeometry, DeltaTime);
-    std::lock_guard<std::mutex> lock(_mutex);
-    if(_users_texture_frame_map["0"]._texture && _users_texture_frame_map["0"]._fresh){
-        localPreviewImage->SetBrush(_users_texture_frame_map["0"].Brush);
-    }
+    
+	FScopeLock lock(&Mutex);
+
+	if (UpdateTextureRegion->Width != Width ||
+		UpdateTextureRegion->Height != Height)
+	{
+		auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, Width, Height);
+
+		auto NewRenderTargetTexture = UTexture2D::CreateTransient(Width, Height, PF_R8G8B8A8 );
+		NewRenderTargetTexture->UpdateResource();
+		NewRenderTargetTexture->UpdateTextureRegions(0, 1, NewUpdateTextureRegion, Width * 4, (uint32)4, Buffer);
+
+		Brush.SetResourceObject(NewRenderTargetTexture);
+		localPreviewImage->SetBrush(Brush);
+		FUpdateTextureRegion2D* TmpUpdateTextureRegion = UpdateTextureRegion;
+		RenderTargetTexture = NewRenderTargetTexture;
+		UpdateTextureRegion = NewUpdateTextureRegion;
+		delete TmpUpdateTextureRegion;
+		return;
+	}
+
+	RenderTargetTexture->UpdateTextureRegions(0, 1, UpdateTextureRegion, Width * 4, (uint32)4, Buffer);
 }
 void UBtnTRTCUserWidget::NativeConstruct() {
     Super::NativeConstruct();
@@ -88,6 +130,27 @@ void UBtnTRTCUserWidget::NativeConstruct() {
     btnInitTrtc->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::handleInitButtonClick);
     btnLocalPreview->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStartLocalPreview_Click);
     writeLblLog(version.c_str());
+    //TODO:
+	Width = 640;
+	Height = 360;
+
+	RenderTargetTexture = UTexture2D::CreateTransient(Width, Height, PF_R8G8B8A8 );
+	RenderTargetTexture->UpdateResource();
+
+	BufferSize = Width * Height * 4;
+	Buffer = new uint8[BufferSize];
+	for (uint32 i = 0; i < Width * Height; ++i)
+	{
+		Buffer[i * 4 + 0] = 0x32;
+		Buffer[i * 4 + 1] = 0x32;
+		Buffer[i * 4 + 2] = 0x32;
+		Buffer[i * 4 + 3] = 0xFF;
+	}
+	UpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, Width, Height);
+	RenderTargetTexture->UpdateTextureRegions(0, 1, UpdateTextureRegion, Width * 4, (uint32)4, Buffer);
+
+	Brush.SetResourceObject(RenderTargetTexture);
+	localPreviewImage->SetBrush(Brush);
 }
 
 void UBtnTRTCUserWidget::NativeDestruct() {
@@ -96,6 +159,8 @@ void UBtnTRTCUserWidget::NativeDestruct() {
         pTRTCCloud->destroyTRTCShareInstance();
         pTRTCCloud = nullptr;
     }
+    delete[] Buffer;
+	delete UpdateTextureRegion;
     Super::NativeDestruct();
 }
 void UBtnTRTCUserWidget::writeLblLog(const char * logStr) {
