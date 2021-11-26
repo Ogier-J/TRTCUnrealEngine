@@ -62,7 +62,7 @@ void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoS
 //    UE_LOG(LogTemp,Log,TEXT("onRenderVideoFrame width: %d , length : %d , data : %s"), videoFrame->width, videoFrame->length,videoFrame->data);
     int frameLength = videoFrame->length;
     if (localPreviewImage != nullptr && frameLength > 1) {
-       
+        // 获取到RGBA32 帧数据
         UpdateBuffer(videoFrame->data,videoFrame->width,videoFrame->height,frameLength);
     }
 }
