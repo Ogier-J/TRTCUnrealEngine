@@ -1105,13 +1105,13 @@ struct TRTCMixUser {
     ///   - 如果您之前在老版本中已经使用了 pureAudio 字段，并期望保持其设置，则可以将 inputType 设置为 TRTCMixInputTypeUndefined。
     TRTCMixInputType inputType;
 
-    TRTCMixUser(){}
-//    : userId(nullptr), roomId(nullptr), rect(), zOrder(0), pureAudio(false), streamType(TRTCVideoStreamTypeBig), inputType(TRTCMixInputTypeUndefined) {
-//        rect.left = 0;
-//        rect.top = 0;
-//        rect.right = 0;
-//        rect.bottom = 0;
-//    }
+    TRTCMixUser(): userId(nullptr), roomId(nullptr), rect(), zOrder(0),
+     streamType(TRTCVideoStreamTypeBig),pureAudio(false), inputType(TRTCMixInputTypeUndefined) {
+       rect.left = 0;
+       rect.top = 0;
+       rect.right = 0;
+       rect.bottom = 0;
+   }
 };
 
 /**
@@ -1188,24 +1188,23 @@ struct TRTCTranscodingConfig {
     ///    - 如您设置该参数，SDK 会将房间里的多路音视频流混合到您指定的直播流上，也就是 A + B => C（C 代表您指定的 streamId）。
     const char *streamId;
 
-    TRTCTranscodingConfig(){}
-//        : mode(TRTCTranscodingConfigMode_Unknown),
-//          appId(0),
-//          bizId(0),
-//          videoWidth(0),
-//          videoHeight(0),
-//          videoBitrate(0),
-//          videoFramerate(15),
-//          videoGOP(2),
-//          audioSampleRate(48000),
-//          audioBitrate(64),
-//          audioChannels(1),
-//          mixUsersArray(nullptr),
-//          mixUsersArraySize(0),
-//          backgroundColor(0),
-//          backgroundImage(nullptr),
-//          streamId(nullptr) {
-//    }
+    TRTCTranscodingConfig(): mode(TRTCTranscodingConfigMode_Unknown),
+         appId(0),
+         bizId(0),
+         videoWidth(0),
+         videoHeight(0),
+         videoBitrate(0),
+         videoFramerate(15),
+         videoGOP(2),
+         backgroundColor(0),
+         backgroundImage(nullptr),
+         audioSampleRate(48000),
+         audioBitrate(64),
+         audioChannels(1),
+         mixUsersArray(nullptr),
+         mixUsersArraySize(0),
+         streamId(nullptr) {
+   }
 };
 
 /**
@@ -1228,9 +1227,8 @@ struct TRTCPublishCDNParam {
     ///【特别说明】推流 URL 必须为 RTMP 格式，必须符合您的目标直播服务商的规范要求，否则目标服务商会拒绝来自 TRTC 后台服务的推流请求。
     const char *url;
 
-    TRTCPublishCDNParam(){}
-//    : url(nullptr), appId(0), bizId(0) {
-//    }
+    TRTCPublishCDNParam(): appId(0), bizId(0), url(nullptr) {
+   }
 };
 
 /**
