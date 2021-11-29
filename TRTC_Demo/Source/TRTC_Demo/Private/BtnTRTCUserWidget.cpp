@@ -105,7 +105,8 @@ void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
 		UpdateTextureRegion->Height != Height)
 	{
 		auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, Width, Height);
-
+        // PF_R8G8B8A8
+        // macos PF_B8G8R8A8 --> TRTCVideoPixelFormat_BGRA32 验证通过
 		auto NewRenderTargetTexture = UTexture2D::CreateTransient(Width, Height, PF_B8G8R8A8 );
 		NewRenderTargetTexture->UpdateResource();
 		NewRenderTargetTexture->UpdateTextureRegions(0, 1, NewUpdateTextureRegion, Width * 4, (uint32)4, Buffer);
