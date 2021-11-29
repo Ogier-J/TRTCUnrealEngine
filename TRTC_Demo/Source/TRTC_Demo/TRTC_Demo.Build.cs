@@ -26,14 +26,15 @@ public class TRTC_Demo : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 		// Uncomment if you are using Slate UI
 		PrivateDependencyModuleNames.AddRange(new string[] {"UMG", "Slate", "SlateCore"});
-        // 添加插件的包含路径
-        PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include"));
-        PublicIncludePaths.Add(Path.Combine(_BasePath, "include"));
+        
         if (Target.Platform == UnrealTargetPlatform.Android)
         {
             
         }else if (Target.Platform == UnrealTargetPlatform.IOS)
         {
+            // 添加插件的包含路径
+            PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include"));
+            PublicIncludePaths.Add(Path.Combine(_BasePath, "include"));
             PublicAdditionalLibraries.AddRange(new string[] {
                 "resolv",
                 "z",
@@ -56,6 +57,9 @@ public class TRTC_Demo : ModuleRules
             //PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVTestUserSig",_BasePath+"/ios/TXLiteAVTestUserSig.framework.zip", ""));
         }else if(Target.Platform == UnrealTargetPlatform.Mac)
         {
+            // 添加插件的包含路径
+            PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include"));
+            PublicIncludePaths.Add(Path.Combine(_BasePath, "include"));
             PublicAdditionalLibraries.AddRange(new string[] {
                 "resolv",
                 "z",
