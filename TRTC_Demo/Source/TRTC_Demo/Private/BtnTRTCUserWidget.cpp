@@ -33,7 +33,7 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     writeLblLog("start OnEnterRoom_Click roomid: 110");
     // 构造进房参数
     trtc::TRTCParams params;
-    params.role = trtc::TRTCRoleAudience;
+    params.role = trtc::TRTCRoleAnchor;
     params.userDefineRecordId = "";
     params.userId = testUserId;
     params.roomId =  110;
