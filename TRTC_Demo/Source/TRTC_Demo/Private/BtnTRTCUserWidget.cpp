@@ -33,12 +33,10 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     writeLblLog("start OnEnterRoom_Click roomid: 110");
     // 构造进房参数
     trtc::TRTCParams params;
-    trtc::TRTCRoleType type = static_cast<trtc::TRTCRoleType>(20);
-    params.role = type;
+    params.role = trtc::TRTCRoleAudience;
     params.userDefineRecordId = "";
     params.userId = testUserId;
-    // params.strRoomId = testStrRoomId;
-    params.roomId =  110;//(uint32_t)atoi(testStrRoomId);
+    params.roomId =  110;
     // 暂时只支持macos。
    #if PLATFORM_MAC
    params.sdkAppId = SDKAppID;
@@ -47,10 +45,8 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
    params.sdkAppId = testSDKAppID;
    params.userSig = testUserSig;
    #endif
-    
-    trtc::TRTCAppScene style = static_cast<trtc::TRTCAppScene>(0);
     // 进房
-    pTRTCCloud->enterRoom(params, style);
+    pTRTCCloud->enterRoom(params, trtc::TRTCAppSceneVideoCall);
     writeLblLog("end OnEnterRoom_Click roomid: 110");
 }
 
