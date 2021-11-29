@@ -868,9 +868,7 @@ struct TRTCVideoEncParam {
     ///【特别说明】默认值：关闭。如有云端录制的需求，请不要开启此功能，因为如果视频分辨率发生变化后，云端录制出的 MP4 在普通的播放器上无法正常播放。
     bool enableAdjustRes;
 
-    TRTCVideoEncParam(){}
-//    : videoResolution(TRTCVideoResolution_640_360), resMode(TRTCVideoResolutionModeLandscape), videoFps(15), videoBitrate(550), enableAdjustRes(false), minVideoBitrate(0) {
-//    }
+    TRTCVideoEncParam(): videoResolution(TRTCVideoResolution_640_360), resMode(TRTCVideoResolutionModeLandscape), videoFps(15), videoBitrate(550), minVideoBitrate(0), enableAdjustRes(false)  {}
 };
 
 /**

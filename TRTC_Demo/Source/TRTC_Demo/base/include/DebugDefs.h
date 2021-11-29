@@ -11,7 +11,7 @@
  */
 static const int testSDKAppID = 1400393897;
 static const char *testUserId = "a9715d2fe80d6dda38db9af2dd7621ad";
-static const char *testUserSig = "eJwtzUsLgkAUBeD-MttC5uE4jtAmqDaSVELWbuSOdonyiSjRf8-U5f0O59wPicOL09maBIQ7lKynG8G*W8xwYqMVk8Az61PwAIzwIdUm4wDK48zA0mngacoSgQTMpVRo4Ws1J7YvsbajSyk5pXTWFl9-84TSnCsmlhXMx5f323ZfHdWwQwyHVXXuk0deRZ1mdeGyZjBRG1*7Q5qfkmJDvj*uFznj";
+static const char *testUserSig = "eJwtzcsOgjAQBdB-6dqQaUtfJi7UBcTICoyPXckUqESCCsTE*O8ispxzc**8SbZPg8E9yJKwAMhiuj26pvOFn9gaRQWywmlAiWi5xtzYgiEqyajFufPE2ratR7KkIQA3XBv1T9yr9Q83uhCCAcBfO3-7meSaKuBg5hVfji*j0Mg4bS6bbXIVLOrv-aGK6zA7Jucqdvd4vRvkXu1OmJcr8vkChP04bA__";
 static const char *testStrRoomId = "110";
 /**
  * 腾讯云 SDKAppId，需要替换为您自己账号下的 SDKAppId。
