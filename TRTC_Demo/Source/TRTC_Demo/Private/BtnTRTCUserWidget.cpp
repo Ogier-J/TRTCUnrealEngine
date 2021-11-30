@@ -101,6 +101,8 @@ void UBtnTRTCUserWidget::UpdateBuffer(
 void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime) {
     Super::NativeTick(MyGeometry, DeltaTime);
 	FScopeLock lock(&Mutex);
+    if(Buffer == nullptr)
+        return;
 	if (UpdateTextureRegion->Width != Width ||
 		UpdateTextureRegion->Height != Height)
 	{
