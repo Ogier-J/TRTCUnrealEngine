@@ -25,6 +25,7 @@ void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
 #else
     pTRTCCloud->startLocalPreview(nullptr);
 #endif
+    // macos ==> TRTCVideoPixelFormat_BGRA32 
     pTRTCCloud->setLocalVideoRenderCallback(trtc::TRTCVideoPixelFormat_BGRA32
 , trtc::TRTCVideoBufferType_Buffer, this);
     writeLblLog("end OnStartLocalPreview_Click");
@@ -62,10 +63,9 @@ void UBtnTRTCUserWidget::ResetBuffer()
 }
 
 void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *videoFrame) {
-//    UE_LOG(LogTemp,Log,TEXT("onRenderVideoFrame width: %d , length : %d , data : %s"), videoFrame->width, videoFrame->length,videoFrame->data);
     int frameLength = videoFrame->length;
     if (localPreviewImage != nullptr && frameLength > 1) {
-        // 获取到RGBA32 帧数据
+        // 获取到BGRA32 帧数据
         UpdateBuffer(videoFrame->data,videoFrame->width,videoFrame->height,frameLength);
     }
 }
@@ -82,7 +82,7 @@ void UBtnTRTCUserWidget::UpdateBuffer(
 		return;
 	}
     // uint8_t *slidePressure = new uint8_t[frameLength];
-        // FMemory::Memcpy(slidePressure, videoFrame->data, frameLength);
+    // FMemory::Memcpy(slidePressure, videoFrame->data, frameLength);
 	if (BufferSize == NewSize)
 	{
 		std::copy(RGBBuffer, RGBBuffer + NewSize, Buffer);
@@ -107,10 +107,9 @@ void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
 		auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, Width, Height);
         // PF_R8G8B8A8
         // macos PF_B8G8R8A8 --> TRTCVideoPixelFormat_BGRA32 验证通过
-		auto NewRenderTargetTexture = UTexture2D::CreateTransient(Width, Height, PF_B8G8R8A8 );
+		auto NewRenderTargetTexture = UTexture2D::CreateTransient(Width, Height);
 		NewRenderTargetTexture->UpdateResource();
 		NewRenderTargetTexture->UpdateTextureRegions(0, 1, NewUpdateTextureRegion, Width * 4, (uint32)4, Buffer);
-
 		Brush.SetResourceObject(NewRenderTargetTexture);
 		localPreviewImage->SetBrush(Brush);
 		FUpdateTextureRegion2D* TmpUpdateTextureRegion = UpdateTextureRegion;
@@ -136,7 +135,7 @@ void UBtnTRTCUserWidget::NativeConstruct() {
 	Width = 640;
 	Height = 640;
 
-	RenderTargetTexture = UTexture2D::CreateTransient(Width, Height, PF_B8G8R8A8 );
+	RenderTargetTexture = UTexture2D::CreateTransient(Width, Height );
 	RenderTargetTexture->UpdateResource();
 
 	BufferSize = Width * Height * 4;
