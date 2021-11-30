@@ -20,7 +20,8 @@ public class TRTC_Demo : ModuleRules
     }
 	public TRTC_Demo(ReadOnlyTargetRules Target) : base(Target)
 	{
-		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+        bEnableUndefinedIdentifierWarnings = false;
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
         // //添加系统Framework和库
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
@@ -93,7 +94,8 @@ public class TRTC_Demo : ModuleRules
             
         }else if (Target.Platform == UnrealTargetPlatform.Win64)
         {
-            PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/x86_x64"));
+	        PublicIncludePaths.Add(Path.Combine(_BasePath, "include"));
+            PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/win64"));
             // Add the import library
             //PublicAdditionalLibraries.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release","liteave.lib"));
 
@@ -112,4 +114,5 @@ public class TRTC_Demo : ModuleRules
 
 		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
 	}
+   
 }
