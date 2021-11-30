@@ -27,6 +27,9 @@ struct VideoTextureFrame {
     int _height;
     const char * _uid;
 };
+#if PLATFORM_WINDOWS
+#define UpdateResource UpdateResource
+#endif
 /**
  * 
  */
