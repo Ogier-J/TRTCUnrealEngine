@@ -33,7 +33,7 @@ public class TRTC_Demo : ModuleRules
         }else if (Target.Platform == UnrealTargetPlatform.IOS)
         {
             // 添加插件的包含路径
-            PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include"));
+            PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/iOS"));
             PublicIncludePaths.Add(Path.Combine(_BasePath, "include"));
             PublicAdditionalLibraries.AddRange(new string[] {
                 "resolv",
@@ -58,7 +58,7 @@ public class TRTC_Demo : ModuleRules
         }else if(Target.Platform == UnrealTargetPlatform.Mac)
         {
             // 添加插件的包含路径
-            PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include"));
+            PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/Mac"));
             PublicIncludePaths.Add(Path.Combine(_BasePath, "include"));
             PublicAdditionalLibraries.AddRange(new string[] {
                 "resolv",
