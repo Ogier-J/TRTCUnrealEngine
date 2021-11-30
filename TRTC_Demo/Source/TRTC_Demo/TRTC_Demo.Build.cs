@@ -93,6 +93,7 @@ public class TRTC_Demo : ModuleRules
             
         }else if (Target.Platform == UnrealTargetPlatform.Win64)
         {
+            PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/x86_x64"));
             // Add the import library
             //PublicAdditionalLibraries.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release","liteave.lib"));
 
