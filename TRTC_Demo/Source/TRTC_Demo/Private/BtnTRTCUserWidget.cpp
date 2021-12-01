@@ -137,10 +137,10 @@ void UBtnTRTCUserWidget::ResetBuffer(bool isLocal)
 void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime) {
     Super::NativeTick(MyGeometry, DeltaTime);
     // 更新本地视频画面
-    if(localUpdateTextureRegion && localBuffer && localPreviewImage) {
+    if(localRenderTargetTexture && localBuffer && localPreviewImage) {
         FScopeLock lock(&localMutex);
-        if (localUpdateTextureRegion->Width != localWidth ||
-        localUpdateTextureRegion->Height != localHeight)
+        if (localRenderTargetTexture->GetSizeX() != localWidth ||
+        localRenderTargetTexture->GetSizeY() != localHeight)
         {
             auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, localWidth, localHeight);
             // PF_R8G8B8A8
@@ -159,10 +159,10 @@ void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
         localRenderTargetTexture->UpdateTextureRegions(0, 1, localUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
     }
     // 更新远端用户画面
-    if(remoteUpdateTextureRegion && remoteBuffer && remoteImage) {
+    if(remoteRenderTargetTexture && remoteBuffer && remoteImage) {
         FScopeLock lock(&remoteMutex);
-        if (remoteUpdateTextureRegion->Width != remoteWidth ||
-        remoteUpdateTextureRegion->Height != remoteHeight)
+        if (remoteRenderTargetTexture->GetSizeX() != remoteWidth ||
+        remoteRenderTargetTexture->GetSizeY() != remoteHeight)
         {
             auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0,remoteWidth,remoteHeight);
             auto NewRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth,remoteHeight);
