@@ -10,6 +10,7 @@
 #include "Engine/Texture2D.h"
 #include "Components/TextBlock.h"
 #include "Modules/ModuleManager.h"
+// 这段是为ue4 打包的时候不报错。
 #if PLATFORM_MAC
 #include "GenerateTestUserSig.h"
 #endif

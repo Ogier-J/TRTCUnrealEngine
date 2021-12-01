@@ -13,7 +13,8 @@
 #include "IDeprecatedTRTCCloud.h"
 #include "TXLiteAVBase.h"
 #endif
-
+// 这段是为ue4 打包的时候不报错。
+//#define __APPLE__ 0
 /// @defgroup TRTCCloud_cplusplus TRTCCloud
 /// 腾讯云 TRTC 主功能接口
 /// @{
