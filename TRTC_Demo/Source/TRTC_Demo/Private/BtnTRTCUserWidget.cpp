@@ -103,32 +103,24 @@ void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
 	FScopeLock lock(&Mutex);
     if(Buffer == nullptr)
         return;
-    try
+    if (UpdateTextureRegion->Width != Width ||
+        UpdateTextureRegion->Height != Height)
     {
-        if (UpdateTextureRegion->Width != Width ||
-            UpdateTextureRegion->Height != Height)
-        {
-            auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, Width, Height);
-            // PF_R8G8B8A8
-            // macos PF_B8G8R8A8 --> TRTCVideoPixelFormat_BGRA32 验证通过
-            auto NewRenderTargetTexture = UTexture2D::CreateTransient(Width, Height);
-            NewRenderTargetTexture->UpdateResource();
-            NewRenderTargetTexture->UpdateTextureRegions(0, 1, NewUpdateTextureRegion, Width * 4, (uint32)4, Buffer);
-            Brush.SetResourceObject(NewRenderTargetTexture);
-            localPreviewImage->SetBrush(Brush);
-            FUpdateTextureRegion2D* TmpUpdateTextureRegion = UpdateTextureRegion;
-            RenderTargetTexture = NewRenderTargetTexture;
-            UpdateTextureRegion = NewUpdateTextureRegion;
-            delete TmpUpdateTextureRegion;
-            return;
-        }
-        RenderTargetTexture->UpdateTextureRegions(0, 1, UpdateTextureRegion, Width * 4, (uint32)4, Buffer);
+        auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, Width, Height);
+        // PF_R8G8B8A8
+        // macos PF_B8G8R8A8 --> TRTCVideoPixelFormat_BGRA32 验证通过
+        auto NewRenderTargetTexture = UTexture2D::CreateTransient(Width, Height);
+        NewRenderTargetTexture->UpdateResource();
+        NewRenderTargetTexture->UpdateTextureRegions(0, 1, NewUpdateTextureRegion, Width * 4, (uint32)4, Buffer);
+        Brush.SetResourceObject(NewRenderTargetTexture);
+        localPreviewImage->SetBrush(Brush);
+        FUpdateTextureRegion2D* TmpUpdateTextureRegion = UpdateTextureRegion;
+        RenderTargetTexture = NewRenderTargetTexture;
+        UpdateTextureRegion = NewUpdateTextureRegion;
+        delete TmpUpdateTextureRegion;
+        return;
     }
-    catch (const char* msg)
-    {
-        writeCallbackLog(msg);
-    }
-	
+    RenderTargetTexture->UpdateTextureRegions(0, 1, UpdateTextureRegion, Width * 4, (uint32)4, Buffer);
 }
 void UBtnTRTCUserWidget::NativeConstruct() {
     Super::NativeConstruct();
@@ -142,7 +134,7 @@ void UBtnTRTCUserWidget::NativeConstruct() {
     writeLblLog(version.c_str());
     //TODO:
 	Width = 640;
-	Height = 360;
+	Height = 368;
 
 	RenderTargetTexture = UTexture2D::CreateTransient(Width, Height );
 	RenderTargetTexture->UpdateResource();
