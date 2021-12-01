@@ -97,21 +97,21 @@ public class TRTC_Demo : ModuleRules
 	        PublicIncludePaths.Add(Path.Combine(_BasePath, "include"));
             PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/win64"));
             // Add the import library
-            //PublicAdditionalLibraries.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release","liteave.lib"));
+            PublicAdditionalLibraries.Add(Path.Combine(_TRTCSDKPath, "win64", "Release","liteav.lib"));
 
-			// Delay-load the DLL, so we can load it from the right place first
-			PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "liteave.dll"));
-            PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "LiteAvAudioHook.dll"));
-            PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "LiteAvAudioHookService.dll"));
-            PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "openh264.dll"));
-            PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "TRAE.dll"));
+            // Delay-load the DLL, so we can load it from the right place first
+            PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "win64", "Release", "liteav.dll"));
+            PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "win64", "Release", "LiteAvAudioHook.dll"));
+            PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "win64", "Release", "LiteAvAudioHookService.dll"));
+            PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "win64", "Release", "openh264.dll"));
+            PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "win64", "Release", "TRAE.dll"));
 
-            //PublicAdditionalLibraries.Add(Path.Combine(_BasePath, "x86_x64", "Release","zlib.lib"));
-            RuntimeDependencies.Add("$(BinaryOutputDir)/liteave.dll", Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "liteave.dll"));
-			RuntimeDependencies.Add("$(BinaryOutputDir)/LiteAvAudioHook.dll", Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "LiteAvAudioHook.dll"));
-			RuntimeDependencies.Add("$(BinaryOutputDir)/LiteAvAudioHookService.dll", Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "LiteAvAudioHookService.dll"));
-			RuntimeDependencies.Add("$(BinaryOutputDir)/openh264.dll", Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "openh264.dll"));
-			RuntimeDependencies.Add("$(BinaryOutputDir)/TRAE.dll", Path.Combine(_TRTCSDKPath, "x86_x64", "Release", "TRAE.dll"));
+            ////PublicAdditionalLibraries.Add(Path.Combine(_BasePath, "win64", "Release","zlib.lib"));
+            RuntimeDependencies.Add("$(BinaryOutputDir)/liteave.dll", Path.Combine(_TRTCSDKPath, "win64", "Release", "liteav.dll"));
+            RuntimeDependencies.Add("$(BinaryOutputDir)/LiteAvAudioHook.dll", Path.Combine(_TRTCSDKPath, "win64", "Release", "LiteAvAudioHook.dll"));
+            RuntimeDependencies.Add("$(BinaryOutputDir)/LiteAvAudioHookService.dll", Path.Combine(_TRTCSDKPath, "win64", "Release", "LiteAvAudioHookService.dll"));
+            RuntimeDependencies.Add("$(BinaryOutputDir)/openh264.dll", Path.Combine(_TRTCSDKPath, "win64", "Release", "openh264.dll"));
+            RuntimeDependencies.Add("$(BinaryOutputDir)/TRAE.dll", Path.Combine(_TRTCSDKPath, "win64", "Release", "TRAE.dll"));
         }
         
 		// Uncomment if you are using online features
