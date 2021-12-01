@@ -53,7 +53,7 @@ public:
 	uint32_t Width = 0;
 	uint32_t Height = 0;
 	uint32 BufferSize = 0;
-    
+
     void UpdateBuffer(
 		char* RGBBuffer,
 		uint32_t Width,
@@ -64,7 +64,7 @@ public:
 
 public:
     UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
-        void handleInitButtonClick();
+        void handleTestButtonClick();
     UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
         void OnEnterRoom_Click();
     UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
@@ -82,7 +82,7 @@ public:
         UButton* btnEnterroom = nullptr;
     
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
-        UButton* btnInitTrtc = nullptr;
+        UButton* btnTrtcTest = nullptr;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
         UButton* btnLocalPreview = nullptr;

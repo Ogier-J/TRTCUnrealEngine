@@ -9,8 +9,8 @@
 
 #endif
 
-void UBtnTRTCUserWidget::handleInitButtonClick() {
-    writeLblLog("start handleInitButtonClick");
+void UBtnTRTCUserWidget::handleTestButtonClick() {
+    writeLblLog("start handleTestButtonClick");
 }
 void UBtnTRTCUserWidget::OnStopLocalPreview_Click() {
     writeLblLog("start OnStopLocalPreview_Click");
@@ -25,7 +25,6 @@ void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
 #else
     pTRTCCloud->startLocalPreview(nullptr);
 #endif
-    // macos ==> TRTCVideoPixelFormat_BGRA32 
     pTRTCCloud->setLocalVideoRenderCallback(trtc::TRTCVideoPixelFormat_BGRA32
 , trtc::TRTCVideoBufferType_Buffer, this);
     writeLblLog("end OnStartLocalPreview_Click");
@@ -39,13 +38,13 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     params.userId = testUserId;
     params.roomId =  110;
     // 暂时只支持macos。
-   #if PLATFORM_MAC
+#if PLATFORM_MAC
    params.sdkAppId = SDKAppID;
    params.userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
-   #else
+#else
    params.sdkAppId = testSDKAppID;
    params.userSig = testUserSig;
-   #endif
+#endif
     // 进房
     pTRTCCloud->enterRoom(params, trtc::TRTCAppSceneVideoCall);
     writeLblLog("end OnEnterRoom_Click roomid: 110");
@@ -81,8 +80,6 @@ void UBtnTRTCUserWidget::UpdateBuffer(
 	{
 		return;
 	}
-    // uint8_t *slidePressure = new uint8_t[frameLength];
-    // FMemory::Memcpy(slidePressure, videoFrame->data, frameLength);
 	if (BufferSize == NewSize)
 	{
 		std::copy(RGBBuffer, RGBBuffer + NewSize, Buffer);
@@ -128,7 +125,7 @@ void UBtnTRTCUserWidget::NativeConstruct() {
     pTRTCCloud->addCallback(this);
     std::string version = pTRTCCloud->getSDKVersion();
     btnEnterroom->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnEnterRoom_Click);
-    btnInitTrtc->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::handleInitButtonClick);
+    btnTrtcTest->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::handleTestButtonClick);
     btnLocalPreview->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStartLocalPreview_Click);
     btnStopPreview->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStopLocalPreview_Click);
     writeLblLog(version.c_str());
@@ -200,7 +197,16 @@ void UBtnTRTCUserWidget::writeCallbackLog(const char * logStr) {
     }
 }
 void  UBtnTRTCUserWidget::onUserVideoAvailable(const char *userId, bool available) {
+    writeCallbackLog("onUserVideoAvailable");
     writeCallbackLog(userId);
+    if (available) {
+        pTRTCCloud->startRemoteView(userId, trtc::TRTCVideoStreamTypeBig, nullptr);
+        pTRTCCloud->muteRemoteVideoStream(userId, false);
+        pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_BGRA32,trtc::TRTCVideoBufferType_Buffer, this);
+    }else{
+        pTRTCCloud->muteRemoteVideoStream(userId, true);
+        ResetBuffer();
+    }
 }
 void UBtnTRTCUserWidget::onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) {
     writeCallbackLog(warningMsg);
