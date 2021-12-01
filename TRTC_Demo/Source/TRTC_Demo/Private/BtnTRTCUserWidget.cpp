@@ -170,6 +170,7 @@ void UBtnTRTCUserWidget::NativeConstruct() {
 void UBtnTRTCUserWidget::NativeDestruct() {
     Super::NativeDestruct();
     if (pTRTCCloud != nullptr) {
+        pTRTCCloud->exitRoom();
         pTRTCCloud->removeCallback(this);
         pTRTCCloud->destroyTRTCShareInstance();
         pTRTCCloud = nullptr;
