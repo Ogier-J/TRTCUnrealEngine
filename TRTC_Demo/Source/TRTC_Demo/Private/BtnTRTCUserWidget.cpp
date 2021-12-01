@@ -142,7 +142,7 @@ void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
         if (localRenderTargetTexture->GetSizeX() != localWidth ||
         localRenderTargetTexture->GetSizeY() != localHeight)
         {
-            UE_LOG(LogTemp, Warning, TEXT("localWidth=%d, localHeight=%d localRenderTargetTexture->GetSizeX()=%d , localRenderTargetTexture->GetSizeY()=%d"),localWidth,localHeight,localRenderTargetTexture->GetSizeX(),localRenderTargetTexture->GetSizeY());
+            UE_LOG(LogTemp, Warning, TEXT("localWidth=%d, localHeight=%d localRenderTargetTexture->GetSizeX =%d , localRenderTargetTexture->GetSizeY =%d"),localWidth,localHeight,localRenderTargetTexture->GetSizeX(),localRenderTargetTexture->GetSizeY());
             auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, localWidth, localHeight);
             // PF_R8G8B8A8
             // macos PF_B8G8R8A8 --> TRTCVideoPixelFormat_BGRA32 验证通过
@@ -165,17 +165,17 @@ void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
         if (remoteRenderTargetTexture->GetSizeX() != remoteWidth ||
         remoteRenderTargetTexture->GetSizeY() != remoteHeight)
         {
-            UE_LOG(LogTemp, Warning, TEXT("remoteWidth=%d, remoteHeight=%d  remoteRenderTargetTexture->GetSizeX()=%d , remoteRenderTargetTexture->GetSizeY()=%d"),remoteWidth,remoteHeight,remoteRenderTargetTexture->GetSizeX(),remoteRenderTargetTexture->GetSizeY());
-            auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0,remoteWidth,remoteHeight);
-            auto NewRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth,remoteHeight);
-            NewRenderTargetTexture->UpdateResource();
-            NewRenderTargetTexture->UpdateTextureRegions(0, 1, NewUpdateTextureRegion,remoteWidth * 4, (uint32)4,remoteBuffer);
-            remoteBrush.SetResourceObject(NewRenderTargetTexture);
+            UE_LOG(LogTemp, Warning, TEXT("remoteWidth=%d, remoteHeight=%d  remoteRenderTargetTexture->GetSizeX =%d , remoteRenderTargetTexture->GetSizeY =%d"),remoteWidth,remoteHeight,remoteRenderTargetTexture->GetSizeX(),remoteRenderTargetTexture->GetSizeY());
+            auto NewRMUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0,remoteWidth,remoteHeight);
+            auto NewRMRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth,remoteHeight);
+            NewRMRenderTargetTexture->UpdateResource();
+            NewRMRenderTargetTexture->UpdateTextureRegions(0, 1, NewRMUpdateTextureRegion,remoteWidth * 4, (uint32)4,remoteBuffer);
+            remoteBrush.SetResourceObject(NewRMRenderTargetTexture);
             remoteImage->SetBrush(remoteBrush);
-            FUpdateTextureRegion2D* TmpUpdateTextureRegion = remoteUpdateTextureRegion;
-            remoteRenderTargetTexture = NewRenderTargetTexture;
-            remoteUpdateTextureRegion = NewUpdateTextureRegion;
-            delete TmpUpdateTextureRegion;
+            FUpdateTextureRegion2D* TmpRMUpdateTextureRegion = remoteUpdateTextureRegion;
+            remoteRenderTargetTexture = NewRMRenderTargetTexture;
+            remoteUpdateTextureRegion = NewRMUpdateTextureRegion;
+            delete TmpRMUpdateTextureRegion;
             return;
         }
         remoteRenderTargetTexture->UpdateTextureRegions(0, 1,remoteUpdateTextureRegion,remoteWidth * 4, (uint32)4,remoteBuffer);
