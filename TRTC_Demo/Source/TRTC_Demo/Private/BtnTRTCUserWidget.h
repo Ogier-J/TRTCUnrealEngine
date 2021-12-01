@@ -19,14 +19,14 @@
 #include <mutex>
 #include "BtnTRTCUserWidget.generated.h"
 struct VideoTextureFrame {
-    VideoTextureFrame():_texture(nullptr),_region(nullptr),_fresh(false),_width(0),_height(0),_uid(0) {}
-    UTexture2D* _texture;
+    UTexture2D* Texture;
     FSlateBrush Brush;
-    std::unique_ptr<FUpdateTextureRegion2D> _region;
-    bool _fresh;
-    int _width;
-    int _height;
-    const char * _uid;
+    std::unique_ptr<FUpdateTextureRegion2D> UpdateTextureRegion;
+    bool Fresh;
+    int Width;
+    int Height;
+    const char * userId;
+    VideoTextureFrame():Texture(nullptr),UpdateTextureRegion(nullptr),Fresh(false),Width(0),Height(0),userId(0) {}
 };
 #if PLATFORM_WINDOWS
 #define UpdateResource UpdateResource
@@ -53,7 +53,7 @@ public:
 	uint32_t Width = 0;
 	uint32_t Height = 0;
 	uint32 BufferSize = 0;
-	
+    
     void UpdateBuffer(
 		char* RGBBuffer,
 		uint32_t Width,
