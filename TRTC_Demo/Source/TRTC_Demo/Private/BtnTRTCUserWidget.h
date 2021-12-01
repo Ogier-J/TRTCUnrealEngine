@@ -82,13 +82,9 @@ public:
 
     UPROPERTY(EditDefaultsOnly)
 		UTexture2D* localRenderTargetTexture = nullptr;
-    
     FUpdateTextureRegion2D* localUpdateTextureRegion = nullptr;
-
 	FSlateBrush localBrush;
-
 	FCriticalSection localMutex;
-
     uint8* localBuffer = nullptr;
 	uint32_t localWidth = 0;
 	uint32_t localHeight = 0;
@@ -98,6 +94,16 @@ public:
     UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
         UImage* remoteImage= nullptr;
 
+    UPROPERTY(EditDefaultsOnly)
+		UTexture2D* remoteRenderTargetTexture = nullptr;
+    FUpdateTextureRegion2D* remoteUpdateTextureRegion = nullptr;
+	FSlateBrush remoteBrush;
+	FCriticalSection remoteMutex;
+    uint8* remoteBuffer = nullptr;
+	uint32_t remoteWidth = 0;
+	uint32_t remoteHeight = 0;
+	uint32 remoteBufferSize = 0;
+
     // 更新帧数据
     void UpdateBuffer(
 		char* RGBBuffer,
@@ -105,7 +111,7 @@ public:
 		uint32_t Height,
 		uint32_t Size,
         bool isLocal);
-        
+
 	void ResetBuffer(bool isLocal);
 
     void NativeTick(const FGeometry& MyGeometry, float DeltaTime) override;

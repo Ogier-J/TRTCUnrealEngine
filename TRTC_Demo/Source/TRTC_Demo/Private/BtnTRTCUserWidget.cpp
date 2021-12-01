@@ -52,9 +52,10 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
 
 void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *videoFrame) {
     int frameLength = videoFrame->length;
-    if (localPreviewImage != nullptr && frameLength > 1) {
+    if (localPreviewImage && remoteImage && frameLength > 1) {
         // 获取到BGRA32 帧数据
-        UpdateBuffer(videoFrame->data,videoFrame->width,videoFrame->height,frameLength,true);
+        bool isLoaclUser =(nullptr == userId || testUserId == userId)? true:false;
+        UpdateBuffer(videoFrame->data,videoFrame->width,videoFrame->height,frameLength,isLoaclUser);
     }
 }
 
@@ -88,7 +89,24 @@ void UBtnTRTCUserWidget::UpdateBuffer(
     }
 	else
     {
-
+        FScopeLock lock(&remoteMutex);
+        if (!RGBBuffer)
+        {
+            return;
+        }
+        if (remoteBufferSize== NewSize)
+        {
+            std::copy(RGBBuffer, RGBBuffer + NewSize, remoteBuffer);
+        }
+        else
+        {
+            delete[] remoteBuffer;
+            remoteBufferSize= NewSize;
+            remoteWidth = NewWidth;
+            remoteHeight = NewHeight;
+            remoteBuffer = new uint8[remoteBufferSize];
+            std::copy(RGBBuffer, RGBBuffer + NewSize, remoteBuffer);
+        }
     }
 }
 
@@ -106,33 +124,63 @@ void UBtnTRTCUserWidget::ResetBuffer(bool isLocal)
     }
     else
     {
-
+        for (uint32 i = 0; i < remoteWidth * remoteHeight; ++i)
+        {
+            remoteBuffer[i * 4 + 0] = 0x32;
+            remoteBuffer[i * 4 + 1] = 0x32;
+            remoteBuffer[i * 4 + 2] = 0x32;
+            remoteBuffer[i * 4 + 3] = 0xFF;
+        }
     }
 }
 
 void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime) {
     Super::NativeTick(MyGeometry, DeltaTime);
-	FScopeLock lock(&localMutex);
-    if(localBuffer == nullptr)
-        return;
-    if (localUpdateTextureRegion->Width != localWidth ||
+    // 更新本地视频画面
+    if(localUpdateTextureRegion && localBuffer && localPreviewImage) {
+        FScopeLock lock(&localMutex);
+        if (localUpdateTextureRegion->Width != localWidth ||
         localUpdateTextureRegion->Height != localHeight)
-    {
-        auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, localWidth, localHeight);
-        // PF_R8G8B8A8
-        // macos PF_B8G8R8A8 --> TRTCVideoPixelFormat_BGRA32 验证通过
-        auto NewRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight);
-        NewRenderTargetTexture->UpdateResource();
-        NewRenderTargetTexture->UpdateTextureRegions(0, 1, NewUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
-        localBrush.SetResourceObject(NewRenderTargetTexture);
-        localPreviewImage->SetBrush(localBrush);
-        FUpdateTextureRegion2D* TmpUpdateTextureRegion = localUpdateTextureRegion;
-        localRenderTargetTexture = NewRenderTargetTexture;
-        localUpdateTextureRegion = NewUpdateTextureRegion;
-        delete TmpUpdateTextureRegion;
-        return;
+        {
+            auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, localWidth, localHeight);
+            // PF_R8G8B8A8
+            // macos PF_B8G8R8A8 --> TRTCVideoPixelFormat_BGRA32 验证通过
+            auto NewRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight);
+            NewRenderTargetTexture->UpdateResource();
+            NewRenderTargetTexture->UpdateTextureRegions(0, 1, NewUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
+            localBrush.SetResourceObject(NewRenderTargetTexture);
+            localPreviewImage->SetBrush(localBrush);
+            FUpdateTextureRegion2D* TmpUpdateTextureRegion = localUpdateTextureRegion;
+            localRenderTargetTexture = NewRenderTargetTexture;
+            localUpdateTextureRegion = NewUpdateTextureRegion;
+            delete TmpUpdateTextureRegion;
+            return;
+        }
+        localRenderTargetTexture->UpdateTextureRegions(0, 1, localUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
     }
-    localRenderTargetTexture->UpdateTextureRegions(0, 1, localUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
+    // 更新远端用户画面
+    if(remoteUpdateTextureRegion && remoteBuffer && remoteImage) {
+        FScopeLock lock(&remoteMutex);
+        if (remoteUpdateTextureRegion->Width != remoteWidth ||
+        remoteUpdateTextureRegion->Height != remoteHeight)
+        {
+            auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0,remoteWidth,remoteHeight);
+            // PF_R8G8B8A8
+            // macos PF_B8G8R8A8 --> TRTCVideoPixelFormat_BGRA32 验证通过
+            auto NewRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth,remoteHeight);
+            NewRenderTargetTexture->UpdateResource();
+            NewRenderTargetTexture->UpdateTextureRegions(0, 1, NewUpdateTextureRegion,remoteWidth * 4, (uint32)4,remoteBuffer);
+            remoteBrush.SetResourceObject(NewRenderTargetTexture);
+            remoteImage->SetBrush(remoteBrush);
+            FUpdateTextureRegion2D* TmpUpdateTextureRegion = remoteUpdateTextureRegion;
+            remoteRenderTargetTexture = NewRenderTargetTexture;
+            remoteUpdateTextureRegion = NewUpdateTextureRegion;
+            delete TmpUpdateTextureRegion;
+            return;
+        }
+        remoteRenderTargetTexture->UpdateTextureRegions(0, 1,remoteUpdateTextureRegion,remoteWidth * 4, (uint32)4,remoteBuffer);
+    }
+
 }
 void UBtnTRTCUserWidget::NativeConstruct() {
     Super::NativeConstruct();
@@ -144,13 +192,12 @@ void UBtnTRTCUserWidget::NativeConstruct() {
     btnLocalPreview->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStartLocalPreview_Click);
     btnStopPreview->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStopLocalPreview_Click);
     writeLblLog(version.c_str());
-    //TODO:
+    
+    // 本地视频画面
 	localWidth = 640;
 	localHeight = 368;
-
 	localRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight );
 	localRenderTargetTexture->UpdateResource();
-
 	localBufferSize= localWidth * localHeight * 4;
 	localBuffer = new uint8[localBufferSize];
 	for (uint32 i = 0; i < localWidth * localWidth; ++i)
@@ -162,9 +209,27 @@ void UBtnTRTCUserWidget::NativeConstruct() {
 	}
 	localUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, localWidth, localHeight);
 	localRenderTargetTexture->UpdateTextureRegions(0, 1, localUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
-
 	localBrush.SetResourceObject(localRenderTargetTexture);
 	localPreviewImage->SetBrush(localBrush);
+
+    // 远端视频画面
+    remoteWidth = 640;
+	remoteHeight = 368;
+	remoteRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth, remoteHeight);
+	remoteRenderTargetTexture->UpdateResource();
+	remoteBufferSize= remoteWidth * remoteHeight * 4;
+	remoteBuffer = new uint8[remoteBufferSize];
+	for (uint32 i = 0; i < remoteWidth * remoteHeight; ++i)
+	{
+		remoteBuffer[i * 4 + 0] = 0x32;
+		remoteBuffer[i * 4 + 1] = 0x32;
+		remoteBuffer[i * 4 + 2] = 0x32;
+		remoteBuffer[i * 4 + 3] = 0xFF;
+	}
+	remoteUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, remoteWidth, remoteHeight);
+	remoteRenderTargetTexture->UpdateTextureRegions(0, 1, remoteUpdateTextureRegion, remoteWidth * 4, (uint32)4,remoteBuffer);
+	remoteBrush.SetResourceObject(remoteRenderTargetTexture);
+	remoteImage->SetBrush(remoteBrush);
 }
 
 void UBtnTRTCUserWidget::NativeDestruct() {
@@ -177,6 +242,8 @@ void UBtnTRTCUserWidget::NativeDestruct() {
     }
     delete[] localBuffer;
 	delete localUpdateTextureRegion;
+    delete[] remoteBuffer;
+	delete remoteUpdateTextureRegion;
 }
 void UBtnTRTCUserWidget::writeLblLog(const char * logStr) {
     std::string stdStrLog(logStr);
@@ -221,7 +288,6 @@ void  UBtnTRTCUserWidget::onUserVideoAvailable(const char *userId, bool availabl
         pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_BGRA32,trtc::TRTCVideoBufferType_Buffer, this);
     }else{
         pTRTCCloud->muteRemoteVideoStream(userId, true);
-        
     }
 }
 void UBtnTRTCUserWidget::onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) {
