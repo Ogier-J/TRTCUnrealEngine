@@ -142,6 +142,7 @@ void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
         if (localRenderTargetTexture->GetSizeX() != localWidth ||
         localRenderTargetTexture->GetSizeY() != localHeight)
         {
+            UE_LOG(LogTemp, Warning, TEXT("localWidth=%d, localHeight=%d localRenderTargetTexture->GetSizeX()=%d , localRenderTargetTexture->GetSizeY()=%d"),localWidth,localHeight,localRenderTargetTexture->GetSizeX(),localRenderTargetTexture->GetSizeY());
             auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, localWidth, localHeight);
             // PF_R8G8B8A8
             // macos PF_B8G8R8A8 --> TRTCVideoPixelFormat_BGRA32 验证通过
@@ -164,6 +165,7 @@ void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
         if (remoteRenderTargetTexture->GetSizeX() != remoteWidth ||
         remoteRenderTargetTexture->GetSizeY() != remoteHeight)
         {
+            UE_LOG(LogTemp, Warning, TEXT("remoteWidth=%d, remoteHeight=%d  remoteRenderTargetTexture->GetSizeX()=%d , remoteRenderTargetTexture->GetSizeY()=%d"),remoteWidth,remoteHeight,remoteRenderTargetTexture->GetSizeX(),remoteRenderTargetTexture->GetSizeY());
             auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0,remoteWidth,remoteHeight);
             auto NewRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth,remoteHeight);
             NewRenderTargetTexture->UpdateResource();
@@ -212,7 +214,7 @@ void UBtnTRTCUserWidget::NativeConstruct() {
 
     // 远端视频画面
     remoteWidth = 640;
-	remoteHeight = 368;
+	remoteHeight = 480;
 	remoteRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth, remoteHeight);
 	remoteRenderTargetTexture->UpdateResource();
 	remoteBufferSize= remoteWidth * remoteHeight * 4;
