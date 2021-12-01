@@ -15,7 +15,7 @@ void UBtnTRTCUserWidget::handleTestButtonClick() {
 void UBtnTRTCUserWidget::OnStopLocalPreview_Click() {
     writeLblLog("start OnStopLocalPreview_Click");
     pTRTCCloud->stopLocalPreview();
-    ResetBuffer();
+    ResetBuffer(true);
 }
 void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     writeLblLog("start OnStartLocalPreview_Click");
@@ -50,22 +50,11 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     writeLblLog("end OnEnterRoom_Click roomid: 110");
 }
 
-void UBtnTRTCUserWidget::ResetBuffer()
-{
-	for (uint32 i = 0; i < Width * Height; ++i)
-	{
-		Buffer[i * 4 + 0] = 0x32;
-		Buffer[i * 4 + 1] = 0x32;
-		Buffer[i * 4 + 2] = 0x32;
-		Buffer[i * 4 + 3] = 0xFF;
-	}
-}
-
 void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *videoFrame) {
     int frameLength = videoFrame->length;
     if (localPreviewImage != nullptr && frameLength > 1) {
         // 获取到BGRA32 帧数据
-        UpdateBuffer(videoFrame->data,videoFrame->width,videoFrame->height,frameLength);
+        UpdateBuffer(videoFrame->data,videoFrame->width,videoFrame->height,frameLength,true);
     }
 }
 
@@ -73,51 +62,77 @@ void UBtnTRTCUserWidget::UpdateBuffer(
 	char* RGBBuffer,
 	uint32_t NewWidth,
 	uint32_t NewHeight,
-	uint32_t NewSize)
+	uint32_t NewSize,
+    bool isLocal)
 {
-	FScopeLock lock(&Mutex);
-	if (!RGBBuffer)
-	{
-		return;
-	}
-	if (BufferSize == NewSize)
-	{
-		std::copy(RGBBuffer, RGBBuffer + NewSize, Buffer);
-	}
+    if (isLocal)
+    {
+        FScopeLock lock(&localMutex);
+        if (!RGBBuffer)
+        {
+            return;
+        }
+        if (localBufferSize== NewSize)
+        {
+            std::copy(RGBBuffer, RGBBuffer + NewSize, localBuffer);
+        }
+        else
+        {
+            delete[] localBuffer;
+            localBufferSize= NewSize;
+            localWidth = NewWidth;
+            localHeight = NewHeight;
+            localBuffer = new uint8[localBufferSize];
+            std::copy(RGBBuffer, RGBBuffer + NewSize, localBuffer);
+        }
+    }
 	else
-	{
-		delete[] Buffer;
-		BufferSize = NewSize;
-		Width = NewWidth;
-		Height = NewHeight;
-		Buffer = new uint8[BufferSize];
-		std::copy(RGBBuffer, RGBBuffer + NewSize, Buffer);
-	}
+    {
+
+    }
+}
+
+void UBtnTRTCUserWidget::ResetBuffer(bool isLocal)
+{
+    if (isLocal)
+    {
+        for (uint32 i = 0; i < localWidth * localHeight; ++i)
+        {
+            localBuffer[i * 4 + 0] = 0x32;
+            localBuffer[i * 4 + 1] = 0x32;
+            localBuffer[i * 4 + 2] = 0x32;
+            localBuffer[i * 4 + 3] = 0xFF;
+        }
+    }
+    else
+    {
+
+    }
 }
 
 void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime) {
     Super::NativeTick(MyGeometry, DeltaTime);
-	FScopeLock lock(&Mutex);
-    if(Buffer == nullptr)
+	FScopeLock lock(&localMutex);
+    if(localBuffer == nullptr)
         return;
-    if (UpdateTextureRegion->Width != Width ||
-        UpdateTextureRegion->Height != Height)
+    if (localUpdateTextureRegion->Width != localWidth ||
+        localUpdateTextureRegion->Height != localHeight)
     {
-        auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, Width, Height);
+        auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, localWidth, localHeight);
         // PF_R8G8B8A8
         // macos PF_B8G8R8A8 --> TRTCVideoPixelFormat_BGRA32 验证通过
-        auto NewRenderTargetTexture = UTexture2D::CreateTransient(Width, Height);
+        auto NewRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight);
         NewRenderTargetTexture->UpdateResource();
-        NewRenderTargetTexture->UpdateTextureRegions(0, 1, NewUpdateTextureRegion, Width * 4, (uint32)4, Buffer);
-        Brush.SetResourceObject(NewRenderTargetTexture);
-        localPreviewImage->SetBrush(Brush);
-        FUpdateTextureRegion2D* TmpUpdateTextureRegion = UpdateTextureRegion;
-        RenderTargetTexture = NewRenderTargetTexture;
-        UpdateTextureRegion = NewUpdateTextureRegion;
+        NewRenderTargetTexture->UpdateTextureRegions(0, 1, NewUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
+        localBrush.SetResourceObject(NewRenderTargetTexture);
+        localPreviewImage->SetBrush(localBrush);
+        FUpdateTextureRegion2D* TmpUpdateTextureRegion = localUpdateTextureRegion;
+        localRenderTargetTexture = NewRenderTargetTexture;
+        localUpdateTextureRegion = NewUpdateTextureRegion;
         delete TmpUpdateTextureRegion;
         return;
     }
-    RenderTargetTexture->UpdateTextureRegions(0, 1, UpdateTextureRegion, Width * 4, (uint32)4, Buffer);
+    localRenderTargetTexture->UpdateTextureRegions(0, 1, localUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
 }
 void UBtnTRTCUserWidget::NativeConstruct() {
     Super::NativeConstruct();
@@ -130,26 +145,26 @@ void UBtnTRTCUserWidget::NativeConstruct() {
     btnStopPreview->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStopLocalPreview_Click);
     writeLblLog(version.c_str());
     //TODO:
-	Width = 640;
-	Height = 368;
+	localWidth = 640;
+	localHeight = 368;
 
-	RenderTargetTexture = UTexture2D::CreateTransient(Width, Height );
-	RenderTargetTexture->UpdateResource();
+	localRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight );
+	localRenderTargetTexture->UpdateResource();
 
-	BufferSize = Width * Height * 4;
-	Buffer = new uint8[BufferSize];
-	for (uint32 i = 0; i < Width * Height; ++i)
+	localBufferSize= localWidth * localHeight * 4;
+	localBuffer = new uint8[localBufferSize];
+	for (uint32 i = 0; i < localWidth * localWidth; ++i)
 	{
-		Buffer[i * 4 + 0] = 0x32;
-		Buffer[i * 4 + 1] = 0x32;
-		Buffer[i * 4 + 2] = 0x32;
-		Buffer[i * 4 + 3] = 0xFF;
+		localBuffer[i * 4 + 0] = 0x32;
+		localBuffer[i * 4 + 1] = 0x32;
+		localBuffer[i * 4 + 2] = 0x32;
+		localBuffer[i * 4 + 3] = 0xFF;
 	}
-	UpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, Width, Height);
-	RenderTargetTexture->UpdateTextureRegions(0, 1, UpdateTextureRegion, Width * 4, (uint32)4, Buffer);
+	localUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, localWidth, localHeight);
+	localRenderTargetTexture->UpdateTextureRegions(0, 1, localUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
 
-	Brush.SetResourceObject(RenderTargetTexture);
-	localPreviewImage->SetBrush(Brush);
+	localBrush.SetResourceObject(localRenderTargetTexture);
+	localPreviewImage->SetBrush(localBrush);
 }
 
 void UBtnTRTCUserWidget::NativeDestruct() {
@@ -159,8 +174,8 @@ void UBtnTRTCUserWidget::NativeDestruct() {
         pTRTCCloud->destroyTRTCShareInstance();
         pTRTCCloud = nullptr;
     }
-    delete[] Buffer;
-	delete UpdateTextureRegion;
+    delete[] localBuffer;
+	delete localUpdateTextureRegion;
 }
 void UBtnTRTCUserWidget::writeLblLog(const char * logStr) {
     std::string stdStrLog(logStr);
@@ -205,7 +220,7 @@ void  UBtnTRTCUserWidget::onUserVideoAvailable(const char *userId, bool availabl
         pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_BGRA32,trtc::TRTCVideoBufferType_Buffer, this);
     }else{
         pTRTCCloud->muteRemoteVideoStream(userId, true);
-        ResetBuffer();
+        
     }
 }
 void UBtnTRTCUserWidget::onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) {

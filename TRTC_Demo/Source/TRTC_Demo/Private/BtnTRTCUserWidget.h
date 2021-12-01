@@ -47,20 +47,6 @@ private:
     void writeLblLog(const char *log);
     void writeCallbackLog(const char *log);
     trtc::ITRTCCloud * pTRTCCloud;
-    
-public:
-    uint8* Buffer = nullptr;
-	uint32_t Width = 0;
-	uint32_t Height = 0;
-	uint32 BufferSize = 0;
-
-    void UpdateBuffer(
-		char* RGBBuffer,
-		uint32_t Width,
-		uint32_t Height,
-		uint32_t Size);
-
-	void ResetBuffer();
 
 public:
     UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
@@ -90,20 +76,37 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
         UButton* btnStopPreview = nullptr;
 
-    UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-        UImage* remoteImage= nullptr;
-
+    // 本地视频
     UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
         UImage* localPreviewImage = nullptr;
 
     UPROPERTY(EditDefaultsOnly)
-		UTexture2D* RenderTargetTexture = nullptr;
+		UTexture2D* localRenderTargetTexture = nullptr;
     
-    FUpdateTextureRegion2D* UpdateTextureRegion = nullptr;
+    FUpdateTextureRegion2D* localUpdateTextureRegion = nullptr;
 
-	FSlateBrush Brush;
+	FSlateBrush localBrush;
 
-	FCriticalSection Mutex;
+	FCriticalSection localMutex;
+
+    uint8* localBuffer = nullptr;
+	uint32_t localWidth = 0;
+	uint32_t localHeight = 0;
+	uint32 localBufferSize = 0;
+
+    // 远端用户345 视频
+    UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+        UImage* remoteImage= nullptr;
+
+    // 更新帧数据
+    void UpdateBuffer(
+		char* RGBBuffer,
+		uint32_t Width,
+		uint32_t Height,
+		uint32_t Size,
+        bool isLocal);
+        
+	void ResetBuffer(bool isLocal);
 
     void NativeTick(const FGeometry& MyGeometry, float DeltaTime) override;
     
