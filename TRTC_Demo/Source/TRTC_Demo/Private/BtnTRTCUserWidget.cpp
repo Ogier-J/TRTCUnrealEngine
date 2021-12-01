@@ -165,8 +165,6 @@ void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
         remoteUpdateTextureRegion->Height != remoteHeight)
         {
             auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0,remoteWidth,remoteHeight);
-            // PF_R8G8B8A8
-            // macos PF_B8G8R8A8 --> TRTCVideoPixelFormat_BGRA32 验证通过
             auto NewRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth,remoteHeight);
             NewRenderTargetTexture->UpdateResource();
             NewRenderTargetTexture->UpdateTextureRegions(0, 1, NewUpdateTextureRegion,remoteWidth * 4, (uint32)4,remoteBuffer);
@@ -196,11 +194,11 @@ void UBtnTRTCUserWidget::NativeConstruct() {
     // 本地视频画面
 	localWidth = 640;
 	localHeight = 368;
-	localRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight );
+	localRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight);
 	localRenderTargetTexture->UpdateResource();
 	localBufferSize= localWidth * localHeight * 4;
 	localBuffer = new uint8[localBufferSize];
-	for (uint32 i = 0; i < localWidth * localWidth; ++i)
+	for (uint32 i = 0; i < localWidth * localHeight; ++i)
 	{
 		localBuffer[i * 4 + 0] = 0x32;
 		localBuffer[i * 4 + 1] = 0x32;
@@ -249,9 +247,6 @@ void UBtnTRTCUserWidget::writeLblLog(const char * logStr) {
     std::string stdStrLog(logStr);
     FString log = stdStrLog.c_str();
     UE_LOG(LogTemp,Log,TEXT("==> %s"), *log);
-#if PLATFORM_IOS
-    //NSLog(@"--------");
-#endif
     if (txtLog != nullptr) {
         AsyncTask(ENamedThreads::GameThread, [=]() {
             txtLog->SetText(FText::FromString(log));

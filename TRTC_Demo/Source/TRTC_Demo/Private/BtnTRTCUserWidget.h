@@ -92,7 +92,7 @@ public:
 
     // 远端用户345 视频
     UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-        UImage* remoteImage= nullptr;
+        UImage* remoteImage = nullptr;
 
     UPROPERTY(EditDefaultsOnly)
 		UTexture2D* remoteRenderTargetTexture = nullptr;
