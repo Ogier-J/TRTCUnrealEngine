@@ -107,7 +107,7 @@ public class TRTC_Demo : ModuleRules
             PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "win64", "Release", "TRAE.dll"));
 
             ////PublicAdditionalLibraries.Add(Path.Combine(_BasePath, "win64", "Release","zlib.lib"));
-            RuntimeDependencies.Add("$(BinaryOutputDir)/liteave.dll", Path.Combine(_TRTCSDKPath, "win64", "Release", "liteav.dll"));
+            RuntimeDependencies.Add("$(BinaryOutputDir)/liteav.dll", Path.Combine(_TRTCSDKPath, "win64", "Release", "liteav.dll"));
             RuntimeDependencies.Add("$(BinaryOutputDir)/LiteAvAudioHook.dll", Path.Combine(_TRTCSDKPath, "win64", "Release", "LiteAvAudioHook.dll"));
             RuntimeDependencies.Add("$(BinaryOutputDir)/LiteAvAudioHookService.dll", Path.Combine(_TRTCSDKPath, "win64", "Release", "LiteAvAudioHookService.dll"));
             RuntimeDependencies.Add("$(BinaryOutputDir)/openh264.dll", Path.Combine(_TRTCSDKPath, "win64", "Release", "openh264.dll"));
