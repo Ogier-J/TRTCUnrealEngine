@@ -11,6 +11,7 @@
 
 void UBtnTRTCUserWidget::handleTestButtonClick() {
     writeLblLog("start handleTestButtonClick");
+    pTRTCCloud->startLocalAudio(trtc::TRTCAudioQualityDefault);
 }
 void UBtnTRTCUserWidget::OnStopLocalPreview_Click() {
     writeLblLog("start OnStopLocalPreview_Click");
