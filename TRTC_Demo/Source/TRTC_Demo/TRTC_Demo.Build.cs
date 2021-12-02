@@ -55,7 +55,7 @@ public class TRTC_Demo : ModuleRules
             // PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_TRTC",Path.Combine(_TRTCSDKPath, "iOS","TXLiteAVSDK_TRTC.framework.zip"), "", true));
             PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVSDK_TRTC",_TRTCSDKPath+"/ios/TXLiteAVSDK_TRTC.framework.zip", ""));
             
-            //PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVTestUserSig",_DebugPath+"/ios/TXLiteAVTestUserSig.framework.zip", ""));
+            PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVTestUserSig",_DebugPath+"/ios/TXLiteAVTestUserSig.framework.zip", ""));
         }else if(Target.Platform == UnrealTargetPlatform.Mac)
         {
             // 添加插件的包含路径
@@ -89,7 +89,6 @@ public class TRTC_Demo : ModuleRules
                     "Accelerate",
                 });
             PublicFrameworks.Add(Path.Combine(_TRTCSDKPath, "Mac", "Release","TXLiteAVSDK_TRTC_Mac.framework"));
-            // 暂时注释
             PublicFrameworks.Add(Path.Combine(_DebugPath, "Mac", "Release","TXLiteAVTestUserSig.framework"));
             
         }else if (Target.Platform == UnrealTargetPlatform.Win64)
