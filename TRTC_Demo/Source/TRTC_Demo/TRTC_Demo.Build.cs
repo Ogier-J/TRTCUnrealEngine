@@ -11,11 +11,11 @@ public class TRTC_Demo : ModuleRules
             return Path.GetFullPath(Path.Combine(ModuleDirectory, "TRTCSDK"));
         }
     }
-    private string _BasePath
+    private string _DebugPath
     {
         get
         {
-            return Path.GetFullPath(Path.Combine(ModuleDirectory, "base"));
+            return Path.GetFullPath(Path.Combine(ModuleDirectory, "debug"));
         }
     }
 	public TRTC_Demo(ReadOnlyTargetRules Target) : base(Target)
@@ -35,7 +35,7 @@ public class TRTC_Demo : ModuleRules
         {
             // 添加插件的包含路径
             PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/iOS"));
-            PublicIncludePaths.Add(Path.Combine(_BasePath, "include"));
+            PublicIncludePaths.Add(Path.Combine(_DebugPath, "include"));
             PublicAdditionalLibraries.AddRange(new string[] {
                 "resolv",
                 "z",
@@ -55,12 +55,12 @@ public class TRTC_Demo : ModuleRules
             // PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_TRTC",Path.Combine(_TRTCSDKPath, "iOS","TXLiteAVSDK_TRTC.framework.zip"), "", true));
             PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVSDK_TRTC",_TRTCSDKPath+"/ios/TXLiteAVSDK_TRTC.framework.zip", ""));
             
-            //PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVTestUserSig",_BasePath+"/ios/TXLiteAVTestUserSig.framework.zip", ""));
+            //PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVTestUserSig",_DebugPath+"/ios/TXLiteAVTestUserSig.framework.zip", ""));
         }else if(Target.Platform == UnrealTargetPlatform.Mac)
         {
             // 添加插件的包含路径
             PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/Mac"));
-            PublicIncludePaths.Add(Path.Combine(_BasePath, "include"));
+            PublicIncludePaths.Add(Path.Combine(_DebugPath, "include"));
             PublicAdditionalLibraries.AddRange(new string[] {
                 "resolv",
                 "z",
@@ -90,11 +90,11 @@ public class TRTC_Demo : ModuleRules
                 });
             PublicFrameworks.Add(Path.Combine(_TRTCSDKPath, "Mac", "Release","TXLiteAVSDK_TRTC_Mac.framework"));
             // 暂时注释
-            PublicFrameworks.Add(Path.Combine(_BasePath, "Mac", "Release","TXLiteAVTestUserSig.framework"));
+            PublicFrameworks.Add(Path.Combine(_DebugPath, "Mac", "Release","TXLiteAVTestUserSig.framework"));
             
         }else if (Target.Platform == UnrealTargetPlatform.Win64)
         {
-	        PublicIncludePaths.Add(Path.Combine(_BasePath, "include"));
+	        PublicIncludePaths.Add(Path.Combine(_DebugPath, "include"));
             PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/win64"));
             // Add the import library
             PublicAdditionalLibraries.Add(Path.Combine(_TRTCSDKPath, "win64", "Release","liteav.lib"));
@@ -106,7 +106,7 @@ public class TRTC_Demo : ModuleRules
             PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "win64", "Release", "openh264.dll"));
             PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "win64", "Release", "TRAE.dll"));
 
-            ////PublicAdditionalLibraries.Add(Path.Combine(_BasePath, "win64", "Release","zlib.lib"));
+            ////PublicAdditionalLibraries.Add(Path.Combine(_DebugPath, "win64", "Release","zlib.lib"));
             RuntimeDependencies.Add("$(BinaryOutputDir)/liteav.dll", Path.Combine(_TRTCSDKPath, "win64", "Release", "liteav.dll"));
             RuntimeDependencies.Add("$(BinaryOutputDir)/LiteAvAudioHook.dll", Path.Combine(_TRTCSDKPath, "win64", "Release", "LiteAvAudioHook.dll"));
             RuntimeDependencies.Add("$(BinaryOutputDir)/LiteAvAudioHookService.dll", Path.Combine(_TRTCSDKPath, "win64", "Release", "LiteAvAudioHookService.dll"));
