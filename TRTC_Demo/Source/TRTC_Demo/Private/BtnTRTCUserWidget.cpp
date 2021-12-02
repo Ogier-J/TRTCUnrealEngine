@@ -76,6 +76,8 @@ void UBtnTRTCUserWidget::UpdateBuffer(
         }
         if (localBufferSize== NewSize)
         {
+            localWidth = NewWidth;
+            localHeight = NewHeight;
             std::copy(RGBBuffer, RGBBuffer + NewSize, localBuffer);
         }
         else
@@ -97,6 +99,8 @@ void UBtnTRTCUserWidget::UpdateBuffer(
         }
         if (remoteBufferSize== NewSize)
         {
+            remoteWidth = NewWidth;
+            remoteHeight = NewHeight;
             std::copy(RGBBuffer, RGBBuffer + NewSize, remoteBuffer);
         }
         else
