@@ -88,6 +88,7 @@ public:
     uint8* localBuffer = nullptr;
 	uint32_t localWidth = 0;
 	uint32_t localHeight = 0;
+    bool localRefresh = false;
 	uint32 localBufferSize = 0;
 
     // 远端用户345 视频
@@ -102,6 +103,7 @@ public:
     uint8* remoteBuffer = nullptr;
 	uint32_t remoteWidth = 0;
 	uint32_t remoteHeight = 0;
+    bool remoteRefresh = false;
 	uint32 remoteBufferSize = 0;
 
     // 更新帧数据

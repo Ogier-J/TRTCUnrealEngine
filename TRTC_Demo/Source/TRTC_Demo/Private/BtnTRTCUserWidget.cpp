@@ -89,6 +89,7 @@ void UBtnTRTCUserWidget::UpdateBuffer(
             localBuffer = new uint8[localBufferSize];
             std::copy(RGBBuffer, RGBBuffer + NewSize, localBuffer);
         }
+        localRefresh = true;
     }
 	else
     {
@@ -112,6 +113,7 @@ void UBtnTRTCUserWidget::UpdateBuffer(
             remoteBuffer = new uint8[remoteBufferSize];
             std::copy(RGBBuffer, RGBBuffer + NewSize, remoteBuffer);
         }
+        remoteRefresh = true;
     }
 }
 
@@ -126,6 +128,8 @@ void UBtnTRTCUserWidget::ResetBuffer(bool isLocal)
             localBuffer[i * 4 + 2] = 0x32;
             localBuffer[i * 4 + 3] = 0xFF;
         }
+        FPlatformProcess::Sleep(0.3f);
+        localRefresh = false;
     }
     else
     {
@@ -136,18 +140,21 @@ void UBtnTRTCUserWidget::ResetBuffer(bool isLocal)
             remoteBuffer[i * 4 + 2] = 0x32;
             remoteBuffer[i * 4 + 3] = 0xFF;
         }
+        FPlatformProcess::Sleep(0.3f);
+        remoteRefresh = false;
     }
 }
 
 void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime) {
     Super::NativeTick(MyGeometry, DeltaTime);
     // 更新本地视频画面
-    if(localRenderTargetTexture && localBuffer && localPreviewImage) {
+    if(localRefresh && localRenderTargetTexture && localBuffer && localPreviewImage && localBufferSize > 4) {
         FScopeLock lock(&localMutex);
         if (localRenderTargetTexture->GetSizeX() != localWidth ||
         localRenderTargetTexture->GetSizeY() != localHeight)
         {
-            UE_LOG(LogTemp, Warning, TEXT("localWidth=%d, localHeight=%d localRenderTargetTexture->GetSizeX =%d , localRenderTargetTexture->GetSizeY =%d"),localWidth,localHeight,localRenderTargetTexture->GetSizeX(),localRenderTargetTexture->GetSizeY());
+            UE_LOG(LogTemp, Warning, TEXT("localBufferSize=%d ,localWidth=%d, localHeight=%d localRenderTargetTexture->GetSizeX =%d , localRenderTargetTexture->GetSizeY =%d"),
+            localBufferSize,localWidth,localHeight,localRenderTargetTexture->GetSizeX(),localRenderTargetTexture->GetSizeY());
             auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, localWidth, localHeight);
             // PF_R8G8B8A8
             // macos PF_B8G8R8A8 --> TRTCVideoPixelFormat_BGRA32 验证通过
@@ -165,12 +172,13 @@ void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
         localRenderTargetTexture->UpdateTextureRegions(0, 1, localUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
     }
     // 更新远端用户画面
-    if(remoteRenderTargetTexture && remoteBuffer && remoteImage) {
+    if(remoteRefresh && remoteRenderTargetTexture && remoteBuffer && remoteImage && remoteBufferSize > 4) {
         FScopeLock lock(&remoteMutex);
         if (remoteRenderTargetTexture->GetSizeX() != remoteWidth ||
         remoteRenderTargetTexture->GetSizeY() != remoteHeight)
         {
-            UE_LOG(LogTemp, Warning, TEXT("remoteWidth=%d, remoteHeight=%d  remoteRenderTargetTexture->GetSizeX =%d , remoteRenderTargetTexture->GetSizeY =%d"),remoteWidth,remoteHeight,remoteRenderTargetTexture->GetSizeX(),remoteRenderTargetTexture->GetSizeY());
+            UE_LOG(LogTemp, Warning, TEXT("remoteBufferSize=%d, remoteWidth=%d, remoteHeight=%d  remoteRenderTargetTexture->GetSizeX =%d , remoteRenderTargetTexture->GetSizeY =%d" ),
+            remoteBufferSize,remoteWidth,remoteHeight,remoteRenderTargetTexture->GetSizeX(),remoteRenderTargetTexture->GetSizeY());
             auto NewRMUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0,remoteWidth,remoteHeight);
             auto NewRMRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth,remoteHeight);
             NewRMRenderTargetTexture->UpdateResource();
@@ -290,6 +298,7 @@ void  UBtnTRTCUserWidget::onUserVideoAvailable(const char *userId, bool availabl
         pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_BGRA32,trtc::TRTCVideoBufferType_Buffer, this);
     }else{
         pTRTCCloud->muteRemoteVideoStream(userId, true);
+        ResetBuffer(false);
     }
 }
 void UBtnTRTCUserWidget::onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) {
