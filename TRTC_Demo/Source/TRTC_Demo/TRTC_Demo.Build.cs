@@ -54,8 +54,9 @@ public class TRTC_Demo : ModuleRules
             );
             // PublicAdditionalFrameworks.Add(new Framework( "TXLiteAVSDK_TRTC",Path.Combine(_TRTCSDKPath, "iOS","TXLiteAVSDK_TRTC.framework.zip"), "", true));
             PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVSDK_TRTC",_TRTCSDKPath+"/ios/TXLiteAVSDK_TRTC.framework.zip", ""));
-            
-            PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVTestUserSig",_DebugPath+"/ios/TXLiteAVTestUserSig.framework.zip", ""));
+            PublicAdditionalLibraries.Add(Path.Combine(_DebugPath, "ios", "libTXLiteAVTestUserSig.a"));
+
+            //PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVTestUserSig",_DebugPath+"/ios/TXLiteAVTestUserSig.framework.zip", ""));
         }else if(Target.Platform == UnrealTargetPlatform.Mac)
         {
             // 添加插件的包含路径
