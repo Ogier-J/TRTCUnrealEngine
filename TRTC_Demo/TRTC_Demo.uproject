@@ -17,10 +17,6 @@
 		{
 			"Name": "TRTC_SDK",
 			"Enabled": false
-		},
-		{
-			"Name": "TencentPlugin",
-			"Enabled": false
 		}
 	],
 	"TargetPlatforms": [
