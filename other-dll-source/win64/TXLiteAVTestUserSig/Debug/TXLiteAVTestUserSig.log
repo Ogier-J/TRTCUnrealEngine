@@ -1,0 +1,62 @@
+﻿  pch.cpp
+  dllmain.cpp
+  GenerateTestUserSig.cpp
+  adler32.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\adler32.c(59,1): warning C4005: “MOD”: 宏重定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\adler32.c(44): message : 参见“MOD”的前一个定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\adler32.c(60,1): warning C4005: “MOD28”: 宏重定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\adler32.c(39): message : 参见“MOD28”的前一个定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\adler32.c(61,1): warning C4005: “MOD63”: 宏重定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\adler32.c(57): message : 参见“MOD63”的前一个定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\adler32.c(180,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  compress.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\compress.c(81,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  crc32.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\crc32.c(46,1): warning C4005: “TBLS”: 宏重定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\crc32.c(44): message : 参见“TBLS”的前一个定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\crc32.c(426,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  deflate.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\deflate.c(189,1): warning C4005: “INSERT_STRING”: 宏重定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\deflate.c(184): message : 参见“INSERT_STRING”的前一个定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\deflate.c(1966,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  gzclose.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\gzclose.c(26,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  gzlib.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\gzlib.c(17,1): warning C4005: “LSEEK”: 宏重定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\gzlib.c(14): message : 参见“LSEEK”的前一个定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\gzlib.c(19,1): warning C4005: “LSEEK”: 宏重定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\gzlib.c(17): message : 参见“LSEEK”的前一个定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\gzlib.c(626,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  gzread.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\gzread.c(595,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  gzwrite.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\gzwrite.c(571,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  infback.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\infback.c(641,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  inffast.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\inffast.c(28,1): warning C4005: “OFF”: 宏重定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\inffast.c(25): message : 参见“OFF”的前一个定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\inffast.c(29,1): warning C4005: “PUP”: 宏重定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\inffast.c(26): message : 参见“PUP”的前一个定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\inffast.c(341,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  inflate.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\inflate.c(435,1): warning C4005: “UPDATE”: 宏重定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\inflate.c(433): message : 参见“UPDATE”的前一个定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\inflate.c(1497,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  inftrees.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\inftrees.c(307,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  ioapi.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\ioapi.c(178,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  trees.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\trees.c(169,1): warning C4005: “send_code”: 宏重定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\trees.c(163): message : 参见“send_code”的前一个定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\trees.c(1225,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  uncompr.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\uncompr.c(60,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  zip.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\zip.c(79,1): warning C4005: “DEF_MEM_LEVEL”: 宏重定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\zip.c(77): message : 参见“DEF_MEM_LEVEL”的前一个定义
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\zip.c(1220,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  zutil.c
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\TXLiteAVTestUserSig\zlib\zutil.c(325,1): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "pch.h"”?
+  正在生成代码...
