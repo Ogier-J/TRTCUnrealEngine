@@ -1,0 +1,22 @@
+﻿  pch.cpp
+  GenerateTestUserSig.cpp
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\LIB\TXLiteAVTestUserSig\GenerateTestUserSig.cpp(194,10): warning C4267: “参数”: 从“size_t”转换到“ULONG”，可能丢失数据
+D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\LIB\TXLiteAVTestUserSig\GenerateTestUserSig.cpp(206,10): warning C4267: “参数”: 从“size_t”转换到“ULONG”，可能丢失数据
+  adler32.c
+  compress.c
+  crc32.c
+  deflate.c
+  gzclose.c
+  gzlib.c
+  gzread.c
+  gzwrite.c
+  infback.c
+  inffast.c
+  inflate.c
+  inftrees.c
+  ioapi.c
+  trees.c
+  uncompr.c
+  zip.c
+  zutil.c
+  TXLiteAVTestUserSig.vcxproj -> D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\LIB\TXLiteAVTestUserSig\x64\Release\TXLiteAVTestUserSig.lib

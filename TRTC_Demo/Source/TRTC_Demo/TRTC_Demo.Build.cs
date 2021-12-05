@@ -96,6 +96,7 @@ public class TRTC_Demo : ModuleRules
         {
 	        PublicIncludePaths.Add(Path.Combine(_DebugPath, "include"));
             PublicFrameworks.Add(Path.Combine(_DebugPath, "win64", "Release","TXLiteAVTestUserSig.dll"));
+            PublicAdditionalLibraries.Add(Path.Combine(_DebugPath, "win64", "Release","TXLiteAVTestUserSig.lib"));
             RuntimeDependencies.Add("$(BinaryOutputDir)/TXLiteAVTestUserSig.dll", Path.Combine(_DebugPath, "win64", "Release", "TXLiteAVTestUserSig.dll"));
 
             PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/win64"));
