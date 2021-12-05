@@ -95,6 +95,9 @@ public class TRTC_Demo : ModuleRules
         }else if (Target.Platform == UnrealTargetPlatform.Win64)
         {
 	        PublicIncludePaths.Add(Path.Combine(_DebugPath, "include"));
+            PublicFrameworks.Add(Path.Combine(_DebugPath, "win64", "Release","TXLiteAVTestUserSig.dll"));
+            RuntimeDependencies.Add("$(BinaryOutputDir)/TXLiteAVTestUserSig.dll", Path.Combine(_DebugPath, "win64", "Release", "TXLiteAVTestUserSig.dll"));
+
             PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/win64"));
             // Add the import library
             PublicAdditionalLibraries.Add(Path.Combine(_TRTCSDKPath, "win64", "Release","liteav.lib"));

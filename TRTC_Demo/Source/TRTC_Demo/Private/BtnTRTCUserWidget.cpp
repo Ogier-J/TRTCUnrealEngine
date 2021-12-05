@@ -39,7 +39,7 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     params.userId = testUserId;
     params.roomId =  110;
     // 暂时只支持macos。
-#if PLATFORM_MAC || PLATFORM_IOS
+#if PLATFORM_MAC || PLATFORM_IOS || PLATFORM_WINDOWS
    params.sdkAppId = SDKAppID;
    params.userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
 #else
