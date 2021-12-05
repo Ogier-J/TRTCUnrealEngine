@@ -13,8 +13,6 @@
 #include "IDeprecatedTRTCCloud.h"
 #include "TXLiteAVBase.h"
 #endif
-// 这段是为ue4 打包的时候不报错。
-//#define __APPLE__ 0
 /// @defgroup TRTCCloud_cplusplus TRTCCloud
 /// 腾讯云 TRTC 主功能接口
 /// @{
@@ -38,7 +36,7 @@ class ITRTCCloud;
 extern "C" {
 /// @name Exported C function
 /// @{
-#ifdef __ANDROID__
+#if PLATFORM_ANDROID
 TRTC_API liteav::ITRTCCloud* getTRTCShareInstance(void* context);
 #else
 TRTC_API liteav::ITRTCCloud* getTRTCShareInstance();
@@ -75,7 +73,7 @@ class ITRTCCloud
  * 2. 在 Windows、Mac 和 iOS 平台上，请调用 getTRTCShareInstance() 接口。
  * 3. 在 Android 平台上，请调用 getTRTCShareInstance(void *context) 接口。
  */
-#ifdef __ANDROID__
+#if PLATFORM_ANDROID
     TRTC_API static liteav::ITRTCCloud* getTRTCShareInstance(void* context);
 #else
     TRTC_API static liteav::ITRTCCloud* getTRTCShareInstance();
@@ -295,7 +293,7 @@ class ITRTCCloud
  * - 通过 createSubCloud 接口创建出来的 TRTCCloud 实例有一个能力限制：不能调用子实例中与本地音视频相关的接口（除 switchRole、muteLocalVideo 和 muteLocalAudio 之外）， 设置美颜等接口请使用原 TRTCCloud 实例对象。
  * @return 子 TRTCCloud 实例
  */
-#if _WIN32 || __APPLE__
+#if _WIN32 || defined(PLATFORM_MAC)
     virtual ITRTCCloud* createSubCloud() = 0;
 #endif
 
@@ -304,7 +302,7 @@ class ITRTCCloud
  *
  * @param subCloud
  */
-#if _WIN32 || __APPLE__
+#if _WIN32 || defined(PLATFORM_MAC)
     virtual void destroySubCloud(ITRTCCloud* subCloud) = 0;
 #endif
 
@@ -603,7 +601,7 @@ class ITRTCCloud
  * @param sourceType 画面来源，可选择截取视频流画面（{@link TRTCSnapshotSourceTypeStream}）或视频渲染画面（{@link TRTCSnapshotSourceTypeView}），前者一般更清晰。
  * @note Windows 平台目前仅支持截取 {@link TRTCSnapshotSourceTypeStream} 来源的视频画面。
  */
-#if _WIN32 || __APPLE__
+#if _WIN32 || defined(PLATFORM_MAC)
     virtual void snapshotVideo(const char* userId, TRTCVideoStreamType streamType, TRTCSnapshotSourceType sourceType) = 0;
 #endif
 
@@ -1493,7 +1491,7 @@ class ITRTCCloud
  *
  * @deprecated v9.2 版本开始不推荐使用，建议使用 startSpeedTest(params) 接口替代之。
  */
-#ifdef __APPLE__
+#if PLATFORM_MAC
     virtual void startSpeedTest(uint32_t sdkAppId, const char* userId, const char* userSig) __attribute__((deprecated("use startSpeedTest:params instead"))) = 0;
 #elif !defined(_WIN32)
     virtual void startSpeedTest(uint32_t sdkAppId, const char* userId, const char* userSig) = 0;
@@ -1511,9 +1509,6 @@ class ITRTCCloud
     using IDeprecatedTRTCCloud::startSpeedTest;
     using IDeprecatedTRTCCloud::stopRemoteView;
 #endif
-    /// @}
 };
-}  // namespace liteav
-/// @}
-
-#endif /* __ITRTCCLOUD_H__ */
+}
+#endif

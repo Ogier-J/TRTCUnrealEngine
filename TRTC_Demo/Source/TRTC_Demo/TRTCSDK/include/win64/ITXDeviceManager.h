@@ -10,7 +10,7 @@
 #define __ITXDEVICEMANAGER_H__
 
 #include <stdint.h>
-#ifdef __APPLE__
+#if PLATFORM_MAC
 #include <TargetConditionals.h>
 #endif
 
@@ -216,7 +216,7 @@ class ITXDeviceCollection {
 };
 /// @}
 
-#if (__APPLE__ && TARGET_OS_MAC && !TARGET_OS_IPHONE) || _WIN32
+#if (defined(PLATFORM_MAC) && defined(TARGET_OS_MAC) && !defined(TARGET_OS_IPHONE)) || _WIN32
 class ITXDeviceObserver {
    public:
     virtual ~ITXDeviceObserver() {
@@ -256,7 +256,7 @@ class ITXDeviceManager {
 /**
  * 1.1 判断当前是否为前置摄像头（仅适用于移动端）
  */
-#if __ANDROID__ || (__APPLE__ && TARGET_OS_IOS)
+#if defined(PLATFORM_ANDROID) || (defined(PLATFORM_MAC) && TARGET_OS_IOS)
     virtual bool isFrontCamera() = 0;
 
     /**
@@ -340,7 +340,7 @@ class ITXDeviceManager {
  *   - type 只支持 TXMediaDeviceTypeMic、TXMediaDeviceTypeSpeaker、TXMediaDeviceTypeCamera。
  *   - 此接口只支持 Mac 和 Windows 平台
  */
-#if (__APPLE__ && TARGET_OS_MAC && !TARGET_OS_IPHONE) || _WIN32
+#if (defined(PLATFORM_MAC) && defined(TARGET_OS_MAC) && !defined(TARGET_OS_IPHONE)) || _WIN32
     virtual ITXDeviceCollection* getDevicesList(TXMediaDeviceType type) = 0;
 
     /**
@@ -474,7 +474,7 @@ class ITXDeviceManager {
 /**
  * 2.20 设置 onDeviceChanged 事件回调
  */
-#if (__APPLE__ && TARGET_OS_MAC && !TARGET_OS_IPHONE) || _WIN32
+#if (defined(PLATFORM_MAC) && defined(TARGET_OS_MAC) && !defined(TARGET_OS_IPHONE)) || _WIN32
     virtual void setDeviceObserver(ITXDeviceObserver* observer) = 0;
 #endif
 

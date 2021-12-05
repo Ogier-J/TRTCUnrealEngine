@@ -16,24 +16,32 @@
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
+// https://blog.csdn.net/SUKHOI27SMK/article/details/105112734
+#include "Windows/AllowWindowsPlatformTypes.h"
+#include "Windows/PreWindowsApi.h"
+
 #include <windows.h>
+
+#include "Windows/PostWindowsApi.h"
+#include "Windows/HideWindowsPlatformTypes.h"
+
 #ifdef TRTC_EXPORTS
 #define TRTC_API __declspec(dllexport)
 #else
 #define TRTC_API __declspec(dllimport)
 #endif
-#elif __APPLE__
+#elif defined(PLATFORM_MAC)
 #include <TargetConditionals.h>
 #define TRTC_API __attribute__((visibility("default")))
-#elif __ANDROID__
+#elif defined(PLATFORM_ANDROID)
 #define TRTC_API __attribute__((visibility("default")))
 #else
 #define TRTC_API
 #endif
 
-#define TARGET_PLATFORM_DESKTOP ((__APPLE__ && TARGET_OS_MAC && !TARGET_OS_IPHONE) || _WIN32)
-#define TARGET_PLATFORM_PHONE (__ANDROID__ || (__APPLE__ && TARGET_OS_IOS))
-#define TARGET_PLATFORM_MAC (__APPLE__ && TARGET_OS_MAC && !TARGET_OS_IPHONE)
+#define TARGET_PLATFORM_DESKTOP ((PLATFORM_MAC && TARGET_OS_MAC && !TARGET_OS_IPHONE) || _WIN32)
+#define TARGET_PLATFORM_PHONE (PLATFORM_ANDROID || (PLATFORM_MAC && TARGET_OS_IOS))
+#define TARGET_PLATFORM_MAC (PLATFORM_MAC && TARGET_OS_MAC && !TARGET_OS_IPHONE)
 
 namespace liteav {
 

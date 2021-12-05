@@ -806,7 +806,7 @@ class ITRTCCloudCallback {
 #ifdef _WIN32
     virtual __declspec(deprecated("use onSpeedTestResult instead")) void onSpeedTest(const TRTCSpeedTestResult& currentResult, uint32_t finishedCount, uint32_t totalCount) {
     }
-#elif defined(__APPLE__)
+#elif defined(PLATFORM_MAC)
     virtual void onSpeedTest(const TRTCSpeedTestResult& currentResult, uint32_t finishedCount, uint32_t totalCount) {
     }
     __attribute__((deprecated("use onSpeedTestResult instead")));
