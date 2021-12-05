@@ -1,4 +1,0 @@
-framework module TXLiteAVTestUserSig {
-    umbrella header "GenerateTestUserSig.h"
-    export *
-}
