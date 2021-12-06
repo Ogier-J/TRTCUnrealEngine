@@ -57,3 +57,4 @@ TRTC_Demo/Plugins/TencentPlugin/DerivedDataCache/*
 TRTC_Demo/Plugins/TencentPlugin/Android_DXT/*
 TRTC_Demo/Plugins/TencentPlugin/MacNoEditor/*
 TRTC_Demo/Source/TRTC_Demo/base/include/Defs.h
+TRTC_Demo/Source/TRTC_Demo/debug/include/DebugDefs.h
