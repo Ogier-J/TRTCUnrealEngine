@@ -1,18 +1,13 @@
-
-## macos UE4Editor.app
-<key>NSCameraUsageDescription</key>
-<string>授权摄像头权限才能正常视频通话</string>
-<key>NSMicrophoneUsageDescription</key>
-<string>授权麦克风权限才能正常语音通话</string>
-
-## macos 
-<key>NSCameraUsageDescription</key>
-<string>授权摄像头权限才能正常视频通话</string>
-<key>NSMicrophoneUsageDescription</key>
-<string>授权麦克风权限才能正常语音通话</string>
-
-## ios
-<key>NSCameraUsageDescription</key>
-<string>授权摄像头权限才能正常视频通话</string>
-<key>NSMicrophoneUsageDescription</key>
-<string>授权麦克风权限才能正常语音通话</string>
+# TRTC Unreal 工程说明
+├── README.md
+├── TRTC_Demo            
+│   ├── Config           // TRTC Demo配置文件
+│   ├── Content          // TRTC Demo UE4 Blueprints
+│   ├── README.md
+│   ├── Source           // TRTC SDK & TRTC Demo文件
+│   ├── 快速集成(Unreal).md
+│   └── 跑通Demo(Unreal).md
+└── other-dll-source      // 各个平台生成userSig的工程。
+    ├── ios
+    ├── macos
+    └── win64
