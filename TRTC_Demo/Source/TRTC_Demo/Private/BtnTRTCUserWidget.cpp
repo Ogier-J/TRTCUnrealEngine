@@ -17,6 +17,7 @@ void UBtnTRTCUserWidget::OnStopLocalPreview_Click() {
     writeLblLog("start OnStopLocalPreview_Click");
     pTRTCCloud->stopLocalPreview();
     ResetBuffer(true);
+    localRenderTargetTexture->UpdateTextureRegions(0, 1, localUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
 }
 void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     writeLblLog("start OnStartLocalPreview_Click");
@@ -128,7 +129,6 @@ void UBtnTRTCUserWidget::ResetBuffer(bool isLocal)
             localBuffer[i * 4 + 2] = 0x32;
             localBuffer[i * 4 + 3] = 0xFF;
         }
-        FPlatformProcess::Sleep(0.3f);
         localRefresh = false;
     }
     else
@@ -140,7 +140,6 @@ void UBtnTRTCUserWidget::ResetBuffer(bool isLocal)
             remoteBuffer[i * 4 + 2] = 0x32;
             remoteBuffer[i * 4 + 3] = 0xFF;
         }
-        FPlatformProcess::Sleep(0.3f);
         remoteRefresh = false;
     }
 }
@@ -299,6 +298,7 @@ void  UBtnTRTCUserWidget::onUserVideoAvailable(const char *userId, bool availabl
     }else{
         pTRTCCloud->muteRemoteVideoStream(userId, true);
         ResetBuffer(false);
+        remoteRenderTargetTexture->UpdateTextureRegions(0, 1, remoteUpdateTextureRegion, remoteWidth * 4, (uint32)4,remoteBuffer);
     }
 }
 void UBtnTRTCUserWidget::onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) {
