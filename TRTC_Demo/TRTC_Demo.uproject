@@ -22,11 +22,5 @@
 			"Name": "TencentPlugin",
 			"Enabled": false
 		}
-	],
-	"TargetPlatforms": [
-		"IOS",
-		"MacNoEditor",
-		"Android",
-		"WindowsNoEditor"
 	]
 }
