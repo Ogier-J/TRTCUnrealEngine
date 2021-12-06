@@ -108,8 +108,6 @@ public class TRTC_Demo : ModuleRules
             RuntimeDependencies.Add("$(BinaryOutputDir)/TRAE.dll", Path.Combine(_TRTCSDKPath, "win64", "Release", "TRAE.dll"));
         }
     }
-
-
 	public TRTC_Demo(ReadOnlyTargetRules Target) : base(Target)
 	{
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
