@@ -93,6 +93,11 @@ Privacy - Microphone Usage Description
 :::
 
 </dx-tabs>
+## Demo运行
+Demo 里面提供了一对一视频通话的实现，可以测试和作为调用参考，API 文档参见 [C++ 全平台 API](https://cloud.tencent.com/document/product/647/32268)。
+>? UI 可能会有部分调整更新，请以最新版为准。
+
+![](https://imgcache.qq.com/operation/dianshi/other/demo.8c159a7021aba2a1946db19010091752e4027536.png)
 
 ## 常见问题
 ### 如何查看 TRTC 日志？
