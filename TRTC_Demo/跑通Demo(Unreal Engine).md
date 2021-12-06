@@ -32,7 +32,7 @@
 
 [](id:step2)
 ### 步骤2：下载 SDK 和 Demo 源码
-1. 根据实际业务需求下载 SDK 及配套的 [Demo 源码]()(暂时加入群号：764231117 获取)。
+1. 根据实际业务需求下载 SDK 及配套的 [Demo 源码](https://comm.qq.com/sdk/trtc/UE4/TRTC_Demo.zip)（有疑问可加入QQ群号：764231117 咨询）。
 2. 下载完成后，单击【已下载，下一步】。
 ![](https://main.qcloudimg.com/raw/a4f5a2ac1f49d67b4c6968d8b22cdeb0.png)
 
