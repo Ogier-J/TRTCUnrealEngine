@@ -4,24 +4,24 @@ using UnrealBuildTool;
 
 public class TencentPlugin : ModuleRules
 {
-	private string _TRTCSDKPath
-	{
-			get
-			{
-					return Path.GetFullPath(Path.Combine(ModuleDirectory, "TRTCSDK"));
-			}
-	}
-	// private string _DebugPath
-	// {
-	// 		get
-	// 		{
-	// 				return Path.GetFullPath(Path.Combine(ModuleDirectory, "debug"));
-	// 		}
-	// }
 	public TencentPlugin(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-		
+		// if (Target.Platform == UnrealTargetPlatform.Android)
+		// {
+				
+		// }else if (Target.Platform == UnrealTargetPlatform.IOS)
+		// {
+		// 	PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "include/iOS"));
+		// }
+		// else if(Target.Platform == UnrealTargetPlatform.Mac)
+		// {
+		// 	PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "include/Mac"));
+		// }
+		// else if (Target.Platform == UnrealTargetPlatform.Win64)
+		// {
+		// 	PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "include/win64"));
+		// }
 		PublicIncludePaths.AddRange(
 			new string[] {}
 		);
@@ -43,6 +43,6 @@ public class TencentPlugin : ModuleRules
 		DynamicallyLoadedModuleNames.AddRange(
 			new string[]{}
 		);
-
+		
 	}
 }

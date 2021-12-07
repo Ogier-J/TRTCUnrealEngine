@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "TencentPlugin.h"
+#include "Core.h"
+#include "ITRTCCloud.h"
 
 #define LOCTEXT_NAMESPACE "FTencentPluginModule"
 

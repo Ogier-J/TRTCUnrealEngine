@@ -85,6 +85,7 @@ public class TRTCSDK : ModuleRules
 	public TRTCSDK(ReadOnlyTargetRules Target) : base(Target)
 	{
 		Type = ModuleType.External;
+    loadTRTCSDK(Target);
   }
 
 }
