@@ -32,6 +32,8 @@ void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     writeLblLog("end OnStartLocalPreview_Click");
 }
 void UBtnTRTCUserWidget::OnEnterRoom_Click() {
+    // 请务必加上
+    pTRTCCloud->callExperimentalAPI("{\"api\": \"setFramework\", \"params\": {\"framework\": 9}}");
     writeLblLog("start OnEnterRoom_Click roomid: 110");
     // 构造进房参数
     trtc::TRTCParams params;
