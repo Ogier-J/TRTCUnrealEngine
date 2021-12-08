@@ -113,6 +113,7 @@ public class TRTC_Demo : ModuleRules
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
         // //添加系统Framework和库
+        // PrivateDependencyModuleNames.AddRange(new string[] { "TencentPlugin" });
 		// Uncomment if you are using Slate UI
 		PrivateDependencyModuleNames.AddRange(new string[] {"UMG", "Slate", "SlateCore"});
         // 导入TRTC SDK
