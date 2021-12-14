@@ -19,9 +19,24 @@ void UBtnTRTCUserWidget::OnStopLocalPreview_Click() {
     ResetBuffer(true);
     localRenderTargetTexture->UpdateTextureRegions(0, 1, localUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
 }
+void UBtnTRTCUserWidget::OnStartScreen_Click() {
+    writeLblLog("start OnStartScreen_Click");
+#if PLATFORM_WINDOWS || PLATFORM_MAC
+    trtc::ITRTCScreenCaptureSourceList*  wnd_info_list = pTRTCCloud->getScreenCaptureSources(trtc::SIZE{ 20, 20 }, trtc::SIZE{ 20,20 });
+    if (wnd_info_list->getCount() > 0 )
+    {
+        trtc::TRTCScreenCaptureSourceInfo source_info = wnd_info_list->getSourceInfo(0);
+        trtc::RECT capture_rect = { 0, 0, 640, 360 };
+        trtc::TRTCScreenCaptureProperty capture_property;
+        pTRTCCloud->selectScreenCaptureTarget(source_info, capture_rect, capture_property);
+        trtc::TRTCVideoEncParam param;
+        pTRTCCloud->startScreenCapture(nullptr, trtc::TRTCVideoStreamTypeSub, &param);
+        writeLblLog("end startScreenCapture");
+    }
+#endif
+}
 void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     writeLblLog("start OnStartLocalPreview_Click");
-    
 #if PLATFORM_IOS || PLATFORM_ANDROID
     pTRTCCloud->startLocalPreview(true, nullptr);
 #else
@@ -39,12 +54,13 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     trtc::TRTCParams params;
     params.role = trtc::TRTCRoleAnchor;
     params.userDefineRecordId = "";
-    params.userId = testUserId;
+    FString c = txtUserId->GetText().ToString();
+    params.userId = TCHAR_TO_ANSI(*c);
     params.roomId =  110;
     // 暂时只支持macos。
 #if PLATFORM_MAC || PLATFORM_IOS || PLATFORM_WINDOWS
    params.sdkAppId = SDKAppID;
-   params.userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
+   params.userSig = GenerateTestUserSig().genTestUserSig(params.userId, SDKAppID, SECRETKEY);
 #else
    params.sdkAppId = testSDKAppID;
    params.userSig = testUserSig;
@@ -205,6 +221,12 @@ void UBtnTRTCUserWidget::NativeConstruct() {
     btnTrtcTest->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::handleTestButtonClick);
     btnLocalPreview->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStartLocalPreview_Click);
     btnStopPreview->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStopLocalPreview_Click);
+    BtnScreenCapture->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStartScreen_Click);
+    FString tempText = TEXT("110");
+    txtRoomID->SetText(FText::FromString(tempText));
+    std::string stdStrTemp(testUserId);
+    tempText = stdStrTemp.c_str();
+    txtUserId->SetText(FText::FromString(tempText));
     writeLblLog(version.c_str());
     
     // 本地视频画面
