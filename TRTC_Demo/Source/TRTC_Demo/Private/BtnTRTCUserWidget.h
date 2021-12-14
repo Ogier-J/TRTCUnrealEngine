@@ -44,6 +44,7 @@ private:
     void onExitRoom(int reason) override;
     void onEnterRoom(int result) override;
     void onUserVideoAvailable(const char *userId, bool available) override;
+    void onUserSubStreamAvailable(const char *userId, bool available) override;
     void onError(TXLiteAVError errCode, const char *errMsg, void *extraInfo) override;
     void onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) override;
     void writeLblLog(const char *log);
@@ -83,8 +84,8 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
         UButton* BtnScreenCapture = nullptr;
 
-    UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-        UImage* ImageScreen = nullptr;
+    // UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+    //     UImage* ImageScreen = nullptr;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
         UButton* btnLocalPreview = nullptr;

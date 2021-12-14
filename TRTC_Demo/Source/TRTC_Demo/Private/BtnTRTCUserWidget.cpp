@@ -21,12 +21,12 @@ void UBtnTRTCUserWidget::OnStopLocalPreview_Click() {
 }
 void UBtnTRTCUserWidget::OnStartScreen_Click() {
     writeLblLog("start OnStartScreen_Click");
-#if PLATFORM_WINDOWS || PLATFORM_MAC
-    trtc::ITRTCScreenCaptureSourceList*  wnd_info_list = pTRTCCloud->getScreenCaptureSources(trtc::SIZE{ 20, 20 }, trtc::SIZE{ 20,20 });
+#if PLATFORM_WINDOWS
+    trtc::ITRTCScreenCaptureSourceList*  wnd_info_list = pTRTCCloud->getScreenCaptureSources(SIZE{ 20, 20 }, SIZE{ 20,20 });
     if (wnd_info_list->getCount() > 0 )
     {
         trtc::TRTCScreenCaptureSourceInfo source_info = wnd_info_list->getSourceInfo(0);
-        trtc::RECT capture_rect = { 0, 0, 640, 360 };
+        RECT capture_rect = { 0, 0, 0, 0 };
         trtc::TRTCScreenCaptureProperty capture_property;
         pTRTCCloud->selectScreenCaptureTarget(source_info, capture_rect, capture_property);
         trtc::TRTCVideoEncParam param;
@@ -317,6 +317,19 @@ void  UBtnTRTCUserWidget::onUserVideoAvailable(const char *userId, bool availabl
     writeCallbackLog(userId);
     if (available) {
         pTRTCCloud->startRemoteView(userId, trtc::TRTCVideoStreamTypeBig, nullptr);
+        pTRTCCloud->muteRemoteVideoStream(userId, false);
+        pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_BGRA32,trtc::TRTCVideoBufferType_Buffer, this);
+    }else{
+        pTRTCCloud->muteRemoteVideoStream(userId, true);
+        ResetBuffer(false);
+        remoteRenderTargetTexture->UpdateTextureRegions(0, 1, remoteUpdateTextureRegion, remoteWidth * 4, (uint32)4,remoteBuffer);
+    }
+}
+void  UBtnTRTCUserWidget::onUserSubStreamAvailable(const char *userId, bool available) {
+    writeCallbackLog("onUserSubStreamAvailable");
+    writeCallbackLog(userId);
+    if (available) {
+        pTRTCCloud->startRemoteView(userId, trtc::TRTCVideoStreamTypeSub, nullptr);
         pTRTCCloud->muteRemoteVideoStream(userId, false);
         pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_BGRA32,trtc::TRTCVideoBufferType_Buffer, this);
     }else{
