@@ -93,6 +93,33 @@ void UBtnTRTCUserWidget::UpdateBuffer(
         {
             return;
         }
+        if(!localRefresh)
+        {
+            // 本地第一帧
+            UE_LOG(LogTemp, Warning, TEXT("localRefresh==false; NewSize=%d ,NewWidth=%d, NewHeight=%d"),
+            NewSize,NewWidth,NewHeight);
+            localRefresh = true;
+            AsyncTask(ENamedThreads::GameThread, [=]() {
+                localWidth = NewWidth;
+                localHeight = NewHeight;
+                localRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight);
+                localRenderTargetTexture->UpdateResource();
+                localBufferSize= localWidth * localHeight * 4;
+                localBuffer = new uint8[localBufferSize];
+                for (uint32 i = 0; i < localWidth * localHeight; ++i)
+                {
+                    localBuffer[i * 4 + 0] = 0x32;
+                    localBuffer[i * 4 + 1] = 0x32;
+                    localBuffer[i * 4 + 2] = 0x32;
+                    localBuffer[i * 4 + 3] = 0xFF;
+                }
+                localUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, localWidth, localHeight);
+                localRenderTargetTexture->UpdateTextureRegions(0, 1, localUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
+                localBrush.SetResourceObject(localRenderTargetTexture);
+                localPreviewImage->SetBrush(localBrush);
+            });
+            return;
+        }
         if (localBufferSize== NewSize)
         {
             localWidth = NewWidth;
@@ -113,8 +140,36 @@ void UBtnTRTCUserWidget::UpdateBuffer(
 	else
     {
         FScopeLock lock(&remoteMutex);
+        
         if (!RGBBuffer)
         {
+            return;
+        }
+        if(!remoteRefresh)
+        {
+            // 远端第一帧
+            UE_LOG(LogTemp, Warning, TEXT("remoteRefresh==false; NewSize=%d ,NewWidth=%d, NewHeight=%d"),
+            NewSize,NewWidth,NewHeight);
+            remoteRefresh = true;
+            AsyncTask(ENamedThreads::GameThread, [=]() {
+                remoteWidth = NewWidth;
+                remoteHeight = NewHeight;
+                remoteRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth, remoteHeight);
+                remoteRenderTargetTexture->UpdateResource();
+                remoteBufferSize= remoteWidth * remoteHeight * 4;
+                remoteBuffer = new uint8[remoteBufferSize];
+                for (uint32 i = 0; i < remoteWidth * remoteHeight; ++i)
+                {
+                    remoteBuffer[i * 4 + 0] = 0x32;
+                    remoteBuffer[i * 4 + 1] = 0x32;
+                    remoteBuffer[i * 4 + 2] = 0x32;
+                    remoteBuffer[i * 4 + 3] = 0xFF;
+                }
+                remoteUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, remoteWidth, remoteHeight);
+                remoteRenderTargetTexture->UpdateTextureRegions(0, 1, remoteUpdateTextureRegion, remoteWidth * 4, (uint32)4,remoteBuffer);
+                remoteBrush.SetResourceObject(remoteRenderTargetTexture);
+                remoteImage->SetBrush(remoteBrush);
+            });
             return;
         }
         if (remoteBufferSize== NewSize)
@@ -228,44 +283,6 @@ void UBtnTRTCUserWidget::NativeConstruct() {
     tempText = stdStrTemp.c_str();
     txtUserId->SetText(FText::FromString(tempText));
     writeLblLog(version.c_str());
-    
-    // 本地视频画面
-	localWidth = 640;
-	localHeight = 368;
-	localRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight);
-	localRenderTargetTexture->UpdateResource();
-	localBufferSize= localWidth * localHeight * 4;
-	localBuffer = new uint8[localBufferSize];
-	for (uint32 i = 0; i < localWidth * localHeight; ++i)
-	{
-		localBuffer[i * 4 + 0] = 0x32;
-		localBuffer[i * 4 + 1] = 0x32;
-		localBuffer[i * 4 + 2] = 0x32;
-		localBuffer[i * 4 + 3] = 0xFF;
-	}
-	localUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, localWidth, localHeight);
-	localRenderTargetTexture->UpdateTextureRegions(0, 1, localUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
-	localBrush.SetResourceObject(localRenderTargetTexture);
-	localPreviewImage->SetBrush(localBrush);
-
-    // 远端视频画面
-    remoteWidth = 640;
-	remoteHeight = 480;
-	remoteRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth, remoteHeight);
-	remoteRenderTargetTexture->UpdateResource();
-	remoteBufferSize= remoteWidth * remoteHeight * 4;
-	remoteBuffer = new uint8[remoteBufferSize];
-	for (uint32 i = 0; i < remoteWidth * remoteHeight; ++i)
-	{
-		remoteBuffer[i * 4 + 0] = 0x32;
-		remoteBuffer[i * 4 + 1] = 0x32;
-		remoteBuffer[i * 4 + 2] = 0x32;
-		remoteBuffer[i * 4 + 3] = 0xFF;
-	}
-	remoteUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, remoteWidth, remoteHeight);
-	remoteRenderTargetTexture->UpdateTextureRegions(0, 1, remoteUpdateTextureRegion, remoteWidth * 4, (uint32)4,remoteBuffer);
-	remoteBrush.SetResourceObject(remoteRenderTargetTexture);
-	remoteImage->SetBrush(remoteBrush);
 }
 
 void UBtnTRTCUserWidget::NativeDestruct() {
