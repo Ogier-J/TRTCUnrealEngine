@@ -74,7 +74,7 @@ void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoS
     int frameLength = videoFrame->length;
     if (localPreviewImage && remoteImage && frameLength > 1) {
         // 获取到BGRA32 帧数据
-        bool isLoaclUser =(nullptr == userId || strlen(userId)==0 || testUserId == userId && streamType ==  trtc::TRTCVideoStreamTypeBig)? true:false;
+        bool isLoaclUser =((nullptr == userId || strlen(userId)==0 || testUserId == userId) && streamType ==  trtc::TRTCVideoStreamTypeBig)? true:false;
         UpdateBuffer(videoFrame->data,videoFrame->width,videoFrame->height,frameLength,isLoaclUser);
     }
 }
