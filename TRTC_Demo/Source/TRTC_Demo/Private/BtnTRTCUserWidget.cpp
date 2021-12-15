@@ -93,6 +93,11 @@ void UBtnTRTCUserWidget::UpdateBuffer(
         {
             return;
         }
+        if(NewHeight != localHeight)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("NewHeight != localHeight ,localHeight=%d, NewHeight=%d"),
+            localHeight,NewHeight);
+        }
         if(!localRefresh)
         {
             // 本地第一帧
@@ -140,10 +145,14 @@ void UBtnTRTCUserWidget::UpdateBuffer(
 	else
     {
         FScopeLock lock(&remoteMutex);
-        
         if (!RGBBuffer)
         {
             return;
+        }
+        if(NewHeight != remoteHeight)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("NewHeight != remoteHeight ,remoteHeight=%d, NewHeight=%d"),
+            remoteHeight,NewHeight);
         }
         if(!remoteRefresh)
         {
