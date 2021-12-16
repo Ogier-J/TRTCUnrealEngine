@@ -35,6 +35,15 @@ void UBtnTRTCUserWidget::OnStartScreen_Click() {
     }
 #endif
 }
+void UBtnTRTCUserWidget::OnExitRoom_Click() {
+    writeLblLog("start OnExitRoom_Click");
+    pTRTCCloud->exitRoom();
+}
+void UBtnTRTCUserWidget::OnStopScreen_Click() {
+    writeLblLog("start OnStopScreen_Click");
+    pTRTCCloud->stopScreenCapture();
+    ResetBuffer(false);
+}
 void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     writeLblLog("start OnStartLocalPreview_Click");
 #if PLATFORM_IOS || PLATFORM_ANDROID
@@ -286,6 +295,8 @@ void UBtnTRTCUserWidget::NativeConstruct() {
     btnLocalPreview->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStartLocalPreview_Click);
     btnStopPreview->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStopLocalPreview_Click);
     BtnScreenCapture->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStartScreen_Click);
+    BtnExitRoom->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnExitRoom_Click);
+    BtnStopScreen->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStopScreen_Click);
     FString tempText = TEXT("110");
     txtRoomID->SetText(FText::FromString(tempText));
     std::string stdStrTemp(testUserId);
