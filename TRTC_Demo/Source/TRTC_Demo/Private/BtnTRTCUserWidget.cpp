@@ -41,8 +41,10 @@ void UBtnTRTCUserWidget::OnExitRoom_Click() {
 }
 void UBtnTRTCUserWidget::OnStopScreen_Click() {
     writeLblLog("start OnStopScreen_Click");
+#if PLATFORM_WINDOWS
     pTRTCCloud->stopScreenCapture();
     ResetBuffer(false);
+#endif
 }
 void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     writeLblLog("start OnStartLocalPreview_Click");
