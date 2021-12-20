@@ -19,9 +19,35 @@ void UBtnTRTCUserWidget::OnStopLocalPreview_Click() {
     ResetBuffer(true);
     localRenderTargetTexture->UpdateTextureRegions(0, 1, localUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
 }
+void UBtnTRTCUserWidget::OnStartScreen_Click() {
+    writeLblLog("start OnStartScreen_Click");
+#if PLATFORM_WINDOWS
+    trtc::ITRTCScreenCaptureSourceList*  wnd_info_list = pTRTCCloud->getScreenCaptureSources(SIZE{ 20, 20 }, SIZE{ 20,20 });
+    if (wnd_info_list->getCount() > 0 )
+    {
+        trtc::TRTCScreenCaptureSourceInfo source_info = wnd_info_list->getSourceInfo(0);
+        RECT capture_rect = { 0, 0, 0, 0 };
+        trtc::TRTCScreenCaptureProperty capture_property;
+        pTRTCCloud->selectScreenCaptureTarget(source_info, capture_rect, capture_property);
+        trtc::TRTCVideoEncParam param;
+        pTRTCCloud->startScreenCapture(nullptr, trtc::TRTCVideoStreamTypeSub, &param);
+        writeLblLog("end startScreenCapture");
+    }
+#endif
+}
+void UBtnTRTCUserWidget::OnExitRoom_Click() {
+    writeLblLog("start OnExitRoom_Click");
+    pTRTCCloud->exitRoom();
+}
+void UBtnTRTCUserWidget::OnStopScreen_Click() {
+    writeLblLog("start OnStopScreen_Click");
+#if PLATFORM_WINDOWS
+    pTRTCCloud->stopScreenCapture();
+    ResetBuffer(false);
+#endif
+}
 void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     writeLblLog("start OnStartLocalPreview_Click");
-    
 #if PLATFORM_IOS || PLATFORM_ANDROID
     pTRTCCloud->startLocalPreview(true, nullptr);
 #else
@@ -32,17 +58,20 @@ void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
     writeLblLog("end OnStartLocalPreview_Click");
 }
 void UBtnTRTCUserWidget::OnEnterRoom_Click() {
+    // 请务必加上
+    pTRTCCloud->callExperimentalAPI("{\"api\": \"setFramework\", \"params\": {\"framework\": 9}}");
     writeLblLog("start OnEnterRoom_Click roomid: 110");
     // 构造进房参数
     trtc::TRTCParams params;
     params.role = trtc::TRTCRoleAnchor;
     params.userDefineRecordId = "";
-    params.userId = testUserId;
+    FString c = txtUserId->GetText().ToString();
+    params.userId = TCHAR_TO_ANSI(*c);
     params.roomId =  110;
     // 暂时只支持macos。
 #if PLATFORM_MAC || PLATFORM_IOS || PLATFORM_WINDOWS
    params.sdkAppId = SDKAppID;
-   params.userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
+   params.userSig = GenerateTestUserSig().genTestUserSig(params.userId, SDKAppID, SECRETKEY);
 #else
    params.sdkAppId = testSDKAppID;
    params.userSig = testUserSig;
@@ -56,7 +85,7 @@ void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoS
     int frameLength = videoFrame->length;
     if (localPreviewImage && remoteImage && frameLength > 1) {
         // 获取到BGRA32 帧数据
-        bool isLoaclUser =(nullptr == userId || strlen(userId)==0 || testUserId == userId)? true:false;
+        bool isLoaclUser =((nullptr == userId || strlen(userId)==0 || testUserId == userId) && streamType ==  trtc::TRTCVideoStreamTypeBig)? true:false;
         UpdateBuffer(videoFrame->data,videoFrame->width,videoFrame->height,frameLength,isLoaclUser);
     }
 }
@@ -73,6 +102,38 @@ void UBtnTRTCUserWidget::UpdateBuffer(
         FScopeLock lock(&localMutex);
         if (!RGBBuffer)
         {
+            return;
+        }
+        if(NewHeight != localHeight)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("NewHeight != localHeight ,localHeight=%d, NewHeight=%d"),
+            localHeight,NewHeight);
+        }
+        if(!localRefresh)
+        {
+            // 本地第一帧
+            UE_LOG(LogTemp, Warning, TEXT("localRefresh==false; NewSize=%d ,NewWidth=%d, NewHeight=%d"),
+            NewSize,NewWidth,NewHeight);
+            localRefresh = true;
+            AsyncTask(ENamedThreads::GameThread, [=]() {
+                localWidth = NewWidth;
+                localHeight = NewHeight;
+                localRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight);
+                localRenderTargetTexture->UpdateResource();
+                localBufferSize= localWidth * localHeight * 4;
+                localBuffer = new uint8[localBufferSize];
+                for (uint32 i = 0; i < localWidth * localHeight; ++i)
+                {
+                    localBuffer[i * 4 + 0] = 0x32;
+                    localBuffer[i * 4 + 1] = 0x32;
+                    localBuffer[i * 4 + 2] = 0x32;
+                    localBuffer[i * 4 + 3] = 0xFF;
+                }
+                localUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, localWidth, localHeight);
+                localRenderTargetTexture->UpdateTextureRegions(0, 1, localUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
+                localBrush.SetResourceObject(localRenderTargetTexture);
+                localPreviewImage->SetBrush(localBrush);
+            });
             return;
         }
         if (localBufferSize== NewSize)
@@ -97,6 +158,38 @@ void UBtnTRTCUserWidget::UpdateBuffer(
         FScopeLock lock(&remoteMutex);
         if (!RGBBuffer)
         {
+            return;
+        }
+        if(NewHeight != remoteHeight)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("NewHeight != remoteHeight ,remoteHeight=%d, NewHeight=%d"),
+            remoteHeight,NewHeight);
+        }
+        if(!remoteRefresh)
+        {
+            // 远端第一帧
+            UE_LOG(LogTemp, Warning, TEXT("remoteRefresh==false; NewSize=%d ,NewWidth=%d, NewHeight=%d"),
+            NewSize,NewWidth,NewHeight);
+            remoteRefresh = true;
+            AsyncTask(ENamedThreads::GameThread, [=]() {
+                remoteWidth = NewWidth;
+                remoteHeight = NewHeight;
+                remoteRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth, remoteHeight);
+                remoteRenderTargetTexture->UpdateResource();
+                remoteBufferSize= remoteWidth * remoteHeight * 4;
+                remoteBuffer = new uint8[remoteBufferSize];
+                for (uint32 i = 0; i < remoteWidth * remoteHeight; ++i)
+                {
+                    remoteBuffer[i * 4 + 0] = 0x32;
+                    remoteBuffer[i * 4 + 1] = 0x32;
+                    remoteBuffer[i * 4 + 2] = 0x32;
+                    remoteBuffer[i * 4 + 3] = 0xFF;
+                }
+                remoteUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, remoteWidth, remoteHeight);
+                remoteRenderTargetTexture->UpdateTextureRegions(0, 1, remoteUpdateTextureRegion, remoteWidth * 4, (uint32)4,remoteBuffer);
+                remoteBrush.SetResourceObject(remoteRenderTargetTexture);
+                remoteImage->SetBrush(remoteBrush);
+            });
             return;
         }
         if (remoteBufferSize== NewSize)
@@ -203,45 +296,15 @@ void UBtnTRTCUserWidget::NativeConstruct() {
     btnTrtcTest->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::handleTestButtonClick);
     btnLocalPreview->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStartLocalPreview_Click);
     btnStopPreview->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStopLocalPreview_Click);
+    BtnScreenCapture->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStartScreen_Click);
+    BtnExitRoom->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnExitRoom_Click);
+    BtnStopScreen->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStopScreen_Click);
+    FString tempText = TEXT("110");
+    txtRoomID->SetText(FText::FromString(tempText));
+    std::string stdStrTemp(testUserId);
+    tempText = stdStrTemp.c_str();
+    txtUserId->SetText(FText::FromString(tempText));
     writeLblLog(version.c_str());
-    
-    // 本地视频画面
-	localWidth = 640;
-	localHeight = 368;
-	localRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight);
-	localRenderTargetTexture->UpdateResource();
-	localBufferSize= localWidth * localHeight * 4;
-	localBuffer = new uint8[localBufferSize];
-	for (uint32 i = 0; i < localWidth * localHeight; ++i)
-	{
-		localBuffer[i * 4 + 0] = 0x32;
-		localBuffer[i * 4 + 1] = 0x32;
-		localBuffer[i * 4 + 2] = 0x32;
-		localBuffer[i * 4 + 3] = 0xFF;
-	}
-	localUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, localWidth, localHeight);
-	localRenderTargetTexture->UpdateTextureRegions(0, 1, localUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
-	localBrush.SetResourceObject(localRenderTargetTexture);
-	localPreviewImage->SetBrush(localBrush);
-
-    // 远端视频画面
-    remoteWidth = 640;
-	remoteHeight = 480;
-	remoteRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth, remoteHeight);
-	remoteRenderTargetTexture->UpdateResource();
-	remoteBufferSize= remoteWidth * remoteHeight * 4;
-	remoteBuffer = new uint8[remoteBufferSize];
-	for (uint32 i = 0; i < remoteWidth * remoteHeight; ++i)
-	{
-		remoteBuffer[i * 4 + 0] = 0x32;
-		remoteBuffer[i * 4 + 1] = 0x32;
-		remoteBuffer[i * 4 + 2] = 0x32;
-		remoteBuffer[i * 4 + 3] = 0xFF;
-	}
-	remoteUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, remoteWidth, remoteHeight);
-	remoteRenderTargetTexture->UpdateTextureRegions(0, 1, remoteUpdateTextureRegion, remoteWidth * 4, (uint32)4,remoteBuffer);
-	remoteBrush.SetResourceObject(remoteRenderTargetTexture);
-	remoteImage->SetBrush(remoteBrush);
 }
 
 void UBtnTRTCUserWidget::NativeDestruct() {
@@ -293,6 +356,19 @@ void  UBtnTRTCUserWidget::onUserVideoAvailable(const char *userId, bool availabl
     writeCallbackLog(userId);
     if (available) {
         pTRTCCloud->startRemoteView(userId, trtc::TRTCVideoStreamTypeBig, nullptr);
+        pTRTCCloud->muteRemoteVideoStream(userId, false);
+        pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_BGRA32,trtc::TRTCVideoBufferType_Buffer, this);
+    }else{
+        pTRTCCloud->muteRemoteVideoStream(userId, true);
+        ResetBuffer(false);
+        remoteRenderTargetTexture->UpdateTextureRegions(0, 1, remoteUpdateTextureRegion, remoteWidth * 4, (uint32)4,remoteBuffer);
+    }
+}
+void  UBtnTRTCUserWidget::onUserSubStreamAvailable(const char *userId, bool available) {
+    writeCallbackLog("onUserSubStreamAvailable");
+    writeCallbackLog(userId);
+    if (available) {
+        pTRTCCloud->startRemoteView(userId, trtc::TRTCVideoStreamTypeSub, nullptr);
         pTRTCCloud->muteRemoteVideoStream(userId, false);
         pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_BGRA32,trtc::TRTCVideoBufferType_Buffer, this);
     }else{

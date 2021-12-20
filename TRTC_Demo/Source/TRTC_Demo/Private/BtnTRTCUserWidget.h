@@ -9,12 +9,14 @@
 #include "SlateOptMacros.h"
 #include "Engine/Texture2D.h"
 #include "Components/TextBlock.h"
+#include "Components/EditableTextBox.h"
 #include "Modules/ModuleManager.h"
 // 这段是为ue4 打包的时候不报错。
 #if PLATFORM_MAC || PLATFORM_IOS || PLATFORM_WINDOWS
 #include "GenerateTestUserSig.h"
 #endif
 #include "ITRTCCloud.h"
+#include "TRTCTypeDef.h"
 #include <map>
 #include <mutex>
 #include "BtnTRTCUserWidget.generated.h"
@@ -42,6 +44,7 @@ private:
     void onExitRoom(int reason) override;
     void onEnterRoom(int result) override;
     void onUserVideoAvailable(const char *userId, bool available) override;
+    void onUserSubStreamAvailable(const char *userId, bool available) override;
     void onError(TXLiteAVError errCode, const char *errMsg, void *extraInfo) override;
     void onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) override;
     void writeLblLog(const char *log);
@@ -57,7 +60,12 @@ public:
         void OnStartLocalPreview_Click();
     UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
         void OnStopLocalPreview_Click();
-
+    UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
+        void OnStartScreen_Click();
+    UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
+        void OnExitRoom_Click();
+    UFUNCTION(BlueprintCallable, Category ="trtcDemoFunction")
+        void OnStopScreen_Click();
     UPROPERTY(VisibleAnywhere, Meta = (BindWidget))
         UTextBlock* txtLog;
 
@@ -66,9 +74,26 @@ public:
     
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
         UButton* btnEnterroom = nullptr;
-    
+
+    UPROPERTY(VisibleAnywhere, Meta = (BindWidget))
+        UEditableTextBox * txtRoomID = nullptr;
+
+    UPROPERTY(VisibleAnywhere, Meta = (BindWidget))
+        UEditableTextBox * txtUserId = nullptr;
+
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
         UButton* btnTrtcTest = nullptr;
+    
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
+        UButton* BtnScreenCapture = nullptr;
+    
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
+        UButton* BtnStopScreen = nullptr;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
+        UButton* BtnExitRoom = nullptr;
+    // UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+    //     UImage* ImageScreen = nullptr;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
         UButton* btnLocalPreview = nullptr;
