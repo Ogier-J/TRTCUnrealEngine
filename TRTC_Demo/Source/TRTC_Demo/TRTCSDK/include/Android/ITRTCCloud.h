@@ -1,7 +1,7 @@
 /**
  * Module:   TRTCCloud @ TXLiteAVSDK
  * Function: 腾讯云 TRTC 主功能接口
- * Version: 9.4.10916
+ * Version: 9.4.10915
  */
 #ifndef __ITRTCCLOUD_H__
 #define __ITRTCCLOUD_H__
@@ -1523,4 +1523,4 @@ class ITRTCCloud
 }  // namespace liteav
 /// @}
 
-#endif /* __ITRTCCLOUD_H__ */
+#endif

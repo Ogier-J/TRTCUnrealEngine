@@ -1484,5 +1484,5 @@ namespace trtc = liteav;
 using namespace liteav;
 #endif
 
-#endif / *__TRTCCLOUDDEF_H__ * /
+#endif
 /// @}

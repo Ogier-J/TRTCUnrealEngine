@@ -53,8 +53,11 @@ void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
 #else
     pTRTCCloud->startLocalPreview(nullptr);
 #endif
-    pTRTCCloud->setLocalVideoRenderCallback(trtc::TRTCVideoPixelFormat_BGRA32
-, trtc::TRTCVideoBufferType_Buffer, this);
+    #if PLATFORM_ANDROID
+        pTRTCCloud->setLocalVideoRenderCallback(trtc::TRTCVideoPixelFormat_RGBA32, trtc::TRTCVideoBufferType_Buffer, this);
+    #else
+        pTRTCCloud->setLocalVideoRenderCallback(trtc::TRTCVideoPixelFormat_BGRA32, trtc::TRTCVideoBufferType_Buffer, this);
+    #endif
     writeLblLog("end OnStartLocalPreview_Click");
 }
 void UBtnTRTCUserWidget::OnEnterRoom_Click() {
@@ -68,23 +71,38 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     FString c = txtUserId->GetText().ToString();
     params.userId = TCHAR_TO_ANSI(*c);
     params.roomId =  110;
-#if PLATFORM_ANDROID
-    params.sdkAppId = testSDKAppID;
-    params.userSig = testUserSig;
-#else
+
+#if PLATFORM_MAC || PLATFORM_IOS || PLATFORM_WINDOWS
    params.sdkAppId = SDKAppID;
-   params.userSig = GenerateTestUserSig().genTestUserSig(params.userId, SDKAppID, SECRETKEY);
+   params.userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
+   pTRTCCloud->enterRoom(params, trtc::TRTCAppSceneVideoCall);
+#else
+    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv()) {
+        jmethodID GetPackageNameMethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "genTestUserSig", "(ILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;", false);
+        jstring jsUserId = Env->NewStringUTF(testUserId);
+        jstring jsKey = Env->NewStringUTF(SECRETKEY);
+        jstring JstringResult = (jstring)FJavaWrapper::CallObjectMethod(Env, FJavaWrapper::GameActivityThis,GetPackageNameMethodID, SDKAppID, jsUserId, jsKey);
+        FString FinalResult = FJavaHelper::FStringFromLocalRef(Env, JstringResult);
+        auto twoHundredAnsi = StringCast<ANSICHAR>(*FinalResult);
+        const char* userSig = twoHundredAnsi.Get();
+
+        params.sdkAppId = SDKAppID;
+        params.userSig = userSig;
+        writeLblLog(userSig);
+        writeLblLog("=====enterRoom");
+        // 进房，因为生成userSig的关系，enterRoom必须放在这个条件语句里
+        pTRTCCloud->enterRoom(params, trtc::TRTCAppSceneVideoCall);
+    }
+    pTRTCCloud->startLocalAudio(trtc::TRTCAudioQualityDefault);
+    writeLblLog("end OnEnterRoom_Click");
 #endif
-    // 进房
-    pTRTCCloud->enterRoom(params, trtc::TRTCAppSceneVideoCall);
-    writeLblLog("end OnEnterRoom_Click roomid: 110");
 }
 
 void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *videoFrame) {
     int frameLength = videoFrame->length;
     if (localPreviewImage && remoteImage && frameLength > 1) {
         // 获取到BGRA32 帧数据
-        bool isLoaclUser =((nullptr == userId || strlen(userId)==0 || testUserId == userId) && streamType ==  trtc::TRTCVideoStreamTypeBig)? true:false;
+        bool isLoaclUser =((strcmp(testUserId, userId) == 0 || nullptr == userId || strlen(userId)==0) && streamType ==  trtc::TRTCVideoStreamTypeBig)? true:false;
         UpdateBuffer(videoFrame->data,videoFrame->width,videoFrame->height,frameLength,isLoaclUser);
     }
 }
@@ -117,7 +135,11 @@ void UBtnTRTCUserWidget::UpdateBuffer(
             AsyncTask(ENamedThreads::GameThread, [=]() {
                 localWidth = NewWidth;
                 localHeight = NewHeight;
-                localRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight);
+                #if PLATFORM_ANDROID
+                    localRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight, PF_R8G8B8A8);
+                #else
+                    localRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight);
+                #endif
                 localRenderTargetTexture->UpdateResource();
                 localBufferSize= localWidth * localHeight * 4;
                 localBuffer = new uint8[localBufferSize];
@@ -173,7 +195,11 @@ void UBtnTRTCUserWidget::UpdateBuffer(
             AsyncTask(ENamedThreads::GameThread, [=]() {
                 remoteWidth = NewWidth;
                 remoteHeight = NewHeight;
-                remoteRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth, remoteHeight);
+                #if PLATFORM_ANDROID
+                    remoteRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight, PF_R8G8B8A8);
+                #else
+                    remoteRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight);
+                #endif
                 remoteRenderTargetTexture->UpdateResource();
                 remoteBufferSize= remoteWidth * remoteHeight * 4;
                 remoteBuffer = new uint8[remoteBufferSize];
@@ -249,7 +275,11 @@ void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
             auto NewUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0, localWidth, localHeight);
             // PF_R8G8B8A8
             // macos PF_B8G8R8A8 --> TRTCVideoPixelFormat_BGRA32 验证通过
-            auto NewRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight);
+            #if PLATFORM_ANDROID
+                auto NewRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight, PF_R8G8B8A8);
+            #else
+                auto NewRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight);
+            #endif
             NewRenderTargetTexture->UpdateResource();
             NewRenderTargetTexture->UpdateTextureRegions(0, 1, NewUpdateTextureRegion, localWidth * 4, (uint32)4, localBuffer);
             localBrush.SetResourceObject(NewRenderTargetTexture);
@@ -271,7 +301,11 @@ void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
             UE_LOG(LogTemp, Warning, TEXT("remoteBufferSize=%d, remoteWidth=%d, remoteHeight=%d  remoteRenderTargetTexture->GetSizeX =%d , remoteRenderTargetTexture->GetSizeY =%d" ),
             remoteBufferSize,remoteWidth,remoteHeight,remoteRenderTargetTexture->GetSizeX(),remoteRenderTargetTexture->GetSizeY());
             auto NewRMUpdateTextureRegion = new FUpdateTextureRegion2D(0, 0, 0, 0,remoteWidth,remoteHeight);
-            auto NewRMRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth,remoteHeight);
+            #if PLATFORM_ANDROID
+                auto NewRMRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth,remoteHeight, PF_R8G8B8A8);
+            #else
+                auto NewRMRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth,remoteHeight);
+            #endif
             NewRMRenderTargetTexture->UpdateResource();
             NewRMRenderTargetTexture->UpdateTextureRegions(0, 1, NewRMUpdateTextureRegion,remoteWidth * 4, (uint32)4,remoteBuffer);
             remoteBrush.SetResourceObject(NewRMRenderTargetTexture);
@@ -288,7 +322,14 @@ void UBtnTRTCUserWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime
 }
 void UBtnTRTCUserWidget::NativeConstruct() {
     Super::NativeConstruct();
-    pTRTCCloud = getTRTCShareInstance();
+    #if PLATFORM_ANDROID
+        if (JNIEnv* Env = FAndroidApplication::GetJavaEnv()) {
+            void* activity = (void*) FAndroidApplication::GetGameActivityThis();
+            pTRTCCloud = getTRTCShareInstance(activity);
+        }
+    #else
+        pTRTCCloud = getTRTCShareInstance();
+    #endif
     pTRTCCloud->addCallback(this);
     std::string version = pTRTCCloud->getSDKVersion();
     btnEnterroom->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnEnterRoom_Click);
@@ -356,7 +397,11 @@ void  UBtnTRTCUserWidget::onUserVideoAvailable(const char *userId, bool availabl
     if (available) {
         pTRTCCloud->startRemoteView(userId, trtc::TRTCVideoStreamTypeBig, nullptr);
         pTRTCCloud->muteRemoteVideoStream(userId, false);
-        pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_BGRA32,trtc::TRTCVideoBufferType_Buffer, this);
+        #if PLATFORM_ANDROID
+            pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_RGBA32,trtc::TRTCVideoBufferType_Buffer, this);
+        #else
+            pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_BGRA32,trtc::TRTCVideoBufferType_Buffer, this);
+        #endif
     }else{
         pTRTCCloud->muteRemoteVideoStream(userId, true);
         ResetBuffer(false);
@@ -368,10 +413,14 @@ void  UBtnTRTCUserWidget::onUserSubStreamAvailable(const char *userId, bool avai
     writeCallbackLog(userId);
     if (available) {
         pTRTCCloud->startRemoteView(userId, trtc::TRTCVideoStreamTypeSub, nullptr);
-        pTRTCCloud->muteRemoteVideoStream(userId, false);
-        pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_BGRA32,trtc::TRTCVideoBufferType_Buffer, this);
+        pTRTCCloud->muteRemoteVideoStream(userId, trtc::TRTCVideoStreamTypeSub, false);
+        #if PLATFORM_ANDROID
+            pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_RGBA32,trtc::TRTCVideoBufferType_Buffer, this);
+        #else
+            pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_BGRA32,trtc::TRTCVideoBufferType_Buffer, this);
+        #endif
     }else{
-        pTRTCCloud->muteRemoteVideoStream(userId, true);
+        pTRTCCloud->muteRemoteVideoStream(userId, trtc::TRTCVideoStreamTypeSub, true);
         ResetBuffer(false);
         remoteRenderTargetTexture->UpdateTextureRegions(0, 1, remoteUpdateTextureRegion, remoteWidth * 4, (uint32)4,remoteBuffer);
     }

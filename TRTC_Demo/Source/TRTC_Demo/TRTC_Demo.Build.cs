@@ -10,7 +10,7 @@ public class TRTC_Demo : ModuleRules
         string _DebugPath = Path.GetFullPath(Path.Combine(ModuleDirectory, "debug"));
         if (Target.Platform == UnrealTargetPlatform.Android)
         {
-            
+            PublicIncludePaths.Add(Path.Combine(_DebugPath, "include"));   
         }else if (Target.Platform == UnrealTargetPlatform.IOS)
         {
             // 添加插件的包含路径
@@ -38,7 +38,17 @@ public class TRTC_Demo : ModuleRules
         bEnableUndefinedIdentifierWarnings = false;
         if (Target.Platform == UnrealTargetPlatform.Android)
         {
+            PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/Android"));
+            PrivateDependencyModuleNames.AddRange(new string[] { "Launch" });
             
+            AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidPlugin", Path.Combine(ModuleDirectory, "TRTCSDK", "Android", "APL_armv7.xml")));
+			
+			// // select required architecture
+			string Architecture = "armeabi-v7a";
+			// string Architecture = "arm64-v8a";
+			// //string Architecture = "x86";
+			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory,"TRTCSDK", "Android", Architecture, "libtraeimp-rtmp.so"));
+			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory,"TRTCSDK", "Android", Architecture, "libliteavsdk.so"));
         }else if (Target.Platform == UnrealTargetPlatform.IOS)
         {
             // 添加插件的包含路径

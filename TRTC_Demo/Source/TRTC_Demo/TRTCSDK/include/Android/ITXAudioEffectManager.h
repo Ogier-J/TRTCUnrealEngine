@@ -314,6 +314,6 @@ namespace trtc = liteav;
 using namespace liteav;
 #endif
 
-#endif /* __ITXAUDIOEFFECTMANAGER_H__ */
+#endif
 
 /// @}

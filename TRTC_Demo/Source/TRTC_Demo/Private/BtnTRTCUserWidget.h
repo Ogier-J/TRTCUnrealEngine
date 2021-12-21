@@ -11,6 +11,11 @@
 #include "Components/TextBlock.h"
 #include "Components/EditableTextBox.h"
 #include "Modules/ModuleManager.h"
+#if PLATFORM_ANDROID
+#include "Runtime/Launch/Public/Android/AndroidJNI.h"
+#include "Runtime/Core/Public/Android/AndroidJavaEnv.h"
+#include "Runtime/ApplicationCore/Public/Android/AndroidApplication.h"
+#endif
 // 这段是为ue4 打包的时候不报错。
 #if PLATFORM_MAC || PLATFORM_IOS || PLATFORM_WINDOWS
 #include "GenerateTestUserSig.h"
