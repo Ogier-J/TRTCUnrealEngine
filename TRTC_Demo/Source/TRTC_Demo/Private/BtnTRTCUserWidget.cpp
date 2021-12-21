@@ -68,13 +68,12 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     FString c = txtUserId->GetText().ToString();
     params.userId = TCHAR_TO_ANSI(*c);
     params.roomId =  110;
-    // 暂时只支持macos。
-#if PLATFORM_MAC || PLATFORM_IOS || PLATFORM_WINDOWS
+#if PLATFORM_ANDROID
+    params.sdkAppId = testSDKAppID;
+    params.userSig = testUserSig;
+#else
    params.sdkAppId = SDKAppID;
    params.userSig = GenerateTestUserSig().genTestUserSig(params.userId, SDKAppID, SECRETKEY);
-#else
-   params.sdkAppId = testSDKAppID;
-   params.userSig = testUserSig;
 #endif
     // 进房
     pTRTCCloud->enterRoom(params, trtc::TRTCAppSceneVideoCall);
