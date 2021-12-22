@@ -2,7 +2,7 @@
 
 ## 环境要求
 * 建议Unreal Engine 4.27.1 及以上版本。
-* 目前支持 iOS、Windows、MacOS平台，Android还在开发中
+* 目前支持 iOS、Android、Windows、MacOS平台
 - 其中 iOS  端开发还需要：
   - Xcode 11.0及以上版本。
   - 请确保您的项目已设置有效的开发者签名。
@@ -10,6 +10,9 @@
     - 操作系统：Windows 7 SP1 或更高的版本（基于 x86-64 的 64 位操作系统）。
     - 磁盘空间：除安装 IDE 和一些工具之外还应有至少 1.64 GB 的空间。
     - 安装 [Visual Studio 2019](https://visualstudio.microsoft.com/zh-hans/downloads/)。
+- **Android 开发：**
+    - Android Studio版本4.0
+    - Visual Studio 2017 15.6版或更高。
 
 ## 集成 SDK
 1. 下载 SDK 及配套的 [SDK 源码](https://comm.qq.com/sdk/trtc/UE4/TRTCSDK.zip)（有疑问可加入QQ群号：764231117 咨询）。
@@ -23,7 +26,16 @@ private void loadTRTCSDK(ReadOnlyTargetRules Target)
     bEnableUndefinedIdentifierWarnings = false;
     if (Target.Platform == UnrealTargetPlatform.Android)
     {
+        PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/Android"));
+        PrivateDependencyModuleNames.AddRange(new string[] { "Launch" });
         
+        AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidPlugin", Path.Combine(ModuleDirectory, "TRTCSDK", "Android", "APL_armv7.xml")));
+        
+        string Architecture = "armeabi-v7a";
+        // string Architecture = "arm64-v8a";
+        // string Architecture = "armeabi";
+        PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory,"TRTCSDK", "Android", Architecture, "libtraeimp-rtmp.so"));
+        PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory,"TRTCSDK", "Android", Architecture, "libliteavsdk.so"));
     }else if (Target.Platform == UnrealTargetPlatform.IOS)
     {
         // 添加插件的包含路径
@@ -98,7 +110,14 @@ private void loadTRTCSDK(ReadOnlyTargetRules Target)
 ![](https://imgcache.qq.com/operation/dianshi/other/TRTCSDK.82d81b0b8fe050772b3c8e02c4578b920515a580.jpg)
 5. 到目前为止你已经集成了TRTC SDK。可在你的cpp 文件中使用TRTC了。`#include "ITRTCCloud.h"`
 ```
-trtc::ITRTCCloud * pTRTCCloud = getTRTCShareInstance();
+#if PLATFORM_ANDROID
+    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv()) {
+        void* activity = (void*) FAndroidApplication::GetGameActivityThis();
+        pTRTCCloud = getTRTCShareInstance(activity);
+    }
+#else
+    pTRTCCloud = getTRTCShareInstance();
+#endif
 pTRTCCloud->addCallback(this);
 std::string version = pTRTCCloud->getSDKVersion();
 ```
@@ -138,7 +157,10 @@ Privacy - Microphone Usage Description
 添加到 Additional Plist Data 里。
 2. 最后打包项目。File -> Package Project -> iOS
 :::
-
+::: Android\s端
+1.开发调试：详见[Android快速入门](https://docs.unrealengine.com/4.27/zh-CN/SharingAndReleasing/Mobile/Android/GettingStarted/)
+2.打包项目：详见[打包Android项目](https://docs.unrealengine.com/4.27/zh-CN/SharingAndReleasing/Mobile/Android/PackagingAndroidProject/)
+:::
 </dx-tabs>
 
 ## 其他

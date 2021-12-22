@@ -43,10 +43,9 @@ public class TRTC_Demo : ModuleRules
             
             AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidPlugin", Path.Combine(ModuleDirectory, "TRTCSDK", "Android", "APL_armv7.xml")));
 			
-			// // select required architecture
 			string Architecture = "armeabi-v7a";
 			// string Architecture = "arm64-v8a";
-			// //string Architecture = "x86";
+			// string Architecture = "armeabi";
 			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory,"TRTCSDK", "Android", Architecture, "libtraeimp-rtmp.so"));
 			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory,"TRTCSDK", "Android", Architecture, "libliteavsdk.so"));
         }else if (Target.Platform == UnrealTargetPlatform.IOS)

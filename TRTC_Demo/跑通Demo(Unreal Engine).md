@@ -15,6 +15,9 @@
     - 操作系统：Windows 7 SP1 或更高的版本（基于 x86-64 的 64 位操作系统）。
     - 磁盘空间：除安装 IDE 和一些工具之外还应有至少 1.64 GB 的空间。
     - 安装 [Visual Studio 2019](https://visualstudio.microsoft.com/zh-hans/downloads/)。
+- **Android 开发：**
+    - Android Studio版本4.0
+    - Visual Studio 2017 15.6版或更高。
 
 ## 前提条件
 您已 [注册腾讯云](https://cloud.tencent.com) 账号，并完成实名认证。
@@ -91,7 +94,10 @@ Privacy - Microphone Usage Description
 添加到 Additional Plist Data 里。
 2. 最后打包项目。File -> Package Project -> iOS
 :::
-
+::: Android\s端
+1.开发调试：详见[Android快速入门](https://docs.unrealengine.com/4.27/zh-CN/SharingAndReleasing/Mobile/Android/GettingStarted/)
+2.打包项目：详见[打包Android项目](https://docs.unrealengine.com/4.27/zh-CN/SharingAndReleasing/Mobile/Android/PackagingAndroidProject/)
+:::
 </dx-tabs>
 ## Demo运行
 Demo 里面提供了一对一视频通话的实现，可以测试和作为调用参考，API 文档参见 [C++ 全平台 API](https://cloud.tencent.com/document/product/647/32268)。
