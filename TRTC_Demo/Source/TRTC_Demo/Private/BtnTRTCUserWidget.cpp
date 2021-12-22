@@ -195,9 +195,9 @@ void UBtnTRTCUserWidget::UpdateBuffer(
                 remoteWidth = NewWidth;
                 remoteHeight = NewHeight;
                 #if PLATFORM_ANDROID
-                    remoteRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight, PF_R8G8B8A8);
+                    remoteRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth, remoteHeight, PF_R8G8B8A8);
                 #else
-                    remoteRenderTargetTexture = UTexture2D::CreateTransient(localWidth, localHeight);
+                    remoteRenderTargetTexture = UTexture2D::CreateTransient(remoteWidth, remoteHeight);
                 #endif
                 remoteRenderTargetTexture->UpdateResource();
                 remoteBufferSize= remoteWidth * remoteHeight * 4;
@@ -396,14 +396,13 @@ void  UBtnTRTCUserWidget::onUserVideoAvailable(const char *userId, bool availabl
     writeCallbackLog(userId);
     if (available) {
         pTRTCCloud->startRemoteView(userId, trtc::TRTCVideoStreamTypeBig, nullptr);
-        pTRTCCloud->muteRemoteVideoStream(userId, false);
         #if PLATFORM_ANDROID
             pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_RGBA32,trtc::TRTCVideoBufferType_Buffer, this);
         #else
             pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_BGRA32,trtc::TRTCVideoBufferType_Buffer, this);
         #endif
     }else{
-        pTRTCCloud->muteRemoteVideoStream(userId, true);
+        pTRTCCloud->stopRemoteView(userId, trtc::TRTCVideoStreamTypeBig);
         ResetBuffer(false);
         remoteRenderTargetTexture->UpdateTextureRegions(0, 1, remoteUpdateTextureRegion, remoteWidth * 4, (uint32)4,remoteBuffer);
     }
@@ -413,14 +412,13 @@ void  UBtnTRTCUserWidget::onUserSubStreamAvailable(const char *userId, bool avai
     writeCallbackLog(userId);
     if (available) {
         pTRTCCloud->startRemoteView(userId, trtc::TRTCVideoStreamTypeSub, nullptr);
-        pTRTCCloud->muteRemoteVideoStream(userId, trtc::TRTCVideoStreamTypeSub, false);
         #if PLATFORM_ANDROID
             pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_RGBA32,trtc::TRTCVideoBufferType_Buffer, this);
         #else
             pTRTCCloud->setRemoteVideoRenderCallback(userId,trtc::TRTCVideoPixelFormat_BGRA32,trtc::TRTCVideoBufferType_Buffer, this);
         #endif
     }else{
-        pTRTCCloud->muteRemoteVideoStream(userId, trtc::TRTCVideoStreamTypeSub, true);
+        pTRTCCloud->stopRemoteView(userId, trtc::TRTCVideoStreamTypeSub);
         ResetBuffer(false);
         remoteRenderTargetTexture->UpdateTextureRegions(0, 1, remoteUpdateTextureRegion, remoteWidth * 4, (uint32)4,remoteBuffer);
     }
