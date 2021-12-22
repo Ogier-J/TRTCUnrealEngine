@@ -7,9 +7,9 @@
 #define QTMACDEMO_BASE_DEFS_H_
 
 // 测试的登录房间ID。
-static const char *testStrRoomId = "3659";
+static const char *testStrRoomId = "2869";
 // 测试登录的UserId
-static const char *testUserId = "44456g";
+static const char *testUserId = "sddds";
 
 /**
  * 腾讯云 SDKAppId，需要替换为您自己账号下的 SDKAppId。
@@ -38,12 +38,6 @@ static const char *SECRETKEY = "";
  *  默认时间：7 x 24 x 60 x 60 = 604800 = 7 天
  */
 static const int EXPIRETIME = 604800;
-
-/**
- * 仅仅for test
- */
-static const int testSDKAppID = 0;
-static const char *testUserSig = "";
 
 
 #endif  // QTMACDEMO_BASE_DEFS_H_

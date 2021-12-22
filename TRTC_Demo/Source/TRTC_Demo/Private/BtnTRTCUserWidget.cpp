@@ -63,18 +63,18 @@ void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
 void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     // 请务必加上
     pTRTCCloud->callExperimentalAPI("{\"api\": \"setFramework\", \"params\": {\"framework\": 9}}");
-    writeLblLog("start OnEnterRoom_Click roomid: 110");
+    writeLblLog("start OnEnterRoom_Click roomid");
     // 构造进房参数
     trtc::TRTCParams params;
     params.role = trtc::TRTCRoleAnchor;
     params.userDefineRecordId = "";
-    FString c = txtUserId->GetText().ToString();
-    params.userId = TCHAR_TO_ANSI(*c);
-    params.roomId =  110;
+    FString cUserId = txtUserId->GetText().ToString();
+    params.userId = TCHAR_TO_ANSI(*cUserId);
+    params.roomId = 2869;
 
 #if PLATFORM_MAC || PLATFORM_IOS || PLATFORM_WINDOWS
    params.sdkAppId = SDKAppID;
-   params.userSig = GenerateTestUserSig().genTestUserSig(testUserId, SDKAppID, SECRETKEY);
+   params.userSig = GenerateTestUserSig().genTestUserSig(params.userId, SDKAppID, SECRETKEY);
    pTRTCCloud->enterRoom(params, trtc::TRTCAppSceneVideoCall);
 #else
     if (JNIEnv* Env = FAndroidApplication::GetJavaEnv()) {
@@ -88,7 +88,6 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
 
         params.sdkAppId = SDKAppID;
         params.userSig = userSig;
-        writeLblLog(userSig);
         writeLblLog("=====enterRoom");
         // 进房，因为生成userSig的关系，enterRoom必须放在这个条件语句里
         pTRTCCloud->enterRoom(params, trtc::TRTCAppSceneVideoCall);
@@ -101,7 +100,7 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
 void UBtnTRTCUserWidget::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *videoFrame) {
     int frameLength = videoFrame->length;
     if (localPreviewImage && remoteImage && frameLength > 1) {
-        // 获取到BGRA32 帧数据
+        // 获取到 帧数据
         bool isLoaclUser =((strcmp(testUserId, userId) == 0 || nullptr == userId || strlen(userId)==0) && streamType ==  trtc::TRTCVideoStreamTypeBig)? true:false;
         UpdateBuffer(videoFrame->data,videoFrame->width,videoFrame->height,frameLength,isLoaclUser);
     }
@@ -339,10 +338,11 @@ void UBtnTRTCUserWidget::NativeConstruct() {
     BtnScreenCapture->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStartScreen_Click);
     BtnExitRoom->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnExitRoom_Click);
     BtnStopScreen->OnClicked.AddDynamic(this, &UBtnTRTCUserWidget::OnStopScreen_Click);
-    FString tempText = TEXT("110");
-    txtRoomID->SetText(FText::FromString(tempText));
-    std::string stdStrTemp(testUserId);
-    tempText = stdStrTemp.c_str();
+    std::string stdStrTemp1(testStrRoomId);
+    FString tempRoomId = stdStrTemp1.c_str();
+    txtRoomID->SetText(FText::FromString(tempRoomId));
+    std::string stdStrTemp2(testUserId);
+    FString tempText = stdStrTemp2.c_str();
     txtUserId->SetText(FText::FromString(tempText));
     writeLblLog(version.c_str());
 }
