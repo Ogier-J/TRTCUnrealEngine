@@ -63,17 +63,21 @@ void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
 void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     // 请务必加上
     pTRTCCloud->callExperimentalAPI("{\"api\": \"setFramework\", \"params\": {\"framework\": 9}}");
-    writeLblLog("start OnEnterRoom_Click roomid");
+    writeLblLog("start OnEnterRoom_Click");
     // 构造进房参数
     trtc::TRTCParams params;
     params.role = trtc::TRTCRoleAnchor;
     params.userDefineRecordId = "";
-    FString cUserId = txtUserId->GetText().ToString();
-    params.userId = TCHAR_TO_ANSI(*cUserId);
-    params.roomId = 2869;
+    FString fUserId = txtUserId->GetText().ToString();
+    std::string strUserId(TCHAR_TO_UTF8(*fUserId));
+    const char* charsUser = strUserId.c_str();
+    params.userId = charsUser;
 
+    FString cRoomId = txtRoomID->GetText().ToString();
+    int32 intRoomId = FCString::Atoi(*cRoomId);
+    params.roomId = (uint32_t)intRoomId;
+    params.sdkAppId = SDKAppID;
 #if PLATFORM_MAC || PLATFORM_IOS || PLATFORM_WINDOWS
-   params.sdkAppId = SDKAppID;
    params.userSig = GenerateTestUserSig().genTestUserSig(params.userId, SDKAppID, SECRETKEY);
    pTRTCCloud->enterRoom(params, trtc::TRTCAppSceneVideoCall);
 #else
@@ -86,9 +90,7 @@ void UBtnTRTCUserWidget::OnEnterRoom_Click() {
         auto twoHundredAnsi = StringCast<ANSICHAR>(*FinalResult);
         const char* userSig = twoHundredAnsi.Get();
 
-        params.sdkAppId = SDKAppID;
         params.userSig = userSig;
-        writeLblLog("=====enterRoom");
         // 进房，因为生成userSig的关系，enterRoom必须放在这个条件语句里
         pTRTCCloud->enterRoom(params, trtc::TRTCAppSceneVideoCall);
     }
@@ -341,9 +343,10 @@ void UBtnTRTCUserWidget::NativeConstruct() {
     std::string stdStrTemp1(testStrRoomId);
     FString tempRoomId = stdStrTemp1.c_str();
     txtRoomID->SetText(FText::FromString(tempRoomId));
+
     std::string stdStrTemp2(testUserId);
-    FString tempText = stdStrTemp2.c_str();
-    txtUserId->SetText(FText::FromString(tempText));
+    FString tempUserText = stdStrTemp2.c_str();
+    txtUserId->SetText(FText::FromString(tempUserText));
     writeLblLog(version.c_str());
 }
 

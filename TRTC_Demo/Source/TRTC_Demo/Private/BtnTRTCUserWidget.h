@@ -11,7 +11,7 @@
 #include "Components/TextBlock.h"
 #include "Components/EditableTextBox.h"
 #include "Modules/ModuleManager.h"
-
+#include "Misc/CString.h"
 #if PLATFORM_ANDROID
 #include "Runtime/Launch/Public/Android/AndroidJNI.h"
 #include "Runtime/Core/Public/Android/AndroidJavaEnv.h"
