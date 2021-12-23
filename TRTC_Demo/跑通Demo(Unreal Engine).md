@@ -1,6 +1,6 @@
 本文主要介绍如何快速运行腾讯云 TRTC Demo（Unreal Engine）。
 
->! 目前 支持Windows、MacOs、ios。Android端还在开发中。
+>! 目前 支持Windows、MacOs、ios、Android。
 
 ## 环境要求
 - 建议Unreal Engine 4.27.1 及以上版本。
