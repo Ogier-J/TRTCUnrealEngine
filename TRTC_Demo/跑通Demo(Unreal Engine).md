@@ -5,8 +5,9 @@
 ## 环境要求
 - 建议Unreal Engine 4.27.1 及以上版本。
 - **Android 端开发：**
-  - Android Studio 3.5及以上版本。
-  - App 要求 Android 4.1及以上版本设备。
+  - Android Studio版本4.0及以上版本。
+  - Visual Studio 2017 15.6版或更高。
+  - 只支持真机调试
 - **iOS & macOS 端开发：**
   - Xcode 11.0及以上版本。
   - osx 系统版本要求 10.11 及以上版本
@@ -15,9 +16,6 @@
     - 操作系统：Windows 7 SP1 或更高的版本（基于 x86-64 的 64 位操作系统）。
     - 磁盘空间：除安装 IDE 和一些工具之外还应有至少 1.64 GB 的空间。
     - 安装 [Visual Studio 2019](https://visualstudio.microsoft.com/zh-hans/downloads/)。
-- **Android 开发：**
-    - Android Studio版本4.0
-    - Visual Studio 2017 15.6版或更高。
 
 ## 前提条件
 您已 [注册腾讯云](https://cloud.tencent.com) 账号，并完成实名认证。
@@ -105,6 +103,10 @@ Demo 里面提供了一对一视频通话的实现，可以测试和作为调用
 
 ![](https://imgcache.qq.com/operation/dianshi/other/demo.8c159a7021aba2a1946db19010091752e4027536.png)
 
+## TRTC全平台 C++ API文档
+[中文文档](https://liteav.sdk.qcloud.com/doc/api/zh-cn/md_introduction_trtc_zh_Cplusplus_Brief.html)
+[英文文档](https://liteav.sdk.qcloud.com/doc/api/en/md_introduction_trtc_en_Cplusplus_Brief.html)
+
 ## 常见问题
 ### 如何查看 TRTC 日志？
 TRTC 的日志默认压缩加密，后缀为 `.xlog`。地址如下：
@@ -122,4 +124,10 @@ TRTC 的日志默认压缩加密，后缀为 `.xlog`。地址如下：
 <string>授权麦克风权限才能正常语音通话</string>
 ```
 
-
+### 安卓“Attempt to construct staged filesystem reference from absolute path"”报错
+关闭UE4项目，打开cmd
+>adb shell
+>cd sdcard
+>ls (you should see the UE4Game directory listed)
+>rm -r UE4Game
+重新编译项目

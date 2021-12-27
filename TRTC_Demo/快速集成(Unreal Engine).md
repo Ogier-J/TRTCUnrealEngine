@@ -1,34 +1,36 @@
 本文主要介绍如何快速地将腾讯云 TRTC SDK（Unreal Engine）集成到您的项目中，只要按照如下步骤进行配置，就可以完成 SDK 的集成工作。
 
 ## 环境要求
-* 建议Unreal Engine 4.27.1 及以上版本。
-* 目前支持 iOS、Android、Windows、MacOS平台
-- 其中 iOS  端开发还需要：
+- 建议Unreal Engine 4.27.1 及以上版本。
+- **Android 端开发：**
+  - Android Studio版本4.0及以上版本。
+  - Visual Studio 2017 15.6版或更高。
+  - 只支持真机调试
+- **iOS & macOS 端开发：**
   - Xcode 11.0及以上版本。
+  - osx 系统版本要求 10.11 及以上版本
   - 请确保您的项目已设置有效的开发者签名。
 - **Windows 开发：**
     - 操作系统：Windows 7 SP1 或更高的版本（基于 x86-64 的 64 位操作系统）。
     - 磁盘空间：除安装 IDE 和一些工具之外还应有至少 1.64 GB 的空间。
     - 安装 [Visual Studio 2019](https://visualstudio.microsoft.com/zh-hans/downloads/)。
-- **Android 开发：**
-    - Android Studio版本4.0
-    - Visual Studio 2017 15.6版或更高。
 
 ## 集成 SDK
 1. 下载 SDK 及配套的 [SDK 源码](https://comm.qq.com/sdk/trtc/UE4/TRTCSDK.zip)（有疑问可加入QQ群号：764231117 咨询）。
 2. 解压后，把项目中的 `TRTCSDK` 文件夹拷贝到您项目中的 **Source/[project_name]** 目录下，其中 **[project_name]** 表示你项目的名称。
 3. 编辑你项目中的 **[project_name].Build.cs**文件。添加下面函数
 ```
-// 加载编译TRTC SDK framework
+// 加载各个平台TRTC底层库
 private void loadTRTCSDK(ReadOnlyTargetRules Target)
 {
     string _TRTCSDKPath = Path.GetFullPath(Path.Combine(ModuleDirectory, "TRTCSDK"));
     bEnableUndefinedIdentifierWarnings = false;
     if (Target.Platform == UnrealTargetPlatform.Android)
     {
+        // 加载Android头文件
         PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/Android"));
         PrivateDependencyModuleNames.AddRange(new string[] { "Launch" });
-        
+        // 加载Android APL文件
         AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidPlugin", Path.Combine(ModuleDirectory, "TRTCSDK", "Android", "APL_armv7.xml")));
         
         string Architecture = "armeabi-v7a";
@@ -38,7 +40,7 @@ private void loadTRTCSDK(ReadOnlyTargetRules Target)
         PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory,"TRTCSDK", "Android", Architecture, "libliteavsdk.so"));
     }else if (Target.Platform == UnrealTargetPlatform.IOS)
     {
-        // 添加插件的包含路径
+        // 加载iOS头文件
         PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/iOS"));
         PublicAdditionalLibraries.AddRange(new string[] {
             "resolv",
@@ -59,6 +61,7 @@ private void loadTRTCSDK(ReadOnlyTargetRules Target)
         PublicAdditionalFrameworks.Add(new UEBuildFramework( "TXLiteAVSDK_TRTC",_TRTCSDKPath+"/ios/TXLiteAVSDK_TRTC.framework.zip", ""));
     }else if(Target.Platform == UnrealTargetPlatform.Mac)
     {
+        // 加载MacOs头文件
         PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/Mac"));
         PublicAdditionalLibraries.AddRange(new string[] {
             "resolv",
@@ -90,6 +93,7 @@ private void loadTRTCSDK(ReadOnlyTargetRules Target)
         PublicFrameworks.Add(Path.Combine(_TRTCSDKPath, "Mac", "Release","TXLiteAVSDK_TRTC_Mac.framework"));
     }else if (Target.Platform == UnrealTargetPlatform.Win64)
     {
+        // 加载Win64头文件
         PublicIncludePaths.Add(Path.Combine(_TRTCSDKPath, "include/win64"));
         PublicAdditionalLibraries.Add(Path.Combine(_TRTCSDKPath, "win64", "Release","liteav.lib"));
         PublicDelayLoadDLLs.Add(Path.Combine(_TRTCSDKPath, "win64", "Release", "liteav.dll"));
@@ -110,16 +114,27 @@ private void loadTRTCSDK(ReadOnlyTargetRules Target)
 ![](https://imgcache.qq.com/operation/dianshi/other/TRTCSDK.82d81b0b8fe050772b3c8e02c4578b920515a580.jpg)
 5. 到目前为止你已经集成了TRTC SDK。可在你的cpp 文件中使用TRTC了。`#include "ITRTCCloud.h"`
 ```
+// 获取TRTC单例对象
 #if PLATFORM_ANDROID
     if (JNIEnv* Env = FAndroidApplication::GetJavaEnv()) {
         void* activity = (void*) FAndroidApplication::GetGameActivityThis();
+        // 安卓这里需要传入当前上下文对象
         pTRTCCloud = getTRTCShareInstance(activity);
     }
 #else
     pTRTCCloud = getTRTCShareInstance();
 #endif
+// 注册事件回调
 pTRTCCloud->addCallback(this);
+// 获取版本号
 std::string version = pTRTCCloud->getSDKVersion();
+// 进入房间
+trtc::TRTCParams params;
+params.userId = "123";
+params.roomId = 110;
+params.sdkAppId = SDKAppID;
+params.userSig = GenerateTestUserSig().genTestUserSig(params.userId, SDKAppID, SECRETKEY);
+pTRTCCloud->enterRoom(params, trtc::TRTCAppSceneVideoCall);
 ```
 ## 打包
 <dx-tabs>
@@ -163,6 +178,6 @@ Privacy - Microphone Usage Description
 :::
 </dx-tabs>
 
-## 其他
-[TRTC全平台 C++ API](https://cloud.tencent.com/document/product/647/32268)
-
+## TRTC全平台 C++ API文档
+[中文文档](https://liteav.sdk.qcloud.com/doc/api/zh-cn/md_introduction_trtc_zh_Cplusplus_Brief.html)
+[英文文档](https://liteav.sdk.qcloud.com/doc/api/en/md_introduction_trtc_en_Cplusplus_Brief.html)
