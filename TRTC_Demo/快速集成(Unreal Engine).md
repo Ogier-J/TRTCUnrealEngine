@@ -180,4 +180,5 @@ Privacy - Microphone Usage Description
 
 ## TRTC全平台 C++ API文档
 [中文文档](https://liteav.sdk.qcloud.com/doc/api/zh-cn/md_introduction_trtc_zh_Cplusplus_Brief.html)
+
 [英文文档](https://liteav.sdk.qcloud.com/doc/api/en/md_introduction_trtc_en_Cplusplus_Brief.html)

@@ -35,8 +35,6 @@
 ### 步骤2：下载 SDK 和 Demo 源码
 1. 根据实际业务需求下载 SDK 及配套的 [Demo 源码](https://comm.qq.com/sdk/trtc/UE4/TRTC_Demo.zip)（有疑问可加入QQ群号：764231117 咨询）。
 2. 下载完成后，单击【已下载，下一步】。
-![](https://main.qcloudimg.com/raw/a4f5a2ac1f49d67b4c6968d8b22cdeb0.png)
-
 
 [](id:step3)
 ### 步骤3：配置 Demo 工程文件
@@ -105,6 +103,7 @@ Demo 里面提供了一对一视频通话的实现，可以测试和作为调用
 
 ## TRTC全平台 C++ API文档
 [中文文档](https://liteav.sdk.qcloud.com/doc/api/zh-cn/md_introduction_trtc_zh_Cplusplus_Brief.html)
+
 [英文文档](https://liteav.sdk.qcloud.com/doc/api/en/md_introduction_trtc_en_Cplusplus_Brief.html)
 
 ## 常见问题
