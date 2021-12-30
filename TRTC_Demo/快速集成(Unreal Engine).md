@@ -17,7 +17,7 @@
 
 ## 集成 SDK
 1. 下载 SDK 及配套的 [SDK 源码](https://github.com/tencentyun/TRTCUnrealEngine)（有疑问可加入QQ群号：764231117 咨询）。
-2. 解压后，把项目中的 `TRTCSDK` 文件夹拷贝到您项目中的 **Source/[project_name]** 目录下，其中 **[project_name]** 表示你项目的名称。
+2. 把项目中的 `TRTCSDK` 文件夹拷贝到您项目中的 **Source/[project_name]** 目录下，其中 **[project_name]** 表示你项目的名称。
 3. 编辑你项目中的 **[project_name].Build.cs**文件。添加下面函数
 ```
 // 加载各个平台TRTC底层库
