@@ -53,10 +53,9 @@
 
 [](id:step4)
 ### 步骤4：编译打包运行
-1. 双击打开 `/TRTC_Demo/TRTC_Demo.uproject`。
-2. 编译运行调试：
-<dx-tabs>
-::: macOS\s端
+双击打开 `/TRTC_Demo/TRTC_Demo.uproject`
+
+#### macOS
 1. File -> Package Project -> Mac
 2. 配置权限。右击上一步编译出的 xxx.app 文件 - 选择 "显示包内容" 
 ![](https://imgcache.qq.com/operation/dianshi/other/macos.85afe01a6930d8f2ba9caadce89693cdd740c6e0.png)
@@ -69,12 +68,12 @@
 <string>授权麦克风权限才能正常语音通话</string>
 ```
 5. 如果你现在在UE4的editor运行的话，需要找到 **UE4Editor.app** 文件并且按照上面步骤添加权限。
-:::
-::: Windows\s端
+
+#### Windows
 1. File->Package Project->Windows->Windows(64-bit)
 ![](https://imgcache.qq.com/operation/dianshi/other/win.ba79ccce59ae58718e6c35c16cdef55531456a70.png)
-:::
-::: iOS\s端
+
+#### iOS
 1. 在 iOS 上也需要以下权限：
 ```
 Privacy - Camera Usage Description
@@ -89,12 +88,11 @@ Privacy - Microphone Usage Description
 ```
 添加到 Additional Plist Data 里。
 2. 最后打包项目。File -> Package Project -> iOS
-:::
-::: Android\s端
+
+#### Android
 1.开发调试：详见[Android快速入门](https://docs.unrealengine.com/4.27/zh-CN/SharingAndReleasing/Mobile/Android/GettingStarted/)
 2.打包项目：详见[打包Android项目](https://docs.unrealengine.com/4.27/zh-CN/SharingAndReleasing/Mobile/Android/PackagingAndroidProject/)
-:::
-</dx-tabs>
+
 ## Demo运行
 Demo 里面提供了一对一视频通话的实现，可以测试和作为调用参考，API 文档参见 [C++ 全平台 API](https://cloud.tencent.com/document/product/647/32268)。
 >? UI 可能会有部分调整更新，请以最新版为准。

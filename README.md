@@ -55,10 +55,9 @@ You have [signed up for a Tencent Cloud account](https://intl.cloud.tencent.com)
 
 [](id:step4)
 ### Step 4. Compile, package, and run the project
-1. Open `/TRTC_Demo/TRTC_Demo.uproject`.
-2. Compile, run, and test the project.
-<dx-tabs>
-::: macOS\s
+Open `/TRTC_Demo/TRTC_Demo.uproject`.Compile, run, and test the project.
+
+#### macOS
 1. Go to **File > Package Project > Mac**.
 2. Configure permissions. Right-click the `xxx.app` file compiled in the previous step and select **Show Package Contents**. 
 ![](https://qcloudimg.tencent-cloud.cn/raw/3eb106ee3307c206dff5314a43920132.png)
@@ -71,12 +70,12 @@ You have [signed up for a Tencent Cloud account](https://intl.cloud.tencent.com)
 <string>Audio calls are possible only with mic access.</string>
 ```
 5. If you use UE4 Editor, add the above permissions to the **UE4Editor.app** file.
-:::
-::: Windows\s
+
+#### Windows
 1. Go to **File > Package Project > Windows > Windows(64-bit)**.
 ![](https://imgcache.qq.com/operation/dianshi/other/win.ba79ccce59ae58718e6c35c16cdef55531456a70.png)
-:::
-::: iOS\s
+
+#### iOS
 1. The following permissions are required on iOS.
 ```
 Privacy - Camera Usage Description
@@ -91,12 +90,11 @@ To add the permissions to `info.plist`, go to **Edit > Project Settings > Platfo
 ```
 to `Additional Plist Data`.
 2. Go to **File > Package Project > iOS** to package your project.
-:::
-::: Android\s
+
+#### Android
 1. For development and testing, see [Android Quick Start](https://docs.unrealengine.com/4.27/en-US/SharingAndReleasing/Mobile/Android/GettingStarted/).
 2. For packaging, see [Packaging Android Projects](https://docs.unrealengine.com/4.27/en-US/SharingAndReleasing/Mobile/Android/PackagingAndroidProject/).
-:::
-</dx-tabs>
+
 ## Running the Demo
 The demo offers implementation code for one-to-one video calls, which you can use for testing or as reference for API calls. For more information about APIs, see [All Platforms (C++) > Overview](https://intl.cloud.tencent.com/document/product/647/35131).
 >? The UI of the latest version of the demo may look different.
