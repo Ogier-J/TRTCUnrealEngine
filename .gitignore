@@ -1,4 +1,5 @@
 .vs/
+.other-dll-source
 *.DS_Store
 *.slo
 *.lo
