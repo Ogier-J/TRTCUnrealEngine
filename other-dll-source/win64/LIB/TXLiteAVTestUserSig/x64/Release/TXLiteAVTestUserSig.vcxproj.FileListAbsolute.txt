@@ -1,1 +1,0 @@
-D:\UGit\TRTC-Unreal-SDK\other-dll-source\win64\LIB\TXLiteAVTestUserSig\x64\Release\TXLiteAVTestUserSig.lib
