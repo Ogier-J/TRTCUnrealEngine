@@ -62,7 +62,7 @@ void UBtnTRTCUserWidget::OnStartLocalPreview_Click() {
 }
 void UBtnTRTCUserWidget::OnEnterRoom_Click() {
     // 请务必加上
-    pTRTCCloud->callExperimentalAPI("{\"api\": \"setFramework\", \"params\": {\"framework\": 9}}");
+    pTRTCCloud->callExperimentalAPI("{\"api\": \"setFramework\", \"params\": {\"framework\": 35}}");
     writeLblLog("start OnEnterRoom_Click");
     // 构造进房参数
     trtc::TRTCParams params;
